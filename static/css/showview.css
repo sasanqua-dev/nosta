@@ -1,0 +1,59 @@
+.container-number-already {
+    display: flex; 
+    width: 100%; 
+    height: 75vh;
+    border-radius: 20px 20px 20px 20px;
+    border: 2.5px solid #00517c;
+    padding: 3vh;
+    font-size: 45px; 
+    font-weight: bold; 
+    align-content: flex-start; 
+    flex-wrap: wrap; 
+    overflow-y: auto;
+    /*IE(Internet Explorer)・Microsoft Edgeへの対応*/
+    -ms-overflow-style: none;
+    /*Firefoxへの対応*/
+    scrollbar-width: none;
+}
+.container-number-already::-webkit-scrollbar{
+    display: none;
+}
+
+.number-item-already {
+    display: inline-block;
+    height: 70px; 
+    width: 130px; 
+    background-color: #00517c; 
+    color: azure;
+    margin: 1vh 0vh;
+}
+
+.container-number-yet{
+    display: flex; 
+    width: 100%; 
+    height: 75vh;
+    border-radius: 20px 20px 20px 20px;
+    border: 2.5px solid #595857;
+    padding: 3vh;
+    font-size: 36px; 
+    overflow-y: auto; 
+    align-content: flex-start; 
+    flex-wrap: wrap;
+    /*IE(Internet Explorer)・Microsoft Edgeへの対応*/
+    -ms-overflow-style: none;
+    /*Firefoxへの対応*/
+    scrollbar-width: none;
+}
+
+.number-item-yet{
+    display: inline-block; 
+    height: 60px; 
+    width: 90px; 
+    background-color: #595857; 
+    color: azure;
+    margin: 1vh 0vh;
+}
+
+.container-number-yet::-webkit-scrollbar{
+    display: none;
+}

@@ -1,0 +1,73 @@
+.container{
+    height: auto;
+    min-height: 100vh;
+}
+.container-number {
+    display: flex;
+    width: 90%;
+    min-height: 20vh;
+    border-radius: 20px 20px 20px 20px;
+    border: 2.5px solid #595857;
+    padding: 1vh;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    overflow-y: auto;
+}
+
+.number-item {
+    display: inline-block;
+    width: 20vh;
+    height: 8vh;
+    background-color: #00517c;
+    color: azure;
+    font-size: 5vh;
+    align-content: flex-start;
+}
+
+.shopmessagebox {
+    position: relative;
+    margin: 2em 0;
+    padding: 0.5em 1em;
+    border: solid 3px #00517c;
+    border-radius: 8px;
+}
+.shopmessagebox .box-title {
+    position: absolute;
+    display: inline-block;
+    top: -13px;
+    left: 10px;
+    padding: 0 9px;
+    line-height: 1;
+    font-size: 19px;
+    background: #FFF;
+    color: #00517c;
+    font-weight: bold;
+}
+.shopmessagebox p {
+    margin: 0; 
+    padding: 0;
+}
+
+.systemmessagebox {
+    position: relative;
+    margin: 2em 0;
+    padding: 0.5em 1em;
+    border: solid 3px #5383c3;
+    border-radius: 8px;
+}
+.systemmessagebox .box-title {
+    position: absolute;
+    display: inline-block;
+    top: -13px;
+    left: 10px;
+    padding: 0 9px;
+    line-height: 1;
+    font-size: 19px;
+    background: #FFF;
+    color: #5383c3;
+    font-weight: bold;
+}
+.systemmessagebox p {
+    margin: 0; 
+    padding: 0;
+}

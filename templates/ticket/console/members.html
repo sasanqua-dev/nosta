@@ -1,0 +1,66 @@
+{% extends 'ticket/console_base.html' %} {% block content %}
+<nav class="navbar has-background-white-ter" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <div class="navbar-item">
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    <li><p class="is-size-6 m-2">Console</p></li>
+                    <li class="is-active is-size-4"><a href="#" aria-current="page">Customers</a></li>
+                </ul>
+            </nav>
+        </div>
+        <p class="navbar-item" style="margin-left: 10px">ようこそ {{ user.username }} さん</p>
+    </div>
+</nav>
+
+<div class="container is-main">
+    <main class="content mt-4 mr-2 ml-2" style="height: 90vh; overflow-y: auto; overflow-x: hidden">
+        <div id="Members">
+            <form class="container">
+                <div class="columns is-multiline">
+                    <div class="column is-2">ユーザーID</div>
+                    <div class="column is-5"><input class="input" type="text" required/></div>
+                    <div class="column is-5 is-size-4"><p>@{{ shop.code }}.nicket</p></div>
+                    <div class="column is-2">ユーザー名</div>
+                    <div class="column is-5"><input class="input" type="text" required/></div>
+                    <div class="column is-5"></div>
+                    <div class="column is-2">パスワード</div>
+                    <div class="column is-5"><input class="input" type="password" required/></div>
+                    <div class="column is-5"></div>
+                    <div class="column is-2">パスワード(確認)</div>
+                    <div class="column is-5"><input class="input" type="password2" required/></div>
+                    <div class="column is-5"></div>
+                    <div class="column is-12"><p class="has-text-danger help">{{ error }}</p></div>
+                    <div class="column is-12"><input type="submit" class="button is-outlined" /></div>
+                </div>
+            </form>
+            <hr />
+            <table class="table">
+                <thead>
+                    <th>
+                        <td>ユーザーID</td>
+                        <td>ユーザー名</td>
+                        <td>権限</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </th>
+                </thead>
+                <tbody>
+                    {% for member in members %}
+                    <tr>
+                        <td>{{ member.email }}</td>
+                        <td>{{ member.username }}</td>
+                        <td>{{ member.app_permission }}</td>
+                        <td><div class="select"></div></td>
+                        <td><a class="button is-outlined is-info" data-target="{{ member.id}}">保存</td>
+                        <td><a class="button is-outlined is-danger">削除</td>
+                        <td><a class="button is-outlined is-danger" data-target="{{ member.id}}">削除</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+{% endblock %}

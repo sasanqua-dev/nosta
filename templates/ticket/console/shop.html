@@ -1,0 +1,212 @@
+{% extends 'ticket/console_base.html' %} {% block content %}
+<style>
+    h1 {
+        padding: 0.25em 0.5em; /*上下 左右の余白*/
+        color: #494949; /*文字色*/
+        background: transparent; /*背景透明に*/
+        border-left: solid 5px #00517c; /*左線*/
+    }
+</style>
+<nav class="navbar has-background-white-ter" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <div class="navbar-item">
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    <li><p class="is-size-6 m-2">Console</p></li>
+                    <li class="is-active is-size-4"><a href="#" aria-current="page">Shop</a></li>
+                </ul>
+            </nav>
+        </div>
+        <p class="navbar-item" style="margin-left: 10px">ようこそ {{ user.username }} さん</p>
+    </div>
+</nav>
+<div class="columns">
+    <div class="column is-10 m-4 mb-6">
+        <h1 id="info" class="m-2"><strong>店舗情報</strong></h1>
+        <p>店舗情報の登録・修正を行います</p>
+        <div class="columns is-multiline my-4">
+            <div class="column is-2 has-text-centered">
+                <label>店舗名</label>
+            </div>
+            <div class="column is-5">
+                <div class="columns">
+                    <div class="column is-10">
+                        <input class="input" placeholder="店舗名" />
+                    </div>
+                    <div class="column is-2"><a class="button is-outlined">保存</a></div>
+                </div>
+            </div>
+            <div class="column is-5"></div>
+            <div class="column is-2 has-text-centered">
+                <label>店舗コード</label>
+            </div>
+            <div class="column is-5">
+                <div class="columns">
+                    <div class="column is-10">
+                        <input class="input" placeholder="店舗コード" type="text" disabled />
+                        <p class="help has-text-danger">店舗コードは変更できません</p>
+                    </div>
+                    <div class="column is-2"><a class="button is-outlined" disabled>保存</a></div>
+                </div>
+            </div>
+            <div class="column is-5"></div>
+            <div class="column is-2 has-text-centered">
+                <label>店舗紹介文</label>
+            </div>
+            <div class="column is-5">
+                <div class="columns">
+                    <div class="column is-10">
+                        <textarea class="input" style="height: 10vh"></textarea>
+                        <p class="help has-text-danger">店舗紹介文は外部に公開されます</p>
+                    </div>
+                    <div class="column is-2"><a class="button is-outlined">保存</a></div>
+                </div>
+            </div>
+            <div class="column is-5"></div>
+        </div>
+        <h1 id="cs_general" class="m-2"><strong>チケット一般設定</strong></h1>
+        <p>チケットの基本的な内容について設定を行います</p>
+        <div class="columns is-multiline my-4">
+            <div class="column is-2 has-text-centered">
+                <label>ユーザー種別</label>
+            </div>
+            <div class="column is-5">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>type1</td>
+                            <td><a class="cs_type_list has-text-danger">削除</a></td>
+                        </tr>
+                        <tr>
+                            <td>type2</td>
+                            <td><a class="cs_type_list has-text-danger">削除</a></td>
+                        </tr>
+                        <tr>
+                            <td>type3</td>
+                            <td><a class="cs_type_list has-text-danger">削除</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="columns">
+                    <div class="column is-10">
+                        <input class="input" placeholder="追加する名前を入力" type="text" />
+                    </div>
+                    <div class="column is-2"><a class="button is-outlined">追加</a></div>
+                </div>
+            </div>
+            <div class="column is-5"></div>
+            <div class="column is-2 has-text-centered">
+                <label>最小人数</label>
+            </div>
+            <div class="column is-5">
+                <div class="columns">
+                    <div class="column is-10">
+                        <input class="input" type="number" placeholder="最小人数" />
+                    </div>
+                    <div class="column is-2"><a class="button is-outlined">変更</a></div>
+                </div>
+            </div>
+            <div class="column is-5"></div>
+            <div class="column is-2 has-text-centered">
+                <label>最大人数</label>
+            </div>
+            <div class="column is-5">
+                <div class="columns">
+                    <div class="column is-10">
+                        <input class="input" type="number" placeholder="最大人数" />
+                    </div>
+                    <div class="column is-2"><a class="button is-outlined">変更</a></div>
+                </div>
+            </div>
+            <div class="column is-5"></div>
+        </div>
+        <h1 id="cs_platform" class="m-2"><strong>チケット発行設定</strong></h1>
+        <p>チケット発行について設定を行います</p>
+        <div class="columns is-multiline my-4">
+            <div class="column is-2 has-text-centered">
+                <label>プラットフォーム</label>
+            </div>
+            <div class="column is-5">
+                <div class="columns is-multiline">
+                    <div class="column is-8">
+                        <p>webサイト(外部公開)</p>
+                        <p class="help">この方法が有効な場合、ユーザーはURLを知っていれば店舗に訪れることなくチケットを発行できるようになります</p>
+                    </div>
+                    <div class="column is-2"><a class="button is-success">有効</a></div>
+                    <div class="column is-2"><a class="button is-outlined is-danger">無効</a></div>
+                </div>
+            </div>
+        </div>
+        <h1 id="cs_webpage" class="m-2"><strong>WEBページ設定</strong></h1>
+        <p>WEBページについて設定を行います</p>
+        <div class="columns is-multiline my-4">
+            <div class="column is-2 has-text-centered">
+                <label>メッセージ</label>
+            </div>
+            <div class="column is-5">
+                <div class="columns">
+                    <div class="column is-10">
+                        <textarea class="input" style="height: 10vh"></textarea>
+                        <p class="help">ここで入力した内容が呼び出し番号表示ページ内の「店舗からのお知らせ」として表示されます</p>
+                    </div>
+                    <div class="column is-2"><a class="button is-outlined">保存</a></div>
+                </div>
+            </div>
+            <div class="column is-5"></div>
+            <div class="column is-2 has-text-centered">
+                <label>WEBサイト</label>
+            </div>
+            <div class="column is-5">
+                <div class="columns">
+                    <div class="column is-10">
+                        <input class="input" placeholder="URLを入力" type="url" />
+                        <p class="help">ここで入力したURLへのリンクを呼び出し番号表示ページ内に表示させることができます</p>
+                    </div>
+                    <div class="column is-2"><a class="button is-outlined">保存</a></div>
+                </div>
+            </div>
+            <div class="column is-5"></div>
+        </div>
+        <h1 id="payments" class="m-2"><strong>Payments</strong></h1>
+        <p class="has-text-danger m-4">現在、このサービスでは有料サービスは提供されていません</p>
+        <p class="has-text-danger m-4">すべての機能が無料でお使い頂けます</p>
+        <div class="columns is-multiline my-4">
+            <div class="column is-2 has-text-centered">
+                <label>購入履歴</label>
+            </div>
+            <div class="column is-5">
+                <table class="table">
+                    <thead>
+                        <th>
+                            <td>決済ID</td>
+                            <td>決済日</td>
+                            <td>サービス</td>
+                            <td>金額</td>
+                            <td>決済方法</td>
+                        </th>
+                    </thead>
+                </table>
+            </div>
+            <div class="column is-5"></div>
+        </div>
+    </div>
+    <div class="column is-2 m-4 mr-4">
+        <aside class="menu container box shopsidebar" style="position: fixed; top: 50px; right: 20px">
+            <p class="menu-label">Shop</p>
+            <ul class="menu-list">
+                <li><a href="#info">Info</a></li>
+            </ul>
+            <p class="menu-label">Customer</p>
+            <ul class="menu-list">
+                <li><a href="#cs_general">General</a></li>
+                <li><a href="#cs_platform">Platform</a></li>
+                <li><a href="#cs_webpage">Web Page</a></li>
+            </ul>
+            <p class="menu-label">Security</p>
+            <ul class="menu-list">
+                <li><a href="#payments">Payments</a></li>
+            </ul>
+        </aside>
+    </div>
+</div>
+{% endblock %}

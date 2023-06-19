@@ -1,0 +1,100 @@
+{% extends 'auth_base.html' %} {% block content %}{% load static %}
+<form class="px-6" method="post" action="{% url 'shop:register' %}">
+    {% csrf_token %}
+    <div class="field">
+        <label for="shopcode" class="label">店舗コード</label>
+        <input type="text" name="shopcode" id="shopcode" class="input my-2" placeholder="店舗コード" required />
+        <p class="has-text-danger help">店舗コードは変更できません、また、他のユーザーが使用しているものを使用することはできません</p>
+    </div>
+    <div class="field">
+        <label for="shopname" class="label">店舗名</label>
+        <input type="text" name="shopname" id="shopname" class="input my-2" placeholder="店舗名" required />
+    </div>
+    <div class="field">
+        <label for="sic" class="label selectbox">業種</label>
+        <label class="selectbox">
+            <select name="sic" id="sic">
+                <option value="農林・水産">農林・水産</option>
+                <option value="林業">林業</option>
+                <option value="漁業">漁業</option>
+                <option value="鉱業">鉱業</option>
+                <option value="建設業">建設業</option>
+                <option value="製造業">製造業</option>
+                <option value="電気・ガス">電気・ガス</option>
+                <option value="運輸・通信業">運輸・通信業</option>
+                <option value="飲食料小売業">飲食料小売業</option>
+                <option value="一般飲食店">一般飲食店</option>
+                <option value="金融・保険業">金融・保険業</option>
+                <option value="不動産業">不動産業</option>
+                <option value="サービス業">サービス業</option>
+                <option value="その他">その他</option>
+            </select>
+        </label>
+    </div>
+    <div class="field">
+        <label for="category" class="label selectbox">事業形態</label>
+        <label class="selectbox">
+            <select name="category" id="category">
+                <option value="スーパーマーケット">スーパーマーケット</option>
+                <option value="コンビニエンスストア">コンビニエンスストア</option>
+                <option value="ホームセンター">ホームセンター</option>
+                <option value="ショッピングセンター">ショッピングセンター</option>
+                <option value="小売店">小売店</option>
+                <option value="直売所">直売所</option>
+                <option value="模擬店(屋外)">模擬店(屋外)</option>
+                <option value="模擬店(屋内)">模擬店(屋内)</option>
+                <option value="その他">その他</option>
+            </select>
+        </label>
+    </div>
+    <div class="field">
+        <input type="checkbox" required />
+        <a class="js-modal-trigger" data-target="term">利用規約</a>と<a class="js-modal-trigger" data-target="privacy">プライバシーポリシー</a>に同意します
+    </div>
+    <p class="help has-text-danger">{{ error }}</p>
+    <input type="submit" class="button is-rounded is-fullwidth my-4 is-info is-light" value="登録" />
+</form>
+<div class="modal" id="term">
+    <div class="modal-background"></div>
+    <div class="modal-card" style="height: 100%">
+        <section class="modal-card-body">
+            <strong>利用規約</strong>
+            <br />
+            <iframe src="{% static 'html/policy/term.html' %}" width="100%" height="95%"></iframe>
+        </section>
+    </div>
+</div>
+<div class="modal" id="privacy">
+    <div class="modal-background"></div>
+    <div class="modal-card" style="height: 100%">
+        <section class="modal-card-body">
+            <strong>プライバシーポリシー</strong>
+            <br />
+            <iframe src="{% static 'html/policy/privacy.html' %}" width="100%" height="95%"></iframe>
+        </section>
+    </div>
+</div>
+<script>
+    function openModal($el) {
+        $el.classList.add('is-active');
+    }
+    function closeModal($el) {
+        $el.classList.remove('is-active');
+    }
+    function createTrigger() {
+        (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+            const $target = document.getElementById($trigger.dataset.target);
+            $trigger.addEventListener('click', () => {
+                openModal($target);
+            });
+        });
+        (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+            const $target = $close.closest('.modal');
+            $close.addEventListener('click', () => {
+                closeModal($target);
+            });
+        });
+    }
+    createTrigger();
+</script>
+{% endblock %}

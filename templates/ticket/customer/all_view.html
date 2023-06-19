@@ -1,0 +1,23 @@
+{% extends 'hp_base.html' %} {% block content %}
+<div class="container box mt-3">
+    <div class="has-text-centered">
+        <strong>{{ shop.name }}</strong>
+        <hr />
+        <b class="is-size-3">お呼び出し中の番号</b>
+        <p class="help">枠内をスクロールしてご覧ください</p>
+    </div>
+    <div class="container-number m-2 is-size-4 has-text-centered" style="width: 90%; min-height: 20vh">
+        {% for ticket in tickets_calling %}
+        <b class="number-item m-1">{{ ticket.number }}</b>
+        {% endfor %}
+    </div>
+    <div class="shopmessagebox" style="width: 90%; min-height: 10vh">
+        <span class="box-title">店舗からのお知らせ</span>
+        <p class="m-3">{{ shop.message }}</p>
+    </div>
+    <div class="systemmessagebox" style="width: 90%">
+        <span class="box-title">NICKETからのお知らせ</span>
+        <p class="m-3">最新の情報を表示するには再読み込みしてください</p>
+    </div>
+</div>
+{% endblock %}

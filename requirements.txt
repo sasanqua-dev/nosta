@@ -1,0 +1,8 @@
+Django
+social-auth-app-django
+django-allauth
+psycopg2
+fontawesomefree
+pytz
+pillow
+django-cors-headers

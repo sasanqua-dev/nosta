@@ -1,0 +1,116 @@
+{% extends 'ticket/console_base.html' %} {% block content %}
+<style>
+    .tab-pane {
+        display: none;
+    }
+    .tab-pane:target {
+        display: block;
+    }
+</style>
+<style>
+    .dli-chevron-right {
+        display: inline-block;
+        vertical-align: middle;
+        color: #333;
+        line-height: 1;
+        width: 0.5em;
+        height: 0.5em;
+        border: 0.1em solid currentColor;
+        border-left: 0;
+        border-bottom: 0;
+        box-sizing: border-box;
+        transform: translateX(-25%) rotate(45deg);
+    }
+</style>
+<nav class="navbar has-background-white-ter" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <div class="navbar-item">
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    <li><p class="is-size-6 m-2">Console</p></li>
+                    <li class="is-active is-size-4"><a href="#" aria-current="page">Dashboard</a></li>
+                </ul>
+            </nav>
+        </div>
+        <p class="navbar-item" style="margin-left: 10px">ようこそ {{ user.username }} さん</p>
+    </div>
+</nav>
+
+<div class="container is-main">
+    <main class="content mt-4 mr-2 ml-2" style="height: 90vh; overflow-y: auto; overflow-x: hidden">
+        <div id="Dashboard">
+            <div class="container box p-4" style="min-height: 20vh; border: 2.5px solid #00517c">
+                {% for content in news %}
+                <div class="m-1 columns" style="width: 100%">
+                    <a href="" style="color: dimgray; display: inline; width: 100%">
+                        <c class="column is-3" style="display: inline-block">{{ content.created_at }}</c>
+                        <c class="column is-2" style="display: inline-block">{{ content.tag }}</c>
+                        <c class="column is-5" style="display: inline-block">{{ content.title }}</c>
+                        <c class="column is-1" style="display: inline-block"><span class="dli-chevron-right"></span></c>
+                    </a>
+                </div>
+                <hr />
+                {% endfor %}
+            </div>
+            <div class="container">
+                <div class="columns p-2 mt-4">
+                    <div class="column box m-2 has-text-centered">
+                        <strong>現在時刻</strong>
+                        <hr />
+                        <b class="has-text-center is-size-1" id="clock"></b>
+                        <script>
+                            function clock() {
+                                var nowTime = new Date(); //  現在日時を得る
+                                var nowHour = nowTime.getHours(); // 時を抜き出す
+                                var nowMin = nowTime.getMinutes(); // 分を抜き出す
+                                var nowSec = nowTime.getSeconds(); // 秒を抜き出す
+                                var msg = ('0' + nowHour).slice(-2) + ':' + ('0' + nowMin).slice(-2) + ':' + ('0' + nowSec).slice(-2);
+                                document.getElementById('clock').innerHTML = msg;
+                            }
+                            setInterval('clock()', 1000);
+                        </script>
+                    </div>
+                    <div class="column box m-2 has-text-centered">
+                        <strong>本日の来客数</strong>
+                        <hr />
+                        <b class="has-text-center is-size-1">{{peoplesum }}</b>
+                    </div>
+                    <div class="column box m-2 has-text-centered">
+                        <strong>総来客数</strong>
+                        <hr />
+                        <b class="has-text-center is-size-1">{{allsum }}</b>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="columns p-2 mt-4">
+                    <div class="column box m-2 has-text-centered">
+                        <strong>本日の発券数</strong>
+                        <hr />
+                        <b class="has-text-center is-size-1">{{ tickets }}</b>
+                    </div>
+                    <div class="column box m-2 has-text-centered">
+                        <strong>呼び出し待ち</strong>
+                        <hr />
+                        <b class="has-text-center is-size-1">{{ tickets_yet.count }}</b>
+                    </div>
+                    <div class="column box m-2 has-text-centered">
+                        <strong>呼び出し済み</strong>
+                        <hr />
+                        <b class="has-text-center is-size-1">{{tickets_callingAndalready }}</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(function () {
+                $('li.tab').click(function () {
+                    $('li.tab').removeClass('is-active');
+                    $(this).addClass('is-active');
+                    return true;
+                });
+            });
+        </script>
+    </main>
+</div>
+{% endblock %}

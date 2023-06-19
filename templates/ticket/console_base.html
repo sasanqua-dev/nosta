@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <title>管理コンソール</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+        <link rel="stylesheet" href="{% static 'css/console.css' %}" />
+        <!-- Our project just needs Font Awesome Free's Solid and Brand files -->
+        <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+        <section class="columns is-gapless" style="min-height: 100vh; overflow: auto">
+            <section class="column is-2" style="background-color: #eaf4fc">
+                <nav class="navbar" role="navigation" aria-label="main navigation" style="background-color: #eaf4fc">
+                    <div class="navbar-brand">
+                        <img src="{% static 'image/long_logo.png' %}" style="max-height: 4.75rem" class="navbar-item" />
+                    </div>
+                </nav>
+                <div class="container is-side sidebar m-2">
+                    <aside class="menu">
+                        <strong>{{ shop.name }}</strong>
+                        <p class="menu-label">General</p>
+                        <ul class="menu-list">
+                            <li><a href="{% url 'ticket:dashboard' shop.id %}" id="side_dashboard" class="">Dashboard</a></li>
+                            <li><a href="{% url 'ticket:customers' shop.id %}">Customers</a></li>
+                        </ul>
+                        <p class="menu-label">Administration</p>
+                        <ul class="menu-list">
+                            <li><a href="{% url 'ticket:shop' shop.id %}">Settings</a></li>
+                        </ul>
+                        <p class="menu-label">display</p>
+                        <ul class="menu-list">
+                            <li>
+                                <a href="{% url 'ticket:reception_internal' shop.id %}">
+                                    チケット発券
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'ticket:client_internal' shop.id %}">
+                                    呼び出し表示
+                                </a>
+                            </li>
+                        </ul>
+                        <p class="menu-label">client</p>
+                        <ul class="menu-list">
+                            <li>
+                                <a href="{% url 'ticket:client_external' shop.id %}" target="_blank">
+                                    呼び出し状況
+                            </li>
+                        </ul>
+                        <p class="menu-label">Link</p>
+                        <ul class="menu-list">
+                            <li>
+                                <a href="">
+                                    <span class="icon-text">
+                                        <span class="icon has-text-info">
+                                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        </span>
+                                        <span>NICKET TOP</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <span class="icon-text">
+                                        <span class="icon has-text-info">
+                                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        </span>
+                                        <span>epoc - 販売管理</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>
+                                    <span class="icon-text">
+                                        <span class="icon has-text-info">
+                                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        </span>
+                                        <span>ABOUT </span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <p class="menu-label">ACCOUNT</p>
+                        <ul class="menu-list">
+                            <li><a class="navbar-item" href="{% url 'ticket:home' %}"> Home </a></li>
+                            <li><a class="navbar-item" href="{% url 'logout' %}"> Logout </a></li>
+                        </ul>
+                    </aside>
+                </div>
+            </section>
+            <section class="column is-10">{% block content %}{% endblock %}</section>
+        </section>
+    </body>
+</html>

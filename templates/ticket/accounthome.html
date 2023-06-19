@@ -1,0 +1,12 @@
+{% extends 'auth_base.html' %} {% block content %}{% load static %}
+<strong>ようこそ {{ user.username }} さん</strong>
+<div class="mt-6">
+    <ul>
+        {% for shop in shops %}
+        <li><a href="{% url 'ticket:dashboard' shop.id %}" class="button is-fullwidth is-outline my-2">{{ shop.name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+<hr />
+<a href="{% url 'shop:register' %}" class="button is-outline">店舗の新規作成</a>
+{% endblock %}

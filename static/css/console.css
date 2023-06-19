@@ -1,0 +1,21 @@
+.sidebar {
+    color: aliceblue !important;
+}
+.content::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+    display:none;
+  }
+.content{
+    -ms-overflow-style: none;    /* IE, Edge 対応 */
+    scrollbar-width: none;       /* Firefox 対応 */
+}
+h1 {
+    padding: 0.25em 0.5em;/*上下 左右の余白*/
+    color: #494949;/*文字色*/
+    background: transparent;/*背景透明に*/
+    border-left: solid 5px #00517c;/*左線*/
+}
+.shopsidebar{
+    position: fixed;
+    top: 50px;
+    right:10px;
+}

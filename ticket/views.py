@@ -1,3 +1,171 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect , reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
+from db.models import *
+from django.db.models import *
+import datetime as dt 
+import pytz
+import json
+
+def get_dayformat():
+    jst = pytz.timezone('Asia/Tokyo')
+    now = dt.datetime.now(jst)
+    formatted = str(now.strftime("%Y-%m-%d"))
+    return formatted
+
+def consolo_access(request,shopID):
+    userid = request.user.id
+    userdomain = request.user.email.split("@")[1]
+    shop = Shop.objects.get(id=shopID)
+    if(shop.owner == request.user) or (shop.code in userdomain):
+        formatted = get_dayformat()
+        tickets = Ticket.objects.all().filter(Q(shopID=shop.id) & Q(day=formatted)& Q(shopID=shop.id)).count()
+        tickets_already = Ticket.objects.all().filter((Q(status="Canceled") | Q(status="Skipped")| Q(status="Called"))& Q(day=formatted)& Q(shopID=shop.id))
+        tickets_calling = Ticket.objects.all().filter(Q(status="Calling") & Q(day=formatted)& Q(shopID=shop.id))
+        tickets_yet = Ticket.objects.all().filter(Q(status="Waiting")& Q(day=formatted)& Q(shopID=shop.id))
+        return shop,tickets,tickets_already,tickets_calling,tickets_yet,formatted
+    else:
+        return "bad","dummy","dummy","dummy","dummy","dummy"
+
+
+@login_required
+def dashboard(request,shopID):
+    shop,tickets,tickets_already,tickets_calling,tickets_yet,formatted = consolo_access(request,shopID)
+    if shop == "bad":
+        return redirect('ticket:home')
+
+    news = News.objects.all().filter(Q(channel="ticket-console") | Q(channel="all")).order_by('created_at').reverse()[:3]
+    # 来店者合計を計算
+    result = Ticket.objects.filter(Q(day=formatted)&Q(shopID=shop)).aggregate(sum=models.Sum('people'))
+    peoplesum = result["sum"]
+    result = Ticket.objects.filter(Q(shopID=shop)).aggregate(sum=models.Sum('people'))
+    allsum = result["sum"]
+    return render(request, 'ticket/console/dashboard.html',{
+        'shop':shop,
+        'news':news,
+        'tickets':tickets,
+        'tickets_already':tickets_already,
+        'tickets_calling':tickets_calling,
+        'tickets_yet':tickets_yet,
+        'peoplesum':peoplesum,
+        'allsum':allsum,
+        'tickets_callingAndalready':tickets_calling.count() + tickets_already.count()
+    })
+
+@login_required
+def customers(request,shopID):
+    shop,tickets,tickets_already,tickets_calling,tickets_yet,formatted = consolo_access(request,shopID)
+    return render(request, 'ticket/console/customers.html',{
+        'shop':shop,
+        'tickets':tickets,
+        'tickets_already':tickets_already,
+        'tickets_yet':tickets_yet,
+        'tickets_calling':tickets_calling
+    })
+
+@login_required
+def shop(request,shopID):
+    userid = request.user.id
+    userdomain = request.user.email.split("@")[1]
+    shop = Shop.objects.get(id=shopID)
+    if(shop.owner == request.user) or (shop.code in userdomain):
+        return render(request, 'ticket/console/shop.html',{'shop':shop})
+    else:
+        return redirect('ticket:home')
+    
+
+@login_required
+def home(request):
+    userid = request.user.id
+    shops = Shop.objects.all().filter(owner=userid)
+    return render(request, 'ticket/accounthome.html',{'shops':shops})
+
+@login_required
+def reception_internal(request,shopID):
+    userid = request.user.id
+    userdomain = request.user.email.split("@")[1]
+    shop = Shop.objects.get(id=shopID)
+    if(shop.owner == request.user) or (shop.code in userdomain):
+        return render(request, 'ticket/reception.html',{'shop':shop})
+    else:
+        return redirect('ticket:home')
+
+@csrf_exempt
+def system_ajax(request):
+    match request.POST["command"]:
+        case 'create_tickets':
+            formatted = get_dayformat()
+            shop = Shop.objects.get(id=request.POST["shopID"])
+            latestnumber = Ticket.objects.all().filter(Q(shopID = shop) & Q(day=formatted)).aggregate(Max('number'))["number__max"]
+            Ticket.objects.all().filter(Q(shopID = shop) & Q(day=formatted))
+            if latestnumber == None:
+                latestnumber = 0
+            ticket = Ticket.objects.create(
+                number=latestnumber + 1,
+                shopID=shop,
+                people=request.POST["people"],
+                cstype=request.POST["cstype"],
+                status="Waiting",
+                location=request.POST["provider"],
+                day=str(formatted),
+                waiting=0
+            )
+            data = {
+                "ticket_number":ticket.number,
+                "ticket_created":str(ticket.created_at.strftime("%Y/%m/%d %H:%M:%S"))
+            }
+            json_str = json.dumps(data, ensure_ascii=False, indent=2)
+            return HttpResponse(json_str)
+        
+        case 'called_ticket':
+            tid = request.POST["tid"]
+            jst = pytz.timezone('Asia/Tokyo')
+            now = dt.datetime.now(jst)
+            ticket = Ticket.objects.get(id=tid)
+            ticket.status = "Called"
+            ticket.finished_at = now
+            ticket.save()
+            return HttpResponse("OK!")
+        
+        case 'calling_ticket':
+            tid = request.POST["tid"]
+            ticket = Ticket.objects.get(id=tid)
+            ticket.status = "Calling"
+            ticket.save()
+            return HttpResponse("OK!")
+
+        case 'skipped_ticket':
+            tid = request.POST["tid"]
+            jst = pytz.timezone('Asia/Tokyo')
+            now = dt.datetime.now(jst)
+            ticket = Ticket.objects.get(id=tid)
+            ticket.status = "Skipped"
+            ticket.finished_at = now
+            ticket.save()
+            return HttpResponse("OK!")
+
+        case 'canceled_ticket':
+            tid = request.POST["tid"]
+            jst = pytz.timezone('Asia/Tokyo')
+            now = dt.datetime.now(jst)
+            ticket = Ticket.objects.get(id=tid)
+            ticket.status = "Canceled"
+            ticket.finished_at = now
+            ticket.save()
+            return HttpResponse("OK!")
+
+def customerview(request,shopID):
+    shop = Shop.objects.get(id=shopID)
+    dayformat = get_dayformat()
+    tickets_calling = Ticket.objects.all().filter(Q(status="Calling") & Q(day=dayformat)& Q(shopID=shop.id))
+    return render(request,'ticket/customer/all_view.html',{'shop':shop,'tickets_calling':tickets_calling})
+
+def shopview(request,shopID):
+    shop = Shop.objects.get(id=shopID)
+    dayformat = get_dayformat()
+    tickets_calling = Ticket.objects.all().filter(Q(status="Calling") & Q(day=dayformat)& Q(shopID=shop.id))
+    tickets_waiting = Ticket.objects.all().filter(Q(status="Waiting") & Q(day=dayformat)& Q(shopID=shop.id))
+    return render(request,'ticket/customer/shop_view.html',{'shop':shop,'tickets_calling':tickets_calling,'tickets_waiting':tickets_waiting})

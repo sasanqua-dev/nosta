@@ -1,0 +1,167 @@
+{% extends 'ticket/console_base.html' %} {% block content %}
+<style>
+    .tab-pane {
+        display: none;
+    }
+    .tab-pane:target {
+        display: block;
+    }
+</style>
+<nav class="navbar has-background-white-ter" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <div class="navbar-item">
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    <li><p class="is-size-6 m-2">Console</p></li>
+                    <li class="is-active is-size-4"><a href="#" aria-current="page">Customers</a></li>
+                </ul>
+            </nav>
+        </div>
+        <p class="navbar-item" style="margin-left: 10px">ようこそ {{ user.username }} さん</p>
+    </div>
+</nav>
+
+<div class="container is-main">
+    <main class="content mt-4 mr-2 ml-2" style="height: 90vh; overflow-y: auto; overflow-x: hidden">
+        <div id="Dashboard">
+            <div class="p-3 m-1 mt-3">
+                <div class="tabs">
+                    <ul>
+                        <li class="tab"><a href="#waiting">来店待ち</a></li>
+                        <li class="tab"><a href="#already">来店済み</a></li>
+                    </ul>
+                </div>
+                <div class="tab-content is-flex">
+                    <div id="waiting" class="tab-pane animated m-2" style="min-height: 500px; width: 100%">
+                        <div class="mb-6">
+                            <div class="container mx-4 p-6 mb-6" style="border: solid 3px #5383c3">
+                                <div class="has-text-centered mb-6">
+                                    <b class="is-size-4 mx-4" style="width: 100%">呼び出し中</b>
+                                </div>
+                                {% for ticket in tickets_calling %}
+                                <div class="columns card card-content">
+                                    <div class="column is-2"><b class="is-size-3">{{ ticket.number }}</b></div>
+                                    <div class="column is-2"><c style="font-size: 12px">人数</c><br />{{ ticket.people }}</div>
+                                    <div class="column is-2"><c style="font-size: 12px">種別</c><br />{{ ticket.cstype }}</div>
+                                    <div class="column is-2"><c style="font-size: 12px">発券</c><br />{{ ticket.location }}</div>
+                                    <div class="column is-2"><c style="font-size: 12px">発券日時</c><br />{{ ticket.created_at }}</div>
+                                    <div class="column is-2">
+                                        <div class="columns is-multiline">
+                                            <div class="column is-12"><a class="button is-outlined is-success ticket-called" data-id="{{ ticket.id }}">呼出確認</a></div>
+                                            <div class="column is-12"><a class="button is-outlined is-danger ticket-skipped" data-id="{{ ticket.id }}">スキップ</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% for ticket in tickets_yet %}
+                            <div class="columns card card-content">
+                                <div class="column is-2"><b class="is-size-3">{{ ticket.number }}</b></div>
+                                <div class="column is-2"><c style="font-size: 12px">人数</c><br />{{ ticket.people }}</div>
+                                <div class="column is-2"><c style="font-size: 12px">種別</c><br />{{ ticket.cstype }}</div>
+                                <div class="column is-2"><c style="font-size: 12px">発券</c><br />{{ ticket.location }}</div>
+                                <div class="column is-2"><c style="font-size: 12px">発券日時</c><br />{{ ticket.created_at }}</div>
+                                <div class="column is-2">
+                                    <div class="columns is-multiline">
+                                        <div class="column is-12"><a class="button is-outlined is-info ticket-calling" data-id="{{ ticket.id }}">呼び出し</a></div>
+                                        <div class="column is-12"><a class="button is-outlined is-danger ticket-canceled" data-id="{{ ticket.id }}">取り消し</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div id="already" class="tab-pane animated m-2 p-6" style="min-height: 500px; width: 100%">
+                        {% for ticket in tickets_already %}
+                        <div class="columns card card-content">
+                            <div class="column is-2"><b class="is-size-3">{{ ticket.number }}</b></div>
+                            <div class="column is-1"><c style="font-size: 12px">人数</c><br />{{ ticket.people }}</div>
+                            <div class="column is-1"><c style="font-size: 12px">種別</c><br />{{ ticket.cstype }}</div>
+                            <div class="column is-2"><c style="font-size: 12px">発券</c><br />{{ ticket.location }}</div>
+                            <div class="column is-2"><c style="font-size: 12px">発券日時</c><br />{{ ticket.created_at }}</div>
+                            <div class="column is-2"><c style="font-size: 12px">変更日時</c><br />{{ ticket.finished_at }}</div>
+                            <div class="column is-2"><c style="font-size: 12px">状態</c><br />{{ ticket.status }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(function () {
+                $('li.tab').click(function () {
+                    $('li.tab').removeClass('is-active');
+                    $(this).addClass('is-active');
+                    return true;
+                });
+            });
+        </script>
+        <script>
+            (document.querySelectorAll('.ticket-called') || []).forEach(($trigger) => {
+                const $id = $trigger.dataset.id;
+                $trigger.addEventListener('click', () => {
+                    $.ajax({
+                        url: "{% url 'ticket:ajax' %}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            command: 'called_ticket',
+                            tid: $id,
+                        },
+                    }).always(function (response) {
+                        location.reload();
+                    });
+                });
+            });
+            (document.querySelectorAll('.ticket-calling') || []).forEach(($trigger) => {
+                const $id = $trigger.dataset.id;
+                $trigger.addEventListener('click', () => {
+                    $.ajax({
+                        url: "{% url 'ticket:ajax' %}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            command: 'calling_ticket',
+                            tid: $id,
+                        },
+                    }).always(function (response) {
+                        location.reload();
+                    });
+                });
+            });
+            (document.querySelectorAll('.ticket-skipped') || []).forEach(($trigger) => {
+                const $id = $trigger.dataset.id;
+                $trigger.addEventListener('click', () => {
+                    $.ajax({
+                        url: "{% url 'ticket:ajax' %}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            command: 'skipped_ticket',
+                            tid: $id,
+                        },
+                    }).always(function (response) {
+                        location.reload();
+                    });
+                });
+            });
+            (document.querySelectorAll('.ticket-canceled') || []).forEach(($trigger) => {
+                const $id = $trigger.dataset.id;
+                $trigger.addEventListener('click', () => {
+                    $.ajax({
+                        url: "{% url 'ticket:ajax' %}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            command: 'canceled_ticket',
+                            tid: $id,
+                        },
+                    }).always(function (response) {
+                        location.reload();
+                    });
+                });
+            });
+        </script>
+    </main>
+</div>
+{% endblock %}

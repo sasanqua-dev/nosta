@@ -1,0 +1,272 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <title>NICKET</title>
+        <base target="_top" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+        <link rel="stylesheet" href="{% static 'css/animation.css' %}" />
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js "></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="{% static 'js/jquery.qrcode.min.js' %}"></script>
+    </head>
+    <body>
+        <div class="container box">
+            <div class="loading-015" hidden id="loading">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="columns" style="width: 100%">
+                <div class="column is-10 is-size-5">{{ shop.name }}</div>
+                <div class="column is-2">
+                    <button onclick="cancell()" class="button is-danger is-outlined">キャンセル</button>
+                </div>
+            </div>
+            <div class="tab-container has-text-centered">
+                <div class="tab active">STEP 1</div>
+                <div class="tab">STEP 2</div>
+                <div class="tab">STEP 3</div>
+                <div class="tab">STEP 4</div>
+                <div class="tab">FINISH</div>
+            </div>
+            <div class="slide-container">
+                <div class="slide active">
+                    <!-- スライド1の内容 -->
+                    <div class="columns is-multiline">
+                        <div class="column is-12">
+                            <p class="is-size-2">下のボタンから受付をしてください</p>
+                        </div>
+                        <div class="column is-12">
+                            <button
+                                class="button has-text-centered"
+                                style="
+                                    padding: 10vh 15vh;
+                                    font-size: 24px;
+                                    border: solid;
+                                    border-radius: 10px;
+                                    cursor: pointer;
+                                    background-color: #00517c;
+                                    color: azure;
+                                    font-weight: 900;
+                                    letter-spacing: 0.25vw;
+                                "
+                                onclick="showSlide(1)"
+                            >
+                                チケットを発券する
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <div class="columns is-multiline">
+                        <div class="column is-12">
+                            <p class="is-size-2">人数を入力してください</p>
+                        </div>
+                        <div class="column is-12">
+                            <p class="is-size-2" style="font-size: 150%">
+                                <input
+                                    id="people_input"
+                                    class="input mx-6"
+                                    type="number"
+                                    min="{{ shop.people_min }}"
+                                    max="{{shop.people_max}}"
+                                    value="{{shop.people_min}}"
+                                    style="width: 20vw; font-size: 150%; size: 200%"
+                                />名様
+                            </p>
+                            <p class="help mt-3" style="font-size: 20px">一度にチケットを発券できるのは{{ shop.people_min }}名様から{{ shop.people_max }}名様までです</p>
+                            <p class="help mt-3 has-text-danger" style="font-size: 20px" id="msg_people"></p>
+                        </div>
+                        <div class="column is-4"></div>
+                        <div class="column is-4 mt-3"><a onclick="checkpeople()" style="background-color: #00517c; color: azure; font-size: 150%; padding: 2vh 10vh">次へ</a></div>
+                        <div class="column is-4"></div>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <!-- スライド3の内容 -->
+                    <div class="columns is-multiline">
+                        <div class="column is-6">
+                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="一般">一般</a>
+                        </div>
+                        <div class="column is-6">
+                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="高校生(校外)">高校生(校外)</a>
+                        </div>
+                        <div class="column is-6">
+                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="中学生">中学生</a>
+                        </div>
+                        <div class="column is-6">
+                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="1組保護者">1組保護者</a>
+                        </div>
+                        <div class="column is-6">
+                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="北高生">北高生</a>
+                        </div>
+                        <div class="column is-6">
+                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="先生">先生</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <!-- スライド4の内容 -->
+                    <div class="columns is-multiline">
+                        <div class="column is-12 is-size-4 my-3">以下の内容でチケットを発券してもよろしいですか？</div>
+                        <div class="column is-6 has-text-centered is-size-6">人数</div>
+                        <div class="column is-6 has-text-centered is-size-6"><c id="people" class="is-size-3"></c> 名様</div>
+                        <div class="column is-6 has-text-centered is-size-6">種別</div>
+                        <div class="column is-6 has-text-centered is-size-6"><c id="cstype" class="is-size-3"></c></div>
+                        <div class="column is-4"></div>
+                        <div class="column is-4 has-text-centered mt-3"><a onclick="reception()" style="background-color: #00517c; color: azure; font-size: 150%; padding: 2vh 10vh">発券</a></div>
+                        <div class="column is-4"></div>
+                    </div>
+                </div>
+                <div class="slide">
+                    <!-- スライド5の内容 -->
+                    <div class="columns is-multiline">
+                        <div class="column is-12 is-size-4 my-3"><c id="message"></c></div>
+                        <div class="column is-12">
+                            <div class="columns">
+                                <div class="column is-6">
+                                    <img src="{% static 'image/long_logo.png' %}" style="max-height: 3.75rem" />
+                                    <hr />
+                                    <strong>オンライン番号確認サービス</strong>
+                                    <div id="img-qr" style="margin: 20px"></div>
+                                    <script>
+                                        $(function () {
+                                            var qrtext = "{{ request.scheme }}://{{ request.get_host }}{% url 'ticket:client_external' shop.id %}";
+                                            var utf8qrtext = unescape(encodeURIComponent(qrtext));
+                                            $('#img-qr').html('');
+                                            $('#img-qr').qrcode({ width: 100, height: 100, text: utf8qrtext });
+                                        });
+                                    </script>
+                                </div>
+                                <div class="column is-6">
+                                    <div class="columns">
+                                        <div class="column is-4 is-size-6">チケットNo.</div>
+                                        <div class="column is-8 is-size-3"><c id="ticket_number"></c></div>
+                                    </div>
+                                    <div class="columns">
+                                        <div class="column is-4 is-size-6">発行時間</div>
+                                        <div class="column is-8 is-size-6"><c id="ticket_created"></c></div>
+                                    </div>
+                                    <div class="my-3 has-text-danger" style="font-weight: bold; letter-spacing: 0.1vh; font-size: 90%">
+                                        チケットNoは写真などで必ず保存してください。<br />番号が確認できない場合、<br />ご案内できないことがあります
+                                    </div>
+                                    <hr />
+                                    <a onclick="showSlide(0)" style="background-color: #00517c; color: azure; font-size: 150%; padding: 2vh 10vh">最初に戻る</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let currentSlide = 0;
+            const slides = document.getElementsByClassName('slide');
+            const tabs = document.getElementsByClassName('tab');
+
+            function showSlide(index) {
+                if (index >= 0 && index < slides.length) {
+                    for (let i = 0; i < slides.length; i++) {
+                        slides[i].classList.remove('active');
+                        tabs[i].classList.remove('active');
+                    }
+                    slides[index].classList.add('active');
+                    tabs[index].classList.add('active');
+                    currentSlide = index;
+                }
+            }
+
+            function previousSlide() {
+                showSlide(currentSlide - 1);
+            }
+
+            function nextSlide() {
+                showSlide(currentSlide + 1);
+            }
+        </script>
+        <script>
+            // 要素にクリックリスナーを追加
+            (document.querySelectorAll('.cstype-selecter') || []).forEach(($trigger) => {
+                const $type = $trigger.dataset.type;
+                $trigger.addEventListener('click', () => {
+                    document.getElementById('people').textContent = document.getElementById('people_input').value;
+                    document.getElementById('cstype').textContent = $type;
+                    showSlide(3);
+                });
+            });
+        </script>
+        <script>
+            function reception() {
+                document.getElementById('loading').removeAttribute('hidden');
+                const people = document.getElementById('people').textContent;
+                const type = document.getElementById('cstype').textContent;
+                const shopID = '{{ shop.id }}';
+                document.getElementById('ticket_number').textContent = '';
+                document.getElementById('ticket_created').textContent = '';
+                document.getElementById('msg_people').textContent = '';
+                document.getElementById('people_input').value = '{{ shop.people_min }}';
+
+                $.ajax({
+                    url: "{% url 'ticket:ajax' %}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        command: 'create_tickets',
+                        provider: 'internal',
+                        shopID: shopID,
+                        people: people,
+                        cstype: type,
+                    },
+                })
+                    .done(function (response) {
+                        var data_stringify = JSON.stringify(response);
+                        var data = JSON.parse(data_stringify);
+                        document.getElementById('message').textContent = 'チケットを発行しました';
+                        document.getElementById('ticket_number').textContent = data['ticket_number'];
+                        document.getElementById('ticket_created').textContent = data['ticket_created'];
+                    })
+                    .fail(function (xhr) {
+                        document.getElementById('message').innerHTML = "<c class='has-text-danger'>取得に失敗しました、再度やり直してください(E006)</c>";
+                    })
+                    .always(function (xhr, msg) {
+                        document.getElementById('loading').setAttribute('hidden', '');
+                        showSlide(4);
+                    });
+            }
+        </script>
+        <script>
+            function checkpeople() {
+                var min = '{{ shop.people_min }}';
+                var max = '{{ shop.people_max }}';
+                var people = document.getElementById('people_input').value;
+                console.log(min, max, people);
+                if (Number(min) <= people && Number(max) >= people) {
+                    showSlide(2);
+                } else {
+                    document.getElementById('msg_people').textContent = '入力可能範囲外です';
+                }
+            }
+            function cancell() {
+                document.getElementById('ticket_number').textContent = '';
+                document.getElementById('ticket_created').textContent = '';
+                document.getElementById('msg_people').textContent = '';
+                document.getElementById('people_input').value = '{{ shop.people_min }}';
+                showSlide(0);
+            }
+        </script>
+    </body>
+</html>
