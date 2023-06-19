@@ -22,4 +22,5 @@ urlpatterns = [
     path('shop/', include('shop.urls')),
     path('ticket/', include('ticket.urls')),
     path('auth/', include('appauth.urls')),
+    path('top/', include('top.urls')),
 ]
