@@ -158,37 +158,37 @@ def system_ajax(request):
             return HttpResponse("OK!")
     
         case 'shop_rename':
-            shop = Shop.objects.get(id=request.POST["shopID"])
+            shop = request.POST["shop"]
             shop.name = request.POST["value"]
             shop.save()
 
         case 'shop_change_min_number':
-            shop = Shop.objects.get(id=request.POST["shopID"])
+            shop = request.POST["shop"]
             shop.people_min = request.POST["value"]
             shop.save()
         
         case 'shop_change_max_number':
-            shop = Shop.objects.get(id=request.POST["shopID"])
+            shop = request.POST["shop"]
             shop.people_max = request.POST["value"]
             shop.save()
         
         case 'online_ticket_valid':
-            shop = Shop.objects.get(id=request.POST["shopID"])
+            shop = request.POST["shop"]
             shop.online_ticket = request.POST["value"]
             shop.save()
         
         case 'online_ticket_invalid':
-            shop = Shop.objects.get(id=request.POST["shopID"])
+            shop = request.POST["shop"]
             shop.online_ticket = request.POST["value"]
             shop.save()
         
         case 'shop_message':
-            shop = Shop.objects.get(id=request.POST["shopID"])
+            shop = request.POST["shop"]
             shop.message = request.POST["value"]
             shop.save()
         
         case 'shop_cstype_add':
-            shop = Shop.objects.get(id=request.POST["shopID"])
+            shop = request.POST["shop"]
             CStype.objects.create(
                 shop=shop,
                 name=request.POST["value"],
