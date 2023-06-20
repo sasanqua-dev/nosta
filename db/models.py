@@ -66,6 +66,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     shopID = models.ForeignKey(Shop, on_delete=models.CASCADE)
     status = models.CharField(max_length=20)
+    day = models.CharField(max_length=10)
     created_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField(auto_now_add=True)
 
@@ -89,3 +90,9 @@ class CStype(models.Model):
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
+
+class UserControl(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    shopconsole = models.CharField(max_length=50,null=True)
+    ticket = models.CharField(max_length=50,null=True)
+    market = models.CharField(max_length=50,null=True)
