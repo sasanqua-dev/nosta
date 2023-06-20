@@ -23,13 +23,13 @@
         <section class="columns is-gapless" style="min-height: 100vh; overflow: auto">
             <section class="column is-2" style="background-color: #eaf4fc">
                 <nav class="navbar" role="navigation" aria-label="main navigation" style="background-color: #eaf4fc">
-                    <div class="navbar-brand" style="margin: auto; display: block; max-height: 10rem;">
-                        <img src="{% static 'image/logo_ticket.png' %}" class="navbar-item" />
+                    <div class="navbar-brand" style="margin: auto; display: block;">
+                        <img src="{% static 'image/logo_ticket.png' %}" class="navbar-item" style="max-height: 10rem;"/>
                     </div>
                 </nav>
                 <div class="container is-side sidebar m-2">
                     <aside class="menu">
-                        <strong>{{ shop.name }}</strong>
+                        <div style="display: flex; width: 100%; flex-wrap: wrap;"><strong>{{ shop.name }}</strong></div>
                         <p class="menu-label">General</p>
                         <ul class="menu-list">
                             <li><a href="{% url 'ticket:dashboard' shop.id %}" id="side_dashboard" class="">Dashboard</a></li>
