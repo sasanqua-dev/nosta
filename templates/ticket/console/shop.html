@@ -138,7 +138,7 @@
         <h1 id="payments" class="m-2"><strong>Payments</strong></h1>
         <p class="has-text-danger m-4">現在、このサービスでは有料サービスは提供されていません</p>
         <p class="has-text-danger m-4">すべての機能が無料でお使い頂けます</p>
-        <div class="is-size-3"><a class="is-light is-link button" href="{% url 'shop:dashboard' %}">支払いやプランの確認はこちら</a></div>
+        <div class="is-size-3"><a class="is-light is-link button" href="{% url 'shop:dashboard' shop.id %}">支払いやプランの確認はこちら</a></div>
     </div>
     <script>
         function ajax_handler(comannd,value){
