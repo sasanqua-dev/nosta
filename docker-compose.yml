@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  web:
+  nosta_app:
     build: .
     command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
@@ -11,14 +11,11 @@ services:
       - prasic
     labels:
       - traefik.enable=true
-      - traefik.http.routers.web.rule=Host(`nosta.${DOMAIN}`)
-      - traefik.http.routers.web.entrypoints=https
-      - traefik.http.routers.web.tls=true
-      - traefik.http.services.web.loadbalancer.server.port=8000
-      - traefik.http.routers.web.tls.certresolver=${CERT_RESOLVER}
-
-volumes:
-  mysql:
+      - traefik.http.routers.nosta_app.rule=Host(`nosta.${DOMAIN}`)
+      - traefik.http.routers.nosta_app.entrypoints=https
+      - traefik.http.routers.nosta_app.tls=true
+      - traefik.http.services.nosta_app.loadbalancer.server.port=8000
+      - traefik.http.routers.nosta_app.tls.certresolver=${CERT_RESOLVER}
 
 networks:
   prasic:
