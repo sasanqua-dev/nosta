@@ -141,7 +141,7 @@
         <div class="is-size-3"><a class="is-light is-link button" href="{% url 'shop:dashboard' shop.id %}">支払いやプランの確認はこちら</a></div>
     </div>
     <script>
-        function ajax_handler(comand,value){
+        function ajax_handler(command,value){
             $.ajax({
                     url: "{% url 'ticket:ajax' %}",
                     type: 'POST',
