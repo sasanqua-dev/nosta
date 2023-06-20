@@ -39,7 +39,7 @@
 <div class="container is-main">
     <main class="content mt-4 mr-2 ml-2" style="height: 90vh; overflow-y: auto; overflow-x: hidden">
         <div id="Dashboard">
-            <div class="container box p-4" style="min-height: 20vh; border: 2.5px solid #00517c">
+            <div class="container box p-4 m-3" style="min-height: 20vh; border: 2.5px solid #00517c">
                 {% for content in news %}
                 <div class="m-1 columns" style="width: 100%">
                     <a href="" style="color: dimgray; display: inline; width: 100%">
@@ -73,12 +73,13 @@
                     <div class="column box m-2 has-text-centered">
                         <strong>本日の来客数</strong>
                         <hr />
-                        <b class="has-text-center is-size-1">{{peoplesum }}</b>
+                        <b class="has-text-center is-size-1">{% if peoplesum != None %}{{peoplesum }}{% else %}0{% endif %}</b><c class="is-size-3">人</c>
+
                     </div>
                     <div class="column box m-2 has-text-centered">
                         <strong>総来客数</strong>
                         <hr />
-                        <b class="has-text-center is-size-1">{{allsum }}</b>
+                        <b class="has-text-center is-size-1">{% if allsum != None %}{{allsum }}{% else %}0{% endif %}</b><c class="is-size-3">人</c>
                     </div>
                 </div>
             </div>
