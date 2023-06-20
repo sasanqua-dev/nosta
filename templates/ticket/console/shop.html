@@ -141,7 +141,7 @@
         <div class="is-size-3"><a class="is-light is-link button" href="{% url 'shop:dashboard' shop.id %}">支払いやプランの確認はこちら</a></div>
     </div>
     <script>
-        function ajax_handler(comannd,value){
+        function ajax_handler(comand,value){
             $.ajax({
                     url: "{% url 'ticket:ajax' %}",
                     type: 'POST',
@@ -161,6 +161,10 @@
         document.getElementById('shop_name_btn').addEventListener('click', function(){
             var name = document.getElementById('shop_name').value
             ajax_handler("shop_rename",name)
+        });
+        document.getElementById('cstype_new_btn').addEventListener('click', function(){
+            var value = document.getElementById('cstype_new_input').value
+            ajax_handler("shop_add_cstype",name)
         });
         document.getElementById('min_number_btn').addEventListener('click', function(){
             var value = document.getElementById('min_number').value

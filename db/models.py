@@ -15,7 +15,6 @@ class Shop(models.Model):
     website = models.CharField(max_length=1000)
     message = models.CharField(max_length=1000)
 
-    cstype = models.CharField(max_length=1000)
     people_min = models.IntegerField()
     people_max = models.IntegerField()
 
@@ -85,3 +84,8 @@ class News(models.Model):
     message = models.CharField(max_length=2000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class CStype(models.Model):
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=500)

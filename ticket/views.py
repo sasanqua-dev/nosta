@@ -68,11 +68,11 @@ def customers(request,shopID):
 
 @login_required
 def shop(request,shopID):
-    userid = request.user.id
     userdomain = request.user.email.split("@")[1]
     shop = Shop.objects.get(id=shopID)
     if(shop.owner == request.user) or (shop.code in userdomain):
-        return render(request, 'ticket/console/shop.html',{'shop':shop})
+        cstype = CStype.objects.all().filter(shop=shop)
+        return render(request, 'ticket/console/shop.html',{'shop':shop,'cstype':cstype})
     else:
         return redirect('ticket:home')
     
@@ -186,6 +186,19 @@ def system_ajax(request):
             shop = Shop.objects.get(id=request.POST["shopID"])
             shop.message = request.POST["value"]
             shop.save()
+        
+        case 'shop_cstype_add':
+            shop = Shop.objects.get(id=request.POST["shopID"])
+            CStype.objects.create(
+                shop=shop,
+                name=request.POST["value"],
+                description=""
+            )
+        
+        case 'shop_cstype_delete':
+            shop = Shop.objects.get(id=request.POST["shopID"])
+            cstype = CStype.objects.get(id=request.POST["value"])
+            cstype.delete()
 
 def customerview(request,shopID):
     shop = Shop.objects.get(id=shopID)
