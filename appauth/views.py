@@ -30,7 +30,7 @@ def user_register(request):
         if User.objects.filter(email = userid).count() > 0:
             error_message = "このメールアドレスはすでに登録されています(E002)"
             return render(request, 'register.html', {'error': error_message})
-        if '.nicket' in userid:
+        if '.nosta' in userid:
             error_message = "このメールアドレスは使用できません(E003)"
             return render(request, 'register.html', {'error': error_message})
         if User.objects.filter(username = username).count() > 0:

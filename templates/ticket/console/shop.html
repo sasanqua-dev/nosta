@@ -31,9 +31,9 @@
             <div class="column is-5">
                 <div class="columns">
                     <div class="column is-10">
-                        <input class="input" placeholder="店舗名" />
+                        <input class="input" placeholder="店舗名" value="{{ shop.name }}" id="shop_name"/>
                     </div>
-                    <div class="column is-2"><a class="button is-outlined">保存</a></div>
+                    <div class="column is-2"><a class="button is-outlined" id="shop_name_btn">保存</a></div>
                 </div>
             </div>
             <div class="column is-5"></div>
@@ -43,7 +43,7 @@
             <div class="column is-5">
                 <div class="columns">
                     <div class="column is-10">
-                        <input class="input" placeholder="店舗コード" type="text" disabled />
+                        <input class="input" placeholder="店舗コード" type="text" disabled value="{{ shop.code }}"/>
                         <p class="help has-text-danger">店舗コードは変更できません</p>
                     </div>
                     <div class="column is-2"></div>
@@ -60,25 +60,19 @@
             <div class="column is-5">
                 <table class="table">
                     <tbody>
+                        {% for cstype_item in cstype_list %}
                         <tr>
-                            <td>type1</td>
-                            <td><a class="cs_type_list has-text-danger">削除</a></td>
+                            <td>{{ cstype_item}}</td>
+                            <td><a class="cs_type_list has-text-danger cstype-list" data-item="{{ cstype_item }}">削除</a></td>
                         </tr>
-                        <tr>
-                            <td>type2</td>
-                            <td><a class="cs_type_list has-text-danger">削除</a></td>
-                        </tr>
-                        <tr>
-                            <td>type3</td>
-                            <td><a class="cs_type_list has-text-danger">削除</a></td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
                 <div class="columns">
                     <div class="column is-10">
-                        <input class="input" placeholder="追加する名前を入力" type="text" />
+                        <input class="input" placeholder="追加する名前を入力" type="text" id="cstype_new_input"/>
                     </div>
-                    <div class="column is-2"><a class="button is-outlined">追加</a></div>
+                    <div class="column is-2"><a class="button is-outlined" id="cstype_new_btn">追加</a></div>
                 </div>
             </div>
             <div class="column is-5"></div>
@@ -88,9 +82,9 @@
             <div class="column is-5">
                 <div class="columns">
                     <div class="column is-10">
-                        <input class="input" type="number" placeholder="最小人数" />
+                        <input class="input" type="number" placeholder="最小人数" id="min_number"/>
                     </div>
-                    <div class="column is-2"><a class="button is-outlined">変更</a></div>
+                    <div class="column is-2"><a class="button is-outlined"id="min_number_btn">変更</a></div>
                 </div>
             </div>
             <div class="column is-5"></div>
@@ -100,9 +94,9 @@
             <div class="column is-5">
                 <div class="columns">
                     <div class="column is-10">
-                        <input class="input" type="number" placeholder="最大人数" />
+                        <input class="input" type="number" placeholder="最大人数" id="max_number"/>
                     </div>
-                    <div class="column is-2"><a class="button is-outlined">変更</a></div>
+                    <div class="column is-2"><a class="button is-outlined"id="max_number_btn">変更</a></div>
                 </div>
             </div>
             <div class="column is-5"></div>
@@ -119,8 +113,8 @@
                         <p>webサイト(外部公開)</p>
                         <p class="help">この方法が有効な場合、ユーザーはURLを知っていれば店舗に訪れることなくチケットを発行できるようになります</p>
                     </div>
-                    <div class="column is-2"><a class="button is-success">有効</a></div>
-                    <div class="column is-2"><a class="button is-outlined is-danger">無効</a></div>
+                    <div class="column is-2"><a class="button is-success" id="online_ticket_valid">有効</a></div>
+                    <div class="column is-2"><a class="button is-outlined is-danger" id="online_ticket_invalid">無効</a></div>
                 </div>
             </div>
         </div>
@@ -133,23 +127,10 @@
             <div class="column is-5">
                 <div class="columns">
                     <div class="column is-10">
-                        <textarea class="input" style="height: 10vh"></textarea>
+                        <textarea class="input" style="height: 10vh" id="shop_message"></textarea>
                         <p class="help">ここで入力した内容が呼び出し番号表示ページ内の「店舗からのお知らせ」として表示されます</p>
                     </div>
-                    <div class="column is-2"><a class="button is-outlined">保存</a></div>
-                </div>
-            </div>
-            <div class="column is-5"></div>
-            <div class="column is-2 has-text-centered">
-                <label>WEBサイト</label>
-            </div>
-            <div class="column is-5">
-                <div class="columns">
-                    <div class="column is-10">
-                        <input class="input" placeholder="URLを入力" type="url" />
-                        <p class="help">ここで入力したURLへのリンクを呼び出し番号表示ページ内に表示させることができます</p>
-                    </div>
-                    <div class="column is-2"><a class="button is-outlined">保存</a></div>
+                    <div class="column is-2"><a class="button is-outlined" id="shop_message_btn">保存</a></div>
                 </div>
             </div>
             <div class="column is-5"></div>
@@ -157,26 +138,48 @@
         <h1 id="payments" class="m-2"><strong>Payments</strong></h1>
         <p class="has-text-danger m-4">現在、このサービスでは有料サービスは提供されていません</p>
         <p class="has-text-danger m-4">すべての機能が無料でお使い頂けます</p>
-        <div class="columns is-multiline my-4">
-            <div class="column is-2 has-text-centered">
-                <label>購入履歴</label>
-            </div>
-            <div class="column is-5">
-                <table class="table">
-                    <thead>
-                        <th>
-                            <td>決済ID</td>
-                            <td>決済日</td>
-                            <td>サービス</td>
-                            <td>金額</td>
-                            <td>決済方法</td>
-                        </th>
-                    </thead>
-                </table>
-            </div>
-            <div class="column is-5"></div>
-        </div>
+        <div class="is-size-3"><a class="is-light is-link button" href="{% url 'shop:dashboard' %}">支払いやプランの確認はこちら</a></div>
     </div>
+    <script>
+        function ajax_handler(comannd,value){
+            $.ajax({
+                    url: "{% url 'ticket:ajax' %}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        command: command,
+                        shopID: shopID,
+                        value: value
+                    },
+                })
+                    .done(function (response) {
+                    })
+                    .fail(function (xhr) {
+                        window.alert("更新に失敗しました(E007)")
+                    })
+        }
+        document.getElementById('shop_name_btn').addEventListener('click', function(){
+            var name = document.getElementById('shop_name').value
+            ajax_handler("shop_rename",name)
+        });
+        document.getElementById('min_number_btn').addEventListener('click', function(){
+            var value = document.getElementById('min_number').value
+            ajax_handler("shop_change_min_number",name)
+        });
+        document.getElementById('max_number_btn').addEventListener('click', function(){
+            var value = document.getElementById('max_number').value
+            ajax_handler("shop_change_max_number",name)
+        });
+        document.getElementById('online_ticket_valid').addEventListener('click', function(){
+            ajax_handler("online_ticket_valid","True")
+        });
+        document.getElementById('online_ticket_invalid').addEventListener('click', function(){
+            ajax_handler("online_ticket_invalid","False")
+        });
+        document.getElementById('shop_message_btn').addEventListener('click', function(){
+            ajax_handler("shop_message",document.getElementById("shop_message").textContent)
+        });
+    </script>
     <div class="column is-2 m-4 mr-4">
         <aside class="menu container box shopsidebar" style="position: fixed; top: 50px; right: 20px">
             <p class="menu-label">Shop</p>
