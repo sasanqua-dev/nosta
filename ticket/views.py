@@ -161,31 +161,37 @@ def system_ajax(request):
             shop = Shop.objects.get(id=request.POST["shopID"])
             shop.name = request.POST["value"]
             shop.save()
+            return HttpResponse("OK!")
 
         case 'shop_change_min_number':
             shop = Shop.objects.get(id=request.POST["shopID"])
             shop.people_min = request.POST["value"]
             shop.save()
+            return HttpResponse("OK!")
         
         case 'shop_change_max_number':
             shop = Shop.objects.get(id=request.POST["shopID"])
             shop.people_max = request.POST["value"]
             shop.save()
+            return HttpResponse("OK!")
         
         case 'online_ticket_valid':
             shop = Shop.objects.get(id=request.POST["shopID"])
             shop.online_ticket = request.POST["value"]
             shop.save()
+            return HttpResponse("OK!")
         
         case 'online_ticket_invalid':
             shop = Shop.objects.get(id=request.POST["shopID"])
             shop.online_ticket = request.POST["value"]
             shop.save()
+            return HttpResponse("OK!")
         
         case 'shop_message':
             shop = Shop.objects.get(id=request.POST["shopID"])
             shop.message = request.POST["value"]
             shop.save()
+            return HttpResponse("OK!")
         
         case 'shop_cstype_add':
             shop = Shop.objects.get(id=request.POST["shopID"])
@@ -194,11 +200,13 @@ def system_ajax(request):
                 name=request.POST["value"],
                 description=""
             )
+            return HttpResponse("OK!")
         
         case 'shop_cstype_delete':
             shop = Shop.objects.get(id=request.POST["shopID"])
             cstype = CStype.objects.get(id=request.POST["value"])
             cstype.delete()
+            return HttpResponse("OK!")
 
 def customerview(request,shopID):
     shop = Shop.objects.get(id=shopID)
