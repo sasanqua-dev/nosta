@@ -1,8 +1,9 @@
 {% extends 'auth_base.html' %} {% block content %}{% load static %}
+<div class="has-text-center is-size-3">サービスに移動</div>
 <div class="box m-3" style="display: block; align-content: center;">
-    <a href="{% url 'shop:dashboard' shop %}"><img src="{% static 'image/logo_home.png' %}" /></a>
+    <a href="{% url 'shop:dashboard' shop %}"><img src="{% static 'image/logo_shop.png' %}"  style="max-height:15vh;"/></a>
 </div>
 <div class="box m-3" style="display: block; align-content: center;">
-    <a href="{% url 'ticket:dashboard' shop %}"><img src="{% static 'image/logo_ticket.png' %}" /></a>
+    <a href="{% url 'ticket:dashboard' shop %}"><img src="{% static 'image/logo_ticket.png' %}" style="max-height:15vh;"/></a>
 </div>
 {% endblock %}
