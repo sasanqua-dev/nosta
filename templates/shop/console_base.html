@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <title>管理コンソール</title>
+        <link rel="icon" href="{% static 'image/favicon.ico' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+        <link rel="stylesheet" href="{% static 'css/console.css' %}" />
+        <!-- Our project just needs Font Awesome Free's Solid and Brand files -->
+        <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+        <section class="columns is-gapless" style="min-height: 100vh; overflow: auto">
+            <section class="column is-2" style="background-color: #eaf4fc">
+                <nav class="navbar" role="navigation" aria-label="main navigation" style="background-color: #eaf4fc">
+                    <div class="navbar-brand" style="margin: auto; display: block;">
+                        <img src="{% static 'image/logo_shop.png' %}" class="navbar-item" style="max-height: 10rem;"/>
+                    </div>
+                </nav>
+                <div class="container is-side sidebar m-2">
+                    <aside class="menu">
+                        <div style="display: flex; width: 100%; flex-wrap: wrap;"><strong>{{ shop.name }}</strong></div>
+                        <p class="menu-label">General</p>
+                        <ul class="menu-list">
+                            <li><a href="{% url 'shop:dashboard' shop.id %}">Dashboard</a></li>
+                            <li><a href="">Analytics</a></li>
+                        </ul>
+                        <p class="menu-label">Administration</p>
+                        <ul class="menu-list">
+                            <li><a href="">Members</a></li>
+                            <li><a href="">Settings</a></li>
+                        </ul>
+                        <p class="menu-label">SHOP</p>
+                        <ul class="menu-list">
+                            <li><a href="">Plofile</a></li>
+                            <li><a href="">Market</a></li>
+                            <li><a href="">Product</a></li>
+                            <li><a href="">Order</a></li>
+                        </ul>
+                        <p class="menu-label">Link</p>
+                        <ul class="menu-list">
+                            <li>
+                                <a href="">
+                                    <span class="icon-text">
+                                        <span class="icon has-text-info">
+                                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        </span>
+                                        <span>NOSTA TOP</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'ticket:home' %}">
+                                    <span class="icon-text">
+                                        <span class="icon has-text-info">
+                                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        </span>
+                                        <span>NOSTA TICKET</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <span class="icon-text">
+                                        <span class="icon has-text-info">
+                                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        </span>
+                                        <span>NOSTA REGI</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <span class="icon-text">
+                                        <span class="icon has-text-info">
+                                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        </span>
+                                        <span>NOSTA MARKET</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <p class="menu-label">ACCOUNT</p>
+                        <ul class="menu-list">
+                            <li><a class="navbar-item" href="{% url 'shop:home' %}"> Home </a></li>
+                            <li><a class="navbar-item" href="{% url 'logout' %}"> Logout </a></li>
+                        </ul>
+                    </aside>
+                </div>
+            </section>
+            <section class="column is-10">{% block content %}{% endblock %}</section>
+        </section>
+    </body>
+</html>

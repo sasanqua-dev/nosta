@@ -5,12 +5,8 @@ from db.models import *
 
 # Create your views here.
 @login_required
-def home(request):
-    return HttpResponse("Hello World")
-
-@login_required
-def dashboard(request,shopID):
-    return HttpResponse("this is console")
+def home(request,shopID):
+    return render(request,'shop/home.html',{'shop':shopID})
 
 @login_required
 def register(request):
@@ -37,7 +33,39 @@ def register(request):
             sic=sic,
             category=category
         )
-        return redirect('shop:home')
+        return redirect('shop:home shop.id')
 
     else:
         return render(request, 'shop/register.html')
+
+@login_required
+def dashboard(request,shopID):
+    return HttpResponse("this is console")
+
+@login_required
+def analytics(request,shopID):
+    return HttpResponse("this is console")
+
+@login_required
+def members(request,shopID):
+    return HttpResponse("this is console")
+
+@login_required
+def settings(request,shopID):
+    return HttpResponse("this is console")
+
+@login_required
+def profile(request,shopID):
+    return HttpResponse("this is console")
+
+@login_required
+def market(request,shopID):
+    return HttpResponse("this is console")
+
+@login_required
+def product(request,shopID):
+    return HttpResponse("this is console")
+
+@login_required
+def order(request,shopID):
+    return HttpResponse("this is console")
