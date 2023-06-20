@@ -163,15 +163,15 @@
         });
         document.getElementById('cstype_new_btn').addEventListener('click', function(){
             var value = document.getElementById('cstype_new_input').value
-            ajax_handler("shop_add_cstype",name)
+            ajax_handler("shop_add_cstype",value)
         });
         document.getElementById('min_number_btn').addEventListener('click', function(){
             var value = document.getElementById('min_number').value
-            ajax_handler("shop_change_min_number",name)
+            ajax_handler("shop_change_min_number",value)
         });
         document.getElementById('max_number_btn').addEventListener('click', function(){
             var value = document.getElementById('max_number').value
-            ajax_handler("shop_change_max_number",name)
+            ajax_handler("shop_change_max_number",value)
         });
         document.getElementById('online_ticket_valid').addEventListener('click', function(){
             ajax_handler("online_ticket_valid","True")

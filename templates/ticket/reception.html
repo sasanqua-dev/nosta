@@ -98,24 +98,11 @@
                 <div class="slide">
                     <!-- スライド3の内容 -->
                     <div class="columns is-multiline">
+                        {% for cstype_item in cstype_list}
                         <div class="column is-6">
-                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="一般">一般</a>
+                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="{{ cstype_item}}">{{ cstype_item}}</a>
                         </div>
-                        <div class="column is-6">
-                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="高校生(校外)">高校生(校外)</a>
-                        </div>
-                        <div class="column is-6">
-                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="中学生">中学生</a>
-                        </div>
-                        <div class="column is-6">
-                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="1組保護者">1組保護者</a>
-                        </div>
-                        <div class="column is-6">
-                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="北高生">北高生</a>
-                        </div>
-                        <div class="column is-6">
-                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="先生">先生</a>
-                        </div>
+                        {% endfor}
                     </div>
                 </div>
 

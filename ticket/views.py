@@ -71,8 +71,8 @@ def shop(request,shopID):
     userdomain = request.user.email.split("@")[1]
     shop = Shop.objects.get(id=shopID)
     if(shop.owner == request.user) or (shop.code in userdomain):
-        cstype = CStype.objects.all().filter(shop=shop)
-        return render(request, 'ticket/console/shop.html',{'shop':shop,'cstype':cstype})
+        cstype_list = CStype.objects.all().filter(shop=shop)
+        return render(request, 'ticket/console/shop.html',{'shop':shop,'cstype_list':cstype_list})
     else:
         return redirect('ticket:home')
     
@@ -85,11 +85,11 @@ def home(request):
 
 @login_required
 def reception_internal(request,shopID):
-    userid = request.user.id
     userdomain = request.user.email.split("@")[1]
     shop = Shop.objects.get(id=shopID)
+    cstype_list = CStype.objects.all().filter(shop=shop)
     if(shop.owner == request.user) or (shop.code in userdomain):
-        return render(request, 'ticket/reception.html',{'shop':shop})
+        return render(request, 'ticket/reception.html',{'shop':shop,'cstype_list':cstype_list})
     else:
         return redirect('ticket:home')
 
