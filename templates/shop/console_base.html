@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="MOSTAショップ管理画面ではMOSTA関連サービスの設定やリアルタイムデータや統計データを効率的に確認・分析することができます。" />
 
-        <link rel="icon" href="{% static 'image/favicon.ico' %}">
+        <link rel="icon" href="{% static 'image/favicon.ico' %}" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
         <link rel="stylesheet" href="{% static 'css/console.css' %}" />
         <!-- Our project just needs Font Awesome Free's Solid and Brand files -->
@@ -26,13 +26,13 @@
         <section class="columns is-gapless" style="min-height: 100vh; overflow: auto">
             <section class="column is-2" style="background-color: #eaf4fc">
                 <nav class="navbar" role="navigation" aria-label="main navigation" style="background-color: #eaf4fc">
-                    <div class="navbar-brand" style="margin: auto; display: block;">
-                        <img src="{% static 'image/logo_shop.png' %}" class="navbar-item" style="max-height: 10rem;" alt="ロゴ" />
+                    <div class="navbar-brand" style="margin: auto; display: block">
+                        <img src="{% static 'image/logo_shop.png' %}" class="navbar-item" style="max-height: 10rem" alt="ロゴ" />
                     </div>
                 </nav>
                 <div class="container is-side sidebar m-2">
                     <aside class="menu">
-                        <div style="display: flex; width: 100%; flex-wrap: wrap;"><strong>{{ shop.name }}</strong></div>
+                        <div style="display: flex; width: 100%; flex-wrap: wrap"><strong>{{ shop.name }}</strong></div>
                         <p class="menu-label">General</p>
                         <ul class="menu-list">
                             <li><a href="{% url 'shop:dashboard' shop.code %}">Dashboard</a></li>
@@ -53,7 +53,7 @@
                         <p class="menu-label">Link</p>
                         <ul class="menu-list">
                             <li>
-                                <a href="">
+                                <a href="{% url 'top:home' %}">
                                     <span class="icon-text">
                                         <span class="icon has-text-info">
                                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -104,7 +104,7 @@
                     </aside>
                 </div>
             </section>
-            <section class="column is-10" style="overflow-y: hidden; overflow-x: hidden;">{% block content %}{% endblock %}</section>
+            <section class="column is-10" style="overflow-y: hidden; overflow-x: hidden">{% block content %}{% endblock %}</section>
         </section>
     </body>
 </html>

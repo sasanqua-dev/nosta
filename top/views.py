@@ -6,4 +6,9 @@ from db.models import *
 # Create your views here.
 @login_required
 def home(request):
-    return HttpResponse("Hello World")
+    news_important = News.objects.all().filter(channel="important").order_by('created_at').reverse()
+    news_info = News.objects.all().filter(channel="info").order_by('created_at').reverse()
+    return render(request,'top/top.html',{
+        'news_important':news_important,
+        'news_info':news_info
+    })

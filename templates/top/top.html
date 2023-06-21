@@ -1,3 +1,93 @@
-{% extends 'hp_base.html' %} {% block content %}
-<div class="container box mt-3">これトップページ</div>
+{% extends 'page_base.html' %}{% load static %}{% block content %}
+<section>
+    <div class="hero is-medium">
+        <!-- Hero content: will be in the middle -->
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <p class="title">title</p>
+                <p class="subtitle">subtitle</p>
+            </div>
+        </div>
+
+        <!-- Hero footer: will stick at the bottom -->
+        <div class="hero-foot">
+            <nav class="tabs is-boxed is-fullwidth">
+                <div class="container">
+                    <ul>
+                        <li>
+                            <a href="#news">お知らせ</a>
+                        </li>
+                        <li>
+                            <a href="#start">スタート</a>
+                        </li>
+                        <li>
+                            <a href="#about">NOSTAとは</a>
+                        </li>
+                        <li>
+                            <a href="#model-case">活用法</a>
+                        </li>
+                        <li>
+                            <a href="#case-study">導入事例</a>
+                        </li>
+                        <li>
+                            <a href="#support">サポート</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="container mt-4" id="news">
+        <div class="container box p-4" style="min-height: 20vh">
+            <strong class="m-2" style="color: #00517c">重要なおしらせ</strong>
+            {% for content in news_important %}
+            <div class="m-1 columns" style="width: 100%">
+                <a href="" style="color: dimgray; display: inline; width: 100%">
+                    <c class="column is-3" style="display: inline-block">{{ content.created_at }}</c>
+                    <c class="column is-2" style="display: inline-block">{{ content.tag }}</c>
+                    <c class="column is-5" style="display: inline-block">{{ content.title }}</c>
+                    <c class="column is-1" style="display: inline-block"><span class="dli-chevron-right"></span></c>
+                </a>
+            </div>
+            <hr />
+            {% endfor %}
+        </div>
+        <div class="container box p-4" style="min-height: 20vh">
+            <strong class="m-2" style="color: #00517c">おしらせ</strong>
+            {% for content in news_info %}
+            <div class="m-1 columns" style="width: 100%">
+                <a href="" style="color: dimgray; display: inline; width: 100%">
+                    <c class="column is-3" style="display: inline-block">{{ content.created_at }}</c>
+                    <c class="column is-2" style="display: inline-block">{{ content.tag }}</c>
+                    <c class="column is-5" style="display: inline-block">{{ content.title }}</c>
+                    <c class="column is-1" style="display: inline-block"><span class="dli-chevron-right"></span></c>
+                </a>
+            </div>
+            <hr />
+            {% endfor %}
+        </div>
+    </div>
+    <div class="container box my-2" id="start">
+        <div class="columns">
+            <div class="column m-2">
+                <div class="">
+                    <p class="is-size-6">NOSTA IDをお持ちの方はこちら</p>
+                    <hr />
+                    <a href="{% url 'login' %}" class="button is-info is-light">NOSTA IDでログイン</a>
+                </div>
+            </div>
+            <div class="column m-2">
+                <div class="">
+                    <p class="is-size-6">NOSTA IDをの新規登録はこちら</p>
+                    <hr />
+                    <a href="{% url 'login' %}" class="button is-info is-light">NOSTA IDを新規登録</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container my-4" id="about">サービス紹介</div>
+    <div class="container my-4" id="model-case">活用法</div>
+    <div class="container my-4" id="case-study">導入事例</div>
+    <div class="container my-4" id="support">サポート</div>
+</section>
 {% endblock %}

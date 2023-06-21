@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <title>MOSTA</title>
+        <link rel="icon" href="{% static 'image/favicon.ico' %}" />
+        <meta
+            name="description"
+            content="MOSTA公式サイトです。MOSTAは模擬店などの小規模店舗でも簡単に導入できる販売支援サービスです。受付でのチケット・整理券の発券からレジ・在庫管理までMOSTAにお任せください。"
+        />
+        <base target="_top" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+        <link rel="stylesheet" href="{% static 'css/footer.css' %}" />
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item is-size-2 pt-1 pr-6" style="font-family: 'Noto Sans JP', sans-serif; color: #00517c" href="{% url 'top:home' %}"
+                    ><img src="{% static 'image/long_logo.png' %}" style="max-height: 3.75rem" alt="ロゴ"
+                /></a>
+                <div class="navbar-item m-2">
+                    <a style="color: dimgray">TOP</a>
+                </div>
+                <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
+                    <a class="navbar-link" href="https://bulma.io/documentation/overview/start/" style="color: dimgray"> INTRODUCE </a>
+                    <div class="navbar-dropdown is-boxed">
+                        <a class="navbar-item" href="" style="color: dimgray"> TICKET </a>
+                        <a class="navbar-item" href="" style="color: dimgray"> REGI </a>
+                        <a class="navbar-item" href="" style="color: dimgray"> SHOP </a>
+                        <a class="navbar-item" href="" style="color: dimgray"> MARKET </a>
+                    </div>
+                </div>
+                <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
+                    <a class="navbar-link" href="https://bulma.io/documentation/overview/start/" style="color: dimgray"> DOCUMENT </a>
+                    <div class="navbar-dropdown is-boxed">
+                        <a class="navbar-item" href="" style="color: dimgray"> GENERAL </a>
+                        <a class="navbar-item" href="" style="color: dimgray"> TICKET </a>
+                        <a class="navbar-item" href="" style="color: dimgray"> REGI </a>
+                        <a class="navbar-item" href="" style="color: dimgray"> SHOP </a>
+                        <a class="navbar-item" href="" style="color: dimgray"> MARKET </a>
+                    </div>
+                </div>
+                <div class="navbar-item m-2">
+                    <a style="color: dimgray">サポート</a>
+                </div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <a href="{% url 'login' %}" class="button is-light is-info">NOSTA IDでログイン</a>
+                </div>
+            </div>
+        </nav>
+    </head>
+    <body>
+        {% block content %}{% endblock %}
+    </body>
+    <footer class="footer">
+        <div class="columns">
+            <div class="column is-1"></div>
+            <div class="column is-2">
+                <a href=""><img src="{% static 'image/long_logo.png' %}" style="max-height: 4.75rem" /></a>
+                <hr />
+                <p style="font-size: 12px">チケットや行列のストレスから</p>
+                <p class="ml-6" style="font-size: 12px">解放されるミライをめざして</p>
+            </div>
+            <div class="column is-1"></div>
+            <div class="column is-2">
+                <ul>
+                    <li class="my-2"><strong>利用者の方へ</strong></li>
+                    <li class="my-2"><a href="">サービスホーム</a></li>
+                    <li class="my-2"><a href="">ヘルプ</a></li>
+                    <li class="my-4"></li>
+                    <li class="my-2"><strong>開発者の方へ</strong></li>
+                    <li class="my-2"><a href="">API申請について</a></li>
+                </ul>
+            </div>
+            <div class="column is-2">
+                <ul>
+                    <li class="my-2"><strong>サービス</strong></li>
+                    <li class="my-2"><a href="">利用規約</a></li>
+                    <li class="my-2"><a href="">プライバシーポリシー</a></li>
+                    <li class="my-2"><a href="">ABOUT</a></li>
+                </ul>
+            </div>
+            <div class="column is-2">
+                <ul>
+                    <li class="my-2"><strong>サポート</strong></li>
+                    <li class="my-2"><a href="">FAQ</a></li>
+                    <li class="my-2"><a href="">お問い合わせ</a></li>
+                </ul>
+            </div>
+            <div class="column is-2">
+                <ul>
+                    <li class="my-2">
+                        <a><img src="{% static 'image/prasic_full.png'%}" style="max-height: 5.75rem" /></a>
+                    </li>
+                    <li class="my-2"><p style="font-size: 12px">このサービスはアプリケーションサービス基盤「Prasic-plus」上で動作しています</p></li>
+                    <hr />
+                    <li class="my-2"><a>共通ガイドライン</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="content has-text-centered">
+            <p>© prasic-plus.com 2023</p>
+        </div>
+    </footer>
+</html>
