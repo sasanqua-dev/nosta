@@ -3,15 +3,15 @@ from . import views
 
 app_name = "shop"
 urlpatterns = [
-    path('home/<int:shopCODE>', views.home, name='home'),
+    path('home/<str:shopCODE>', views.home, name='home'),
     path('register/', views.register, name='register'),
 
-    path('console/dashboard/<int:shopCODE>', views.dashboard, name='dashboard'),
-    path('console/analytics/<int:shopCODE>', views.analytics, name='analytics'),
-    path('console/members/<int:shopCODE>', views.members, name='members'),
-    path('console/settings/<int:shopCODE>', views.settings, name='settings'),
-    path('console/profile/<int:shopCODE>', views.profile, name='profile'),
-    path('console/market/<int:shopCODE>', views.market, name='market'),
-    path('console/product/<int:shopCODE>', views.product, name='product'),
-    path('console/order/<int:shopCODE>', views.order, name='order'),
+    path('console/dashboard/<str:shopCODE>', views.dashboard, name='dashboard'),
+    path('console/analytics/<str:shopCODE>', views.analytics, name='analytics'),
+    path('console/members/<str:shopCODE>', views.members, name='members'),
+    path('console/settings/<str:shopCODE>', views.settings, name='settings'),
+    path('console/profile/<str:shopCODE>', views.profile, name='profile'),
+    path('console/market/<str:shopCODE>', views.market, name='market'),
+    path('console/product/<str:shopCODE>', views.product, name='product'),
+    path('console/order/<str:shopCODE>', views.order, name='order'),
 ]
