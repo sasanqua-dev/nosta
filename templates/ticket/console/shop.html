@@ -101,23 +101,6 @@
             </div>
             <div class="column is-5"></div>
         </div>
-        <h1 id="cs_platform" class="m-2"><strong>チケット発行設定</strong></h1>
-        <p>チケット発行について設定を行います</p>
-        <div class="columns is-multiline my-4">
-            <div class="column is-2 has-text-centered">
-                <label>プラットフォーム</label>
-            </div>
-            <div class="column is-5">
-                <div class="columns is-multiline">
-                    <div class="column is-8">
-                        <p>webサイト(外部公開)</p>
-                        <p class="help">この方法が有効な場合、ユーザーはURLを知っていれば店舗に訪れることなくチケットを発行できるようになります</p>
-                    </div>
-                    <div class="column is-2"><a class="button is-success" id="online_ticket_valid">有効</a></div>
-                    <div class="column is-2"><a class="button is-outlined is-danger" id="online_ticket_invalid">無効</a></div>
-                </div>
-            </div>
-        </div>
         <h1 id="cs_webpage" class="m-2"><strong>WEBページ設定</strong></h1>
         <p>WEBページについて設定を行います</p>
         <div class="columns is-multiline my-4">
@@ -148,7 +131,7 @@
                     dataType: 'json',
                     data: {
                         command: command,
-                        shopID: '{{shop.id }}',
+                        shopID: '{{ shop.id }}',
                         value: value
                     },
                 })
@@ -201,7 +184,6 @@
             <p class="menu-label">Customer</p>
             <ul class="menu-list">
                 <li><a href="#cs_general">General</a></li>
-                <li><a href="#cs_platform">Platform</a></li>
                 <li><a href="#cs_webpage">Web Page</a></li>
             </ul>
             <p class="menu-label">Security</p>
