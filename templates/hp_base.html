@@ -3,8 +3,11 @@
 <html lang="ja">
     <head>
         <title>MOSTA</title>
-        <link rel="icon" href="{% static 'image/favicon.ico' %}">
-        <meta name="description" content="MOSTA公式サイトです。MOSTAは模擬店などの小規模店舗でも簡単に導入できる販売支援サービスです。受付でのチケット・整理券の発券からレジ・在庫管理までMOSTAにお任せください。" />
+        <link rel="icon" href="{% static 'image/favicon.ico' %}" />
+        <meta
+            name="description"
+            content="MOSTA公式サイトです。MOSTAは模擬店などの小規模店舗でも簡単に導入できる販売支援サービスです。受付でのチケット・整理券の発券からレジ・在庫管理までMOSTAにお任せください。"
+        />
         <base target="_top" />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -18,6 +21,17 @@
         <link rel="stylesheet" href="{% static 'css/animation.css' %}" />
         <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-KNEMN3XWCG"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+
+            gtag('config', 'G-KNEMN3XWCG');
+        </script>
         <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a class="navbar-item is-size-2 pt-1 pr-6" style="font-family: 'Noto Sans JP', sans-serif; color: #00517c" href="{% url 'top:home' %}"
