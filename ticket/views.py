@@ -214,7 +214,7 @@ def customerview(request,shopCODE):
     return render(request,'ticket/customer/all_view.html',{'shop':shop,'tickets_calling':tickets_calling})
 
 def shopview(request,shopCODE):
-    shop = Shop.objects.get(id=shopCODE)
+    shop = Shop.objects.get(code=shopCODE)
     dayformat = get_dayformat()
     tickets_calling = Ticket.objects.all().filter(Q(status="Calling") & Q(day=dayformat)& Q(shopID=shop.id))
     tickets_waiting = Ticket.objects.all().filter(Q(status="Waiting") & Q(day=dayformat)& Q(shopID=shop.id))
