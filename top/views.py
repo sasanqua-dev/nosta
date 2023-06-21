@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from db.models import *
 
 # Create your views here.
-@login_required
 def home(request):
     news_important = News.objects.all().filter(channel="important").order_by('created_at').reverse()
     news_info = News.objects.all().filter(channel="info").order_by('created_at').reverse()
