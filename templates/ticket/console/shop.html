@@ -62,8 +62,8 @@
                     <tbody>
                         {% for cstype_item in cstype_list %}
                         <tr>
-                            <td>{{ cstype_item}}</td>
-                            <td><a class="cs_type_list has-text-danger cstype-list" data-item="{{ cstype_item }}">削除</a></td>
+                            <td>{{ cstype_item.name }}</td>
+                            <td><a class="cstype_list has-text-danger cstype-list" data-target="{{ cstype_item.id }}">削除</a></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -181,6 +181,12 @@
         });
         document.getElementById('shop_message_btn').addEventListener('click', function(){
             ajax_handler("shop_message",document.getElementById("shop_message").textContent)
+        });
+        (document.querySelectorAll('cstype_list') || []).forEach(($trigger) => {
+            const $target = document.getElementById($trigger.dataset.target);
+            $trigger.addEventListener('click', () => {
+                ajax_handler("shop_cstype_delete",$target)
+            });
         });
     </script>
     <div class="column is-2 m-4 mr-4">
