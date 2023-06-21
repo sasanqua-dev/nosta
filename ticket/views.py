@@ -68,7 +68,7 @@ def customers(request,shopCODE):
 @login_required
 def shop(request,shopCODE):
     userdomain = request.user.email.split("@")[1]
-    shop = Shop.objects.get(id=shopCODE)
+    shop = Shop.objects.get(code=shopCODE)
     if(shop.owner == request.user) or (shop.code in userdomain):
         cstype_list = CStype.objects.all().filter(shop=shop)
         return render(request, 'ticket/console/shop.html',{'shop':shop,'cstype_list':cstype_list})
