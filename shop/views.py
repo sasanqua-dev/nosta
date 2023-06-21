@@ -84,11 +84,10 @@ def dashboard(request,shopCODE):
         })
     else:
         return redirect('ticket:home')
-    return HttpResponse("this is console")
 
 @login_required
 def analytics(request,shopCODE):
-    return HttpResponse("this is console")
+    return render(request, 'shop/console/alalytics.html',{})
 
 @login_required
 def members(request,shopCODE):
@@ -96,20 +95,20 @@ def members(request,shopCODE):
 
 @login_required
 def settings(request,shopCODE):
-    return HttpResponse("this is console")
+    return render(request, 'shop/console/settings.html',{})
 
 @login_required
 def profile(request,shopCODE):
-    return HttpResponse("this is console")
+    return render(request, 'shop/console/profile.html',{})
 
 @login_required
 def market(request,shopCODE):
-    return HttpResponse("this is console")
+    return render(request, 'shop/console/market.html',{})
 
 @login_required
 def product(request,shopCODE):
-    return HttpResponse("this is console")
+    return render(request, 'shop/console/product.html',{})
 
 @login_required
 def order(request,shopCODE):
-    return HttpResponse("this is console")
+    return render(request, 'shop/console/order.html',{})

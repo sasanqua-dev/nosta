@@ -1,0 +1,30 @@
+{% extends 'ticket/console_base.html' %} {% block content %}
+<nav class="navbar has-background-white-ter" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <div class="navbar-item">
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    <li><p class="is-size-6 m-2">Console</p></li>
+                    <li class="is-active is-size-4"><a href="#" aria-current="page">Analytics</a></li>
+                </ul>
+            </nav>
+        </div>
+        <p class="navbar-item" style="margin-left: 10px">ようこそ {{ user.username }} さん</p>
+    </div>
+</nav>
+
+<div class="container is-main">
+    <main class="content mt-4 mr-2 ml-2" style="height: 90vh; overflow-y: auto; overflow-x: hidden"></main>
+        <section class="hero is-light">
+            <div class="hero-body">
+                <p class="title">
+                    この機能は現在提供されていません
+                </p>
+                <p class="subtitle">
+                    近日提供予定です
+                </p>
+            </div>
+        </section>
+    </main>
+</div>
+{% endblock %}
