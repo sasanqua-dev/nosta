@@ -77,7 +77,7 @@ def dashboard(request,shopCODE):
             'news':news,
             'tickets_yet':tickets_yet,
             'tickets_calling':tickets_calling,
-            'orders_yet':orders_yet,
+            'orders_waiting':orders_yet,
             'orders_calling':orders_calling,
             'peoplesum':peoplesum,
             'allsum':allsum,
