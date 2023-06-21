@@ -83,3 +83,21 @@ body, html {
     list-style:none;
     margin-left: 0;
   }
+
+.arrow{
+  position: relative;
+  display: inline-block;
+}
+
+.arrow::after{
+    content: '';
+    width: 8px;
+    height: 8px;
+    margin-top: -5px;
+    border-top: solid 1px #00517c;   /* 好みで色を変えてください */  
+    border-right: solid 1px #00517c;   /* 好みで色を変えてください */  
+    transform: rotate(45deg);
+    position: absolute;
+    top: 50%;
+    right: -20px;
+}

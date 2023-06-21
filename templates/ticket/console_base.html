@@ -4,6 +4,8 @@
     <head>
         <meta charset="UTF-8" />
         <title>管理コンソール</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="MOSTAチケットサービス管理画面ではチケットの設定、呼び出し、確認が簡単に行えます。" />
         <link rel="icon" href="{% static 'image/favicon.ico' %}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
         <link rel="stylesheet" href="{% static 'css/console.css' %}" />
@@ -24,7 +26,7 @@
             <section class="column is-2" style="background-color: #eaf4fc">
                 <nav class="navbar" role="navigation" aria-label="main navigation" style="background-color: #eaf4fc">
                     <div class="navbar-brand" style="margin: auto; display: block;">
-                        <img src="{% static 'image/logo_ticket.png' %}" class="navbar-item" style="max-height: 10rem;"/>
+                        <img src="{% static 'image/logo_ticket.png' %}" class="navbar-item" style="max-height: 10rem;"  alt="ロゴ" />
                     </div>
                 </nav>
                 <div class="container is-side sidebar m-2">
@@ -42,12 +44,12 @@
                         <p class="menu-label">display</p>
                         <ul class="menu-list">
                             <li>
-                                <a href="{% url 'ticket:reception_internal' shop.code %}">
+                                <a href="{% url 'ticket:reception_internal' shop.code %}" target="_blank">
                                     チケット発券
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'ticket:client_internal' shop.code %}">
+                                <a href="{% url 'ticket:client_internal' shop.code %}" target="_blank">
                                     呼び出し表示
                                 </a>
                             </li>

@@ -4,7 +4,8 @@
 <div class="mt-6">
     <ul>
         {% for shop in shops %}
-        <li><a href="{% url 'ticket:dashboard' shop.code %}" class="button is-fullwidth is-gray is-light my-2">{{ shop.name }}</a></li>
+        <hr />
+        <li><a href="{% url 'ticket:dashboard' shop.code %}" class="is-fullwidth my-2 arrow" style="width: 100%;">{{ shop.name }}</a></li>
         {% endfor %}
     </ul>
 </div>

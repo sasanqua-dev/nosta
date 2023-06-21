@@ -105,7 +105,7 @@
                         {% else %}
                             {% for cstype_item in cstype_list %}
                             <div class="column is-6">
-                                <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="{{ cstype_item.name }}">{{ cstype_item.name }}</a>
+                                <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" style="min-width: 5vh;" data-type="{{ cstype_item.name }}">{{ cstype_item.name }}</a>
                             </div>
                             {% endfor %}
                         {% endif %}
@@ -132,7 +132,7 @@
                         <div class="column is-12">
                             <div class="columns">
                                 <div class="column is-6">
-                                    <img src="{% static 'image/logo_ticket.png' %}" style="max-height: 10rem" />
+                                    <img src="{% static 'image/logo_ticket.png' %}" style="max-height: 10rem" alt="ロゴ" />
                                     <hr />
                                     <strong>オンライン番号確認サービス</strong>
                                     <div id="img-qr" style="margin: 20px"></div>

@@ -208,7 +208,7 @@ def system_ajax(request):
             return HttpResponse("OK!")
 
 def customerview(request,shopCODE):
-    shop = Shop.objects.get(id=shopCODE)
+    shop = Shop.objects.get(code=shopCODE)
     dayformat = get_dayformat()
     tickets_calling = Ticket.objects.all().filter(Q(status="Calling") & Q(day=dayformat)& Q(shopID=shop.id))
     return render(request,'ticket/customer/all_view.html',{'shop':shop,'tickets_calling':tickets_calling})

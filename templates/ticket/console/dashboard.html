@@ -65,7 +65,7 @@
                                 var nowHour = nowTime.getHours(); // 時を抜き出す
                                 var nowMin = nowTime.getMinutes(); // 分を抜き出す
                                 var nowSec = nowTime.getSeconds(); // 秒を抜き出す
-                                var msg = ('0' + nowHour).slice(-2) + ':' + ('0' + nowMin).slice(-2) + ':' + ('0' + nowSec).slice(-2);
+                                var msg = ('0' + nowHour).slice(-2) + ':' + ('0' + nowMin).slice(-2) + '<c class="is-size-4">:' + ('0' + nowSec).slice(-2)+"</c>";
                                 document.getElementById('clock').innerHTML = msg;
                             }
                             setInterval('clock()', 1000);
