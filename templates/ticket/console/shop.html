@@ -158,12 +158,6 @@
             var value = document.getElementById('max_number').value
             ajax_handler("shop_change_max_number",value)
         });
-        document.getElementById('online_ticket_valid').addEventListener('click', function(){
-            ajax_handler("online_ticket_valid","True")
-        });
-        document.getElementById('online_ticket_invalid').addEventListener('click', function(){
-            ajax_handler("online_ticket_invalid","False")
-        });
         document.getElementById('shop_message_btn').addEventListener('click', function(){
             ajax_handler("shop_message",document.getElementById("shop_message").textContent)
         });
