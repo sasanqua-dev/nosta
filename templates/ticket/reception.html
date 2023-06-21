@@ -100,7 +100,7 @@
                     <div class="columns is-multiline">
                         {% for cstype_item in cstype_list}
                         <div class="column is-6">
-                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="{{ cstype_item}}">{{ cstype_item}}</a>
+                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="{{ cstype_item.name }}">{{ cstype_item.name }}</a>
                         </div>
                         {% endfor}
                     </div>

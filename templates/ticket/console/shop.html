@@ -186,6 +186,7 @@
             const $target = $trigger.dataset.target;
             $trigger.addEventListener('click', () => {
                 ajax_handler("shop_cstype_delete",$target)
+                window.onload()
             });
         });
     </script>
