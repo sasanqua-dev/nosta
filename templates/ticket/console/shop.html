@@ -159,6 +159,7 @@
             ajax_handler("shop_change_max_number",value)
         });
         document.getElementById('shop_message_btn').addEventListener('click', function(){
+            console.log(document.getElementById("shop_message").textContent)
             ajax_handler("shop_message",document.getElementById("shop_message").textContent)
         });
         (document.querySelectorAll('.cstype_list') || []).forEach(($trigger) => {
