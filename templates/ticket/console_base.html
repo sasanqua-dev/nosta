@@ -32,22 +32,22 @@
                         <div style="display: flex; width: 100%; flex-wrap: wrap;"><strong>{{ shop.name }}</strong></div>
                         <p class="menu-label">General</p>
                         <ul class="menu-list">
-                            <li><a href="{% url 'ticket:dashboard' shop.id %}" id="side_dashboard" class="">Dashboard</a></li>
-                            <li><a href="{% url 'ticket:customers' shop.id %}">Customers</a></li>
+                            <li><a href="{% url 'ticket:dashboard' shop.code %}" id="side_dashboard" class="">Dashboard</a></li>
+                            <li><a href="{% url 'ticket:customers' shop.code %}">Customers</a></li>
                         </ul>
                         <p class="menu-label">Administration</p>
                         <ul class="menu-list">
-                            <li><a href="{% url 'ticket:shop' shop.id %}">Settings</a></li>
+                            <li><a href="{% url 'ticket:shop' shop.code %}">Settings</a></li>
                         </ul>
                         <p class="menu-label">display</p>
                         <ul class="menu-list">
                             <li>
-                                <a href="{% url 'ticket:reception_internal' shop.id %}">
+                                <a href="{% url 'ticket:reception_internal' shop.code %}">
                                     チケット発券
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'ticket:client_internal' shop.id %}">
+                                <a href="{% url 'ticket:client_internal' shop.code %}">
                                     呼び出し表示
                                 </a>
                             </li>
@@ -55,7 +55,7 @@
                         <p class="menu-label">client</p>
                         <ul class="menu-list">
                             <li>
-                                <a href="{% url 'ticket:client_external' shop.id %}" target="_blank">
+                                <a href="{% url 'ticket:client_external' shop.code %}" target="_blank">
                                     呼び出し状況
                             </li>
                         </ul>
@@ -72,7 +72,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'shop:home' shop.id %}">
+                                <a href="{% url 'shop:home' shop.code %}">
                                     <span class="icon-text">
                                         <span class="icon has-text-info">
                                             <i class="fa-solid fa-arrow-up-right-from-square"></i>

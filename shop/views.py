@@ -9,8 +9,8 @@ import json
 
 # Create your views here.
 @login_required
-def home(request,shopID):
-    return render(request,'shop/home.html',{'shop':shopID})
+def home(request,shopCODE):
+    return render(request,'shop/home.html',{'shop':shopCODE})
 
 @login_required
 def register(request):
@@ -48,17 +48,17 @@ def get_dayformat():
     formatted = str(now.strftime("%Y-%m-%d"))
     return formatted
 
-def user_permission_auth(request,shopID):
+def user_permission_auth(request,shopCODE):
     userdomain = request.user.email.split("@")[1]
-    shop = Shop.objects.get(id=shopID)
+    shop = Shop.objects.get(code=shopCODE)
     if(shop.owner == request.user) or ((shop.code in userdomain) and UserControl.objects.get(user=request.user).shopconsole == "valid"):
         return "allow"
     else:
         return "reject"
 @login_required
-def dashboard(request,shopID):
-    if user_permission_auth(request,shopID) == "allow":
-        shop = Shop.objects.get(id=shopID)
+def dashboard(request,shopCODE):
+    if user_permission_auth(request,shopCODE) == "allow":
+        shop = Shop.objects.get(code=shopCODE)
         formatted = get_dayformat()
         tickets_yet = Ticket.objects.all().filter(Q(status="Waiting")& Q(day=formatted)& Q(shopID=shop.id))
         tickets_calling = Ticket.objects.all().filter(Q(status="Calling")& Q(day=formatted)& Q(shopID=shop.id))
@@ -87,29 +87,29 @@ def dashboard(request,shopID):
     return HttpResponse("this is console")
 
 @login_required
-def analytics(request,shopID):
+def analytics(request,shopCODE):
     return HttpResponse("this is console")
 
 @login_required
-def members(request,shopID):
+def members(request,shopCODE):
     return HttpResponse("this is console")
 
 @login_required
-def settings(request,shopID):
+def settings(request,shopCODE):
     return HttpResponse("this is console")
 
 @login_required
-def profile(request,shopID):
+def profile(request,shopCODE):
     return HttpResponse("this is console")
 
 @login_required
-def market(request,shopID):
+def market(request,shopCODE):
     return HttpResponse("this is console")
 
 @login_required
-def product(request,shopID):
+def product(request,shopCODE):
     return HttpResponse("this is console")
 
 @login_required
-def order(request,shopID):
+def order(request,shopCODE):
     return HttpResponse("this is console")

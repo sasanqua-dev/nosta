@@ -32,7 +32,7 @@
                         <div style="display: flex; width: 100%; flex-wrap: wrap;"><strong>{{ shop.name }}</strong></div>
                         <p class="menu-label">General</p>
                         <ul class="menu-list">
-                            <li><a href="{% url 'shop:dashboard' shop.id %}">Dashboard</a></li>
+                            <li><a href="{% url 'shop:dashboard' shop.code %}">Dashboard</a></li>
                             <li><a href="">Analytics</a></li>
                         </ul>
                         <p class="menu-label">Administration</p>
@@ -60,7 +60,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'ticket:home' %}">
+                                <a href="{% url 'ticket:home' shop.code %}">
                                     <span class="icon-text">
                                         <span class="icon has-text-info">
                                             <i class="fa-solid fa-arrow-up-right-from-square"></i>

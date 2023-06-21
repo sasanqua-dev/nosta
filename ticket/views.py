@@ -16,10 +16,9 @@ def get_dayformat():
     formatted = str(now.strftime("%Y-%m-%d"))
     return formatted
 
-def consolo_access(request,shopID):
-    userid = request.user.id
+def consolo_access(request,shopCODE):
     userdomain = request.user.email.split("@")[1]
-    shop = Shop.objects.get(id=shopID)
+    shop = Shop.objects.get(code=shopCODE)
     if(shop.owner == request.user) or (shop.code in userdomain):
         formatted = get_dayformat()
         tickets = Ticket.objects.all().filter(Q(shopID=shop.id) & Q(day=formatted)& Q(shopID=shop.id)).count()
@@ -32,8 +31,8 @@ def consolo_access(request,shopID):
 
 
 @login_required
-def dashboard(request,shopID):
-    shop,tickets,tickets_already,tickets_calling,tickets_yet,formatted = consolo_access(request,shopID)
+def dashboard(request,shopCODE):
+    shop,tickets,tickets_already,tickets_calling,tickets_yet,formatted = consolo_access(request,shopCODE)
     if shop == "bad":
         return redirect('ticket:home')
 
@@ -56,8 +55,8 @@ def dashboard(request,shopID):
     })
 
 @login_required
-def customers(request,shopID):
-    shop,tickets,tickets_already,tickets_calling,tickets_yet,formatted = consolo_access(request,shopID)
+def customers(request,shopCODE):
+    shop,tickets,tickets_already,tickets_calling,tickets_yet,formatted = consolo_access(request,shopCODE)
     return render(request, 'ticket/console/customers.html',{
         'shop':shop,
         'tickets':tickets,
@@ -67,9 +66,9 @@ def customers(request,shopID):
     })
 
 @login_required
-def shop(request,shopID):
+def shop(request,shopCODE):
     userdomain = request.user.email.split("@")[1]
-    shop = Shop.objects.get(id=shopID)
+    shop = Shop.objects.get(id=shopCODE)
     if(shop.owner == request.user) or (shop.code in userdomain):
         cstype_list = CStype.objects.all().filter(shop=shop)
         return render(request, 'ticket/console/shop.html',{'shop':shop,'cstype_list':cstype_list})
@@ -84,9 +83,9 @@ def home(request):
     return render(request, 'ticket/accounthome.html',{'shops':shops})
 
 @login_required
-def reception_internal(request,shopID):
+def reception_internal(request,shopCODE):
     userdomain = request.user.email.split("@")[1]
-    shop = Shop.objects.get(id=shopID)
+    shop = Shop.objects.get(code=shopCODE)
     cstype_list = CStype.objects.all().filter(shop=shop)
     if(shop.owner == request.user) or (shop.code in userdomain):
         return render(request, 'ticket/reception.html',{'shop':shop,'cstype_list':cstype_list})
@@ -208,14 +207,14 @@ def system_ajax(request):
             cstype.delete()
             return HttpResponse("OK!")
 
-def customerview(request,shopID):
-    shop = Shop.objects.get(id=shopID)
+def customerview(request,shopCODE):
+    shop = Shop.objects.get(id=shopCODE)
     dayformat = get_dayformat()
     tickets_calling = Ticket.objects.all().filter(Q(status="Calling") & Q(day=dayformat)& Q(shopID=shop.id))
     return render(request,'ticket/customer/all_view.html',{'shop':shop,'tickets_calling':tickets_calling})
 
-def shopview(request,shopID):
-    shop = Shop.objects.get(id=shopID)
+def shopview(request,shopCODE):
+    shop = Shop.objects.get(id=shopCODE)
     dayformat = get_dayformat()
     tickets_calling = Ticket.objects.all().filter(Q(status="Calling") & Q(day=dayformat)& Q(shopID=shop.id))
     tickets_waiting = Ticket.objects.all().filter(Q(status="Waiting") & Q(day=dayformat)& Q(shopID=shop.id))
