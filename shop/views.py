@@ -91,7 +91,7 @@ def analytics(request,shopCODE):
 
 @login_required
 def members(request,shopCODE):
-    return HttpResponse("this is console")
+    return render(request, 'shop/console/member.html',{})
 
 @login_required
 def settings(request,shopCODE):
