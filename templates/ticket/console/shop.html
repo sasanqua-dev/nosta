@@ -153,8 +153,10 @@
                     },
                 })
                     .done(function (response) {
+                        window.alert("変更しました")
                     })
                     .fail(function (xhr) {
+                        window.alert("失敗しました(E007)")
                     })
         }
         document.getElementById('shop_name_btn').addEventListener('click', function(){
