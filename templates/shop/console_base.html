@@ -37,15 +37,15 @@
                         </ul>
                         <p class="menu-label">Administration</p>
                         <ul class="menu-list">
-                            <li><a href="">Members</a></li>
-                            <li><a href="">Settings</a></li>
+                            <li><a href="{% url 'shop:member' shop.code %}">Members</a></li>
+                            <li><a href="{% url 'shop:settings' shop.code %}">Settings</a></li>
                         </ul>
                         <p class="menu-label">SHOP</p>
                         <ul class="menu-list">
-                            <li><a href="">Plofile</a></li>
-                            <li><a href="">Market</a></li>
-                            <li><a href="">Product</a></li>
-                            <li><a href="">Order</a></li>
+                            <li><a href="{% url 'shop:profile' shop.code %}">Plofile</a></li>
+                            <li><a href="{% url 'shop:market' shop.code %}">Market</a></li>
+                            <li><a href="{% url 'shop:product' shop.code %}">Product</a></li>
+                            <li><a href="{% url 'shop:order' shop.code %}">Order</a></li>
                         </ul>
                         <p class="menu-label">Link</p>
                         <ul class="menu-list">
@@ -57,6 +57,7 @@
                                         </span>
                                         <span>NOSTA TOP</span>
                                     </span>
+                                    <p class="help">近日提供予定</p>
                                 </a>
                             </li>
                             <li>
@@ -77,6 +78,7 @@
                                         </span>
                                         <span>NOSTA REGI</span>
                                     </span>
+                                    <p class="help">近日提供予定</p>
                                 </a>
                             </li>
                             <li>
@@ -87,6 +89,7 @@
                                         </span>
                                         <span>NOSTA MARKET</span>
                                     </span>
+                                    <p class="help">近日提供予定</p>
                                 </a>
                             </li>
                         </ul>
