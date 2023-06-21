@@ -189,7 +189,6 @@ def system_ajax(request):
         case 'shop_message':
             shop = Shop.objects.get(id=request.POST["shopID"])
             shop.message = request.POST["value"]
-            print(shop.message)
             shop.save()
             return HttpResponse("OK!")
         
