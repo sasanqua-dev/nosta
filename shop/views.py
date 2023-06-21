@@ -87,28 +87,56 @@ def dashboard(request,shopCODE):
 
 @login_required
 def analytics(request,shopCODE):
-    return render(request, 'shop/console/alalytics.html',{})
+    if user_permission_auth(request,shopCODE) == "allow":
+        shop = Shop.objects.get(code=shopCODE)
+        return render(request, 'shop/console/analytics.html',{'shop':shop})
+    else:
+        return redirect('ticket:home')
 
 @login_required
 def members(request,shopCODE):
-    return render(request, 'shop/console/member.html',{})
+    if user_permission_auth(request,shopCODE) == "allow":
+        shop = Shop.objects.get(code=shopCODE)
+        return render(request, 'shop/console/member.html',{'shop':shop})
+    else:
+        return redirect('ticket:home')
 
 @login_required
 def settings(request,shopCODE):
-    return render(request, 'shop/console/settings.html',{})
+    if user_permission_auth(request,shopCODE) == "allow":
+        shop = Shop.objects.get(code=shopCODE)
+        return render(request, 'shop/console/settings.html',{'shop':shop})
+    else:
+        return redirect('ticket:home')
 
 @login_required
 def profile(request,shopCODE):
-    return render(request, 'shop/console/profile.html',{})
+    if user_permission_auth(request,shopCODE) == "allow":
+        shop = Shop.objects.get(code=shopCODE)
+        return render(request, 'shop/console/profile.html',{'shop':shop})
+    else:
+        return redirect('ticket:home')
 
 @login_required
 def market(request,shopCODE):
-    return render(request, 'shop/console/market.html',{})
+    if user_permission_auth(request,shopCODE) == "allow":
+        shop = Shop.objects.get(code=shopCODE)
+        return render(request, 'shop/console/market.html',{'shop':shop})
+    else:
+        return redirect('ticket:home')
 
 @login_required
 def product(request,shopCODE):
-    return render(request, 'shop/console/product.html',{})
+    if user_permission_auth(request,shopCODE) == "allow":
+        shop = Shop.objects.get(code=shopCODE)
+        return render(request, 'shop/console/product.html',{'shop':shop})
+    else:
+        return redirect('ticket:home')
 
 @login_required
 def order(request,shopCODE):
-    return render(request, 'shop/console/order.html',{})
+    if user_permission_auth(request,shopCODE) == "allow":
+        shop = Shop.objects.get(code=shopCODE)
+        return render(request, 'shop/console/order.html',{'shop':shop})
+    else:
+        return redirect('ticket:home')
