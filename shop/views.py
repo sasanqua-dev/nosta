@@ -72,7 +72,7 @@ def dashboard(request,shopCODE):
         result = Ticket.objects.filter(Q(shopID=shop)).aggregate(sum=models.Sum('people'))
         allsum = result["sum"]
 
-        return render(request, 'shop/console.dashboard.html',{
+        return render(request, 'shop/console/dashboard.html',{
             'shop':shop,
             'news':news,
             'tickets_yet':tickets_yet,
