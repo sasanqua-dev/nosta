@@ -1,12 +1,12 @@
 {% extends 'auth_base.html' %} {% block content %}{% load static %}
-<div style="min-width: 20vm">
+<div style="min-width: 40vm">
     <strong>ようこそ {{ user.username }} さん</strong>
     <div class="is-size-3">店舗を選択してください</div>
     <div class="mt-6">
         <ul>
             {% for shop in shops %}
             <hr />
-            <li><a href="{% url 'ticket:dashboard' shop.code %}" class="is-fullwidth my-2 arrow" style="width: 100%">{{ shop.name }}</a></li>
+            <li><a href="{% url 'ticket:dashboard' shop.code %}" class="is-fullwidth my-2 arrow" style="width: 90%">{{ shop.name }}</a></li>
             {% endfor %}
         </ul>
     </div>
