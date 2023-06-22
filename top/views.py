@@ -8,11 +8,9 @@ from django.utils.html import strip_tags
 
 # Create your views here.
 def home(request):
-    news_important = News.objects.all().filter(channel="important").order_by('created_at').reverse()
-    news_info = News.objects.all().filter(channel="info").order_by('created_at').reverse()
+    news = News.objects.all().filter(channel="all").order_by('created_at').reverse()
     return render(request,'top/top.html',{
-        'news_important':news_important,
-        'news_info':news_info
+        'news':news,
     })
 
 def s_ticket(request):
