@@ -37,6 +37,25 @@
             </nav>
         </div>
     </div>
+    <div class="container my-2" id="start" style="height: 200px;" style="background-color: #00517c; color: azure;">
+        <h1 class="has-text-centered">NOSTAをはじめよう</h1>
+        <div class="columns">
+            <div class="column m-2">
+                <div class="has-text-centered">
+                    <p class="is-size-6"><b>NOSTA IDをお持ちの方はこちら</b></p>
+                    <hr />
+                    <a href="{% url 'login' %}" class="button is-gray is-light">NOSTA IDでログイン</a>
+                </div>
+            </div>
+            <div class="column m-2">
+                <div class="has-text-centered">
+                    <p class="is-size-6"><b>NOSTA IDをの新規登録はこちら</b></p>
+                    <hr />
+                    <a href="{% url 'login' %}" class="button is-gray is-light">NOSTA IDを新規登録</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container mt-4" id="news">
         <div class="container box p-4" style="min-height: 20vh">
             <strong class="m-2" style="color: #00517c">重要なおしらせ</strong>
@@ -51,24 +70,6 @@
             </div>
             <hr />
             {% endfor %}
-        </div>
-    </div>
-    <div class="container my-2" id="start" style="height: 10vh;">
-        <div class="columns">
-            <div class="column m-2">
-                <div class="has-text-centered">
-                    <p class="is-size-6"><b>NOSTA IDをお持ちの方はこちら</b></p>
-                    <hr />
-                    <a href="{% url 'login' %}" class="button is-info is-light">NOSTA IDでログイン</a>
-                </div>
-            </div>
-            <div class="column m-2">
-                <div class="has-text-centered">
-                    <p class="is-size-6"><b>NOSTA IDをの新規登録はこちら</b></p>
-                    <hr />
-                    <a href="{% url 'login' %}" class="button is-info is-light">NOSTA IDを新規登録</a>
-                </div>
-            </div>
         </div>
     </div>
     <div class="container my-4" id="about">
