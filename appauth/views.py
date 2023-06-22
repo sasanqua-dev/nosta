@@ -27,16 +27,16 @@ def user_register(request):
         password2 = request.POST['password2']
         if User.objects.filter(email = userid).count() > 0:
             error_message = "このメールアドレスはすでに登録されています(E002)"
-            return render(request, 'register.html', {'error': error_message})
+            return render(request, 'auth/register.html', {'error': error_message})
         if '.nosta' in userid:
             error_message = "このメールアドレスは使用できません(E003)"
-            return render(request, 'register.html', {'error': error_message})
+            return render(request, 'auth/register.html', {'error': error_message})
         if User.objects.filter(username = username).count() > 0:
             error_message = "このユーザー名はすでに登録されています(E004)"
-            return render(request, 'register.html', {'error': error_message})
+            return render(request, 'auth/register.html', {'error': error_message})
         if password != password2 :
             error_message = "パスワードが一致しません(E005)"
-            return render(request, 'register.html', {'error': error_message})
+            return render(request, 'auth/register.html', {'error': error_message})
         user = User.objects.create_user(
             username=username,
             email=userid,
