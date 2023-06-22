@@ -102,6 +102,12 @@ DATABASES = {
 }
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
+EMAIL_HOST = 'smtp.email.ap-sydney-1.oci.oraclecloud.com'
+EMAIL_HOST_USER = 'ocid1.user.oc1..aaaaaaaapiyved63mmxxg7rcbla2xuzlsf7qijnjebz6kneuryuvooptgjua@ocid1.tenancy.oc1..aaaaaaaaaxnytjnf26pq2sblch27njgo3h26wur6t7bzcvm2nhpnapxajcba.yr.com'
+EMAIL_HOST_PASSWORD = '(pW;gm>+!vALa4KhQcb5'
+EMAIL_PORT = '465' #メールサーバーで指定されているポート
+EMAIL_USE_SSL = True #メールサーバーで確認
+DEFAULT_FROM_EMAIL = 'no-reply@nosta.prasic-plus.com'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

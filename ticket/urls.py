@@ -4,7 +4,6 @@ from . import views
 
 app_name ="ticket"
 urlpatterns = [
-    path('', views.home, name='home'),
     path('console/dashboard/<str:shopCODE>', views.dashboard, name='dashboard'),
     path('console/customers/<str:shopCODE>', views.customers, name='customers'),
     path('console/settings/<str:shopCODE>', views.shop, name='shop'),

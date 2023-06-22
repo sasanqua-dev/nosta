@@ -6,16 +6,17 @@ from db.models import *
 # Create your views here.
 def user_login(request):
     if request.method == 'POST':
+        next_url = request.GET['next']
         userid = request.POST['userid']
         password = request.POST['password']
         user = authenticate(request, email=userid, password=password)
         if user is not None:
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
-            return redirect('shop:home') # ログイン後にリダイレクトするURLを指定します
+            return redirect(next_url) # ログイン後にリダイレクトするURLを指定します
         else:
             # ログイン失敗時の処理
-            return render(request, 'login.html', {'error': 'ユーザーIDまたはパスワードが間違っています(E001)'})
+            return render(request, 'auth/login.html', {'error': 'ユーザーIDまたはパスワードが間違っています(E001)'})
     else:
         return render(request, 'auth/login.html')
 
@@ -46,7 +47,17 @@ def user_register(request):
 
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
-        return redirect('ticket:home')
+        return redirect('service')
 
     else:
         return render(request, 'auth/register.html')
+
+@login_required
+def service(request,shopCODE):
+    return render(request,'auth/service.html',{'shop':shopCODE})
+
+@login_required
+def home(request):
+    userid = request.user.id
+    shops = Shop.objects.all().filter(owner=userid)
+    return render(request, 'auth/home.html',{'shops':shops})

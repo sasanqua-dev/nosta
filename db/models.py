@@ -63,7 +63,7 @@ class Product(models.Model):
     is_active = models.CharField(max_length=50)
 
 class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
     shopID = models.ForeignKey(Shop, on_delete=models.CASCADE)
     status = models.CharField(max_length=20)
     day = models.CharField(max_length=10)
@@ -71,14 +71,14 @@ class Order(models.Model):
     finished_at = models.DateTimeField(auto_now_add=True)
 
 class CellProduct(models.Model):
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Product, on_delete=models.SET_NULL,null=True)
     order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
     ticket_id = models.ForeignKey(Ticket, on_delete=models.CASCADE)
     number = models.IntegerField()
     price = models.IntegerField()
 
 class News(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
     title = models.CharField(max_length=100)
     tag = models.CharField(max_length=100)
     channel = models.CharField(max_length=100)
@@ -87,12 +87,21 @@ class News(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class CStype(models.Model):
-    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
+    shop = models.ForeignKey(Shop, on_delete=models.SET_NULL,null=True)
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
 
 class UserControl(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
     shopconsole = models.CharField(max_length=50,null=True)
     ticket = models.CharField(max_length=50,null=True)
     market = models.CharField(max_length=50,null=True)
+
+class FAQ(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
+    category = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
+    question = models.CharField(max_length=5000)
+    answer = models.CharField(max_length=5000)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

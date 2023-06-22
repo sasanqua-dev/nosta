@@ -9,10 +9,6 @@ import json
 
 # Create your views here.
 @login_required
-def home(request,shopCODE):
-    return render(request,'shop/home.html',{'shop':shopCODE})
-
-@login_required
 def register(request):
     if request.method == 'POST':
         code = request.POST['shopcode']
@@ -37,7 +33,7 @@ def register(request):
             sic=sic,
             category=category
         )
-        return redirect('shop:home',shop.code)
+        return redirect('home',shop.code)
 
     else:
         return render(request, 'shop/register.html')
@@ -83,7 +79,7 @@ def dashboard(request,shopCODE):
             'allsum':allsum,
         })
     else:
-        return redirect('ticket:home')
+        return redirect('home')
 
 @login_required
 def analytics(request,shopCODE):
@@ -91,7 +87,7 @@ def analytics(request,shopCODE):
         shop = Shop.objects.get(code=shopCODE)
         return render(request, 'shop/console/analytics.html',{'shop':shop})
     else:
-        return redirect('ticket:home')
+        return redirect('home')
 
 @login_required
 def members(request,shopCODE):
@@ -99,7 +95,7 @@ def members(request,shopCODE):
         shop = Shop.objects.get(code=shopCODE)
         return render(request, 'shop/console/member.html',{'shop':shop})
     else:
-        return redirect('ticket:home')
+        return redirect('home')
 
 @login_required
 def settings(request,shopCODE):
@@ -107,7 +103,7 @@ def settings(request,shopCODE):
         shop = Shop.objects.get(code=shopCODE)
         return render(request, 'shop/console/settings.html',{'shop':shop})
     else:
-        return redirect('ticket:home')
+        return redirect('home')
 
 @login_required
 def profile(request,shopCODE):
@@ -115,7 +111,7 @@ def profile(request,shopCODE):
         shop = Shop.objects.get(code=shopCODE)
         return render(request, 'shop/console/profile.html',{'shop':shop})
     else:
-        return redirect('ticket:home')
+        return redirect('home')
 
 @login_required
 def market(request,shopCODE):
@@ -123,7 +119,7 @@ def market(request,shopCODE):
         shop = Shop.objects.get(code=shopCODE)
         return render(request, 'shop/console/market.html',{'shop':shop})
     else:
-        return redirect('ticket:home')
+        return redirect('home')
 
 @login_required
 def product(request,shopCODE):
@@ -131,7 +127,7 @@ def product(request,shopCODE):
         shop = Shop.objects.get(code=shopCODE)
         return render(request, 'shop/console/product.html',{'shop':shop})
     else:
-        return redirect('ticket:home')
+        return redirect('home')
 
 @login_required
 def order(request,shopCODE):
@@ -139,4 +135,4 @@ def order(request,shopCODE):
         shop = Shop.objects.get(code=shopCODE)
         return render(request, 'shop/console/order.html',{'shop':shop})
     else:
-        return redirect('ticket:home')
+        return redirect('home')

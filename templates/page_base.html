@@ -17,6 +17,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
         <link rel="stylesheet" href="{% static 'css/footer.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/contact.css' %}" />
         <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 
@@ -54,7 +55,7 @@
             <div class="navbar-menu" id="nav-menu">
                 <div class="navbar-start">
                     <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
-                        <a class="navbar-link" href="https://bulma.io/documentation/overview/start/" style="color: dimgray"> TICKET </a>
+                        <a class="navbar-link" style="color: dimgray"> TICKET </a>
                         <div class="navbar-dropdown is-boxed">
                             <a class="navbar-item" href="" style="color: dimgray"> サービス </a>
                             <a class="navbar-item" href="" style="color: dimgray"> ユーザーガイド </a>
@@ -62,28 +63,35 @@
                         </div>
                     </div>
                     <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
-                        <a class="navbar-link" href="https://bulma.io/documentation/overview/start/" style="color: dimgray"> REGI </a>
+                        <a class="navbar-link" style="color: dimgray"> REGI </a>
                         <div class="navbar-dropdown is-boxed">
                             <a class="navbar-item" href="" style="color: dimgray"> 近日リリース予定 </a>
                         </div>
                     </div>
                     <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
-                        <a class="navbar-link" href="https://bulma.io/documentation/overview/start/" style="color: dimgray"> SHOP </a>
+                        <a class="navbar-link" style="color: dimgray"> SHOP </a>
                         <div class="navbar-dropdown is-boxed">
                             <a class="navbar-item" href="" style="color: dimgray"> 近日リリース予定 </a>
                         </div>
                     </div>
                     <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
-                        <a class="navbar-link" href="https://bulma.io/documentation/overview/start/" style="color: dimgray"> MARKET </a>
+                        <a class="navbar-link" style="color: dimgray"> MARKET </a>
                         <div class="navbar-dropdown is-boxed">
                             <a class="navbar-item" href="" style="color: dimgray"> 近日リリース予定 </a>
                         </div>
                     </div>
-                    <div class="navbar-item m-2">
-                        <a style="color: dimgray">サポート</a>
+                    <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
+                        <a class="navbar-link" style="color: dimgray"> サポート </a>
+                        <div class="navbar-dropdown is-boxed">
+                            <a class="navbar-item" href="{% url 'top:faq' %}" style="color: dimgray"> FAQ </a>
+                            <a class="navbar-item" href="{% url 'top:contact' %}" style="color: dimgray"> お問い合わせ </a>
+                        </div>
                     </div>
                 </div>
                 <div class="navbar-end">
+                    <div class="navbar-item">
+                        <a href="{% url 'home' %}" class="button is-light is-info">アカウントホーム</a>
+                    </div>
                     <div class="navbar-item">
                         <a href="{% url 'login' %}" class="button is-light is-info">NOSTA IDでログイン</a>
                     </div>
@@ -92,7 +100,7 @@
         </nav>
     </head>
     <body>
-        {% block content %}{% endblock %}
+        <div class="mt-6">{% block content %}{% endblock %}</div>
     </body>
     <footer class="footer">
         <div class="columns">

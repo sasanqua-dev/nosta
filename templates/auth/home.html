@@ -6,7 +6,7 @@
         <ul>
             {% for shop in shops %}
             <hr />
-            <li><a href="{% url 'ticket:dashboard' shop.code %}" class="is-fullwidth my-2 arrow" style="width: 90%">{{ shop.name }}</a></li>
+            <li><a href="{% url 'service' shop.code %}" class="is-fullwidth my-2 arrow" style="width: 90%">{{ shop.name }}</a></li>
             {% endfor %}
         </ul>
     </div>

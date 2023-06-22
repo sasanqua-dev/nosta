@@ -1,0 +1,41 @@
+{% extends 'page_base.html' %}{% load static %}{% block content %}
+<section>
+    <link type="stylesheet" src="{% static 'css/contact.css' %}" />
+    <div class="hero">
+        <div class="hero-body has-text-centered">
+            <p class="title">お問い合わせ</p>
+        </div>
+    </div>
+    <form class="Form" action="{% url 'top:contact' %}" method="POST">
+        {% csrf_token %}
+        <div class="Form-Item">
+            <p class="Form-Item-Label"><span class="Form-Item-Label-Required">必須</span>会社/団体名</p>
+            <input type="text" class="Form-Item-Input input" name="org" placeholder="例）株式会社NOSTA" />
+        </div>
+        <div class="Form-Item">
+            <p class="Form-Item-Label"><span class="Form-Item-Label-Required">必須</span>氏名</p>
+            <input type="text" class="Form-Item-Input input" name="name" placeholder="例）野須 太一" />
+        </div>
+        <div class="Form-Item">
+            <p class="Form-Item-Label"><span class="Form-Item-Label-Required">必須</span>メールアドレス</p>
+            <input type="email" class="Form-Item-Input input" name="email" placeholder="例）example@gmail.com" />
+        </div>
+        <div class="Form-Item">
+            <p class="Form-Item-Label isMsg"><span class="Form-Item-Label-Required">必須</span>お問い合わせ内容</p>
+            <textarea class="Form-Item-Textarea input" name="content"></textarea>
+        </div>
+        <div class="Form-Item" style="display: inline-block">
+            <a href="{% url 'top:privacy' %}">こちら</a>をお読みになり、NOSTA運営チームプライバシーポリシー(個人情報保護方針)についてご理解の上送信してください。
+            送信内容は自動返信メールでお届けします。 メールが届かない場合は以下の内容をご確認の上、再度お問い合わせください。
+            <br />
+            <ul>
+                <li>・ご入力いただいたメールアドレスが間違っていないか</li>
+                <li>・メール受信制限機能で@nosta.prasic-plus.comもしくは@gmail.com制限していないか</li>
+            </ul>
+        </div>
+        <div class="has-text-centered">
+            <input type="submit" class="button my-6 is-outlined is-info has-text-centered" value="上記のことに同意して送信する" />
+        </div>
+    </form>
+</section>
+{% endblock %}

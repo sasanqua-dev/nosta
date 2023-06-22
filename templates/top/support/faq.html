@@ -1,0 +1,128 @@
+{% extends 'page_base.html' %}{% load static %}{% block content %}
+<section>
+    <div class="hero">
+        <div class="hero-body has-text-centered">
+            <p class="title">FAQ</p>
+            <p>解決しない場合はお問い合わせください</p>
+            <a class="button is-info is-light mt-3" href="{% url 'top:contact' %}">お問い合わせ</a>
+        </div>
+    </div>
+</section>
+<section class="columns p-4 m-0">
+    <!-- ここにサイドバーの部品を配置します。 -->
+    <div class="submenu column is-4">
+        <aside class="box menu">
+            <p class="menu-label">一般</p>
+            <ul class="menu-list">
+                <li><a href="#General">NOSTA全般</a></li>
+            </ul>
+            <p class="menu-label">サービス</p>
+            <ul class="menu-list">
+                <li>
+                    <a href="#Ticket">TICKET</a>
+                </li>
+                <li>
+                    <a href="#Shop">SHOP</a>
+                </li>
+                <li>
+                    <a href="#Regi">REGI</a>
+                </li>
+                <li>
+                    <a href="#Market">MARKET</a>
+                </li>
+            </ul>
+            <p class="menu-label">その他</p>
+            <ul class="menu-list">
+                <li><a href="#Other">その他</a></li>
+            </ul>
+        </aside>
+    </div>
+    <div class="column">
+        <!-- General -->
+        <div class="container m-3" id="General">
+            {% for content in general %}
+            <div class="container box">
+                <h1 class="is-size-5">Q. {{ content.title }}</h1>
+                <p class="m-3">{{ content.question }}</p>
+                <hr />
+                <h3><strong>回答</strong></h3>
+                <p>{{ content.answer }}</p>
+                <hr />
+                <p>作成日: {{ content.created_at | date:"y/n/j" }}</p>
+                <p>更新日: {{ content.updated_at | date:"y/n/j" }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="container" id="Ticket">
+            {% for content in ticket %}
+            <div class="container box">
+                <h1 class="is-size-5">Q. {{ content.title }}</h1>
+                <p class="m-3">{{ content.question }}</p>
+                <hr />
+                <h3><strong>回答</strong></h3>
+                <p>{{ content.answer }}</p>
+                <hr />
+                <p>作成日: {{ content.created_at | date:"y/n/j" }}</p>
+                <p>更新日: {{ content.updated_at | date:"y/n/j" }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="container" id="Shop">
+            {% for content in shop %}
+            <div class="container box">
+                <h1 class="is-size-5">Q. {{ content.title }}</h1>
+                <p class="m-3">{{ content.question }}</p>
+                <hr />
+                <h3><strong>回答</strong></h3>
+                <p>{{ content.answer }}</p>
+                <hr />
+                <p>作成日: {{ content.created_at | date:"y/n/j" }}</p>
+                <p>更新日: {{ content.updated_at | date:"y/n/j" }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="container" id="REGI">
+            {% for content in regi %}
+            <div class="container box">
+                <h1 class="is-size-5">Q. {{ content.title }}</h1>
+                <p class="m-3">{{ content.question }}</p>
+                <hr />
+                <h3><strong>回答</strong></h3>
+                <p>{{ content.answer }}</p>
+                <hr />
+                <p>作成日: {{ content.created_at | date:"y/n/j" }}</p>
+                <p>更新日: {{ content.updated_at | date:"y/n/j" }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="container" id="Market">
+            {% for content in market %}
+            <div class="container box">
+                <h1 class="is-size-5">Q. {{ content.title }}</h1>
+                <p class="m-3">{{ content.question }}</p>
+                <hr />
+                <h3><strong>回答</strong></h3>
+                <p>{{ content.answer }}</p>
+                <hr />
+                <p>作成日: {{ content.created_at | date:"y/n/j" }}</p>
+                <p>更新日: {{ content.updated_at | date:"y/n/j" }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="container" id="Other">
+            {% for content in other %}
+            <div class="container box">
+                <h1 class="is-size-5">Q. {{ content.title }}</h1>
+                <p class="m-3">{{ content.question }}</p>
+                <hr />
+                <h3><strong>回答</strong></h3>
+                <p>{{ content.answer }}</p>
+                <hr />
+                <p>作成日: {{ content.created_at | date:"y/n/j" }}</p>
+                <p>更新日: {{ content.updated_at | date:"y/n/j" }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

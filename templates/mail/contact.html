@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <title>お問い合わせありがとうございました</title>
+    </head>
+    <body>
+        <h2>NOSTAよりお知らせします</h2>
+        <p>{{ orgname }} {{ username }}様</p>
+        <p>このたびはお問合せいただき、誠にありがとうございました。</p>
+        <p>内容を拝見致しまして、折り返しご連絡を致します。</p>
+        <p>その他、何かご不明な点等ございましたら、お気軽にお問合せください。</p>
+        <p>以下はお問い合わせの詳細です:</p>
+        <table>
+            <tr>
+                <td>お名前:</td>
+                <td>{{ name }}</td>
+            </tr>
+            <tr>
+                <td>メールアドレス:</td>
+                <td>{{ mail }}</td>
+            </tr>
+            <tr>
+                <td>お問い合わせ内容:</td>
+                <td>{{ content }}</td>
+            </tr>
+        </table>
+
+        <p>このメールアドレスは送信専用です。</p>
+    </body>
+</html>

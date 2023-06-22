@@ -25,3 +25,15 @@ class CellAdmin(admin.ModelAdmin):
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(CStype)
+class CstypeAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(UserControl)
+class UserControlAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(FAQ)
+class FAQAdmin(admin.ModelAdmin):
+    pass
