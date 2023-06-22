@@ -41,7 +41,6 @@ def user_register(request):
             username=username,
             email=userid,
             password=password,
-            grade="Free",
             is_active="active"
             )
 
