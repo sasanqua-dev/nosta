@@ -37,7 +37,7 @@ def contact(request):
     return HttpResponse("準備中...")
 
 def terms(request):
-    return render(request,'top/support/terms.html')
+    return render(request,'top/support/term.html')
     
 def privacy(request):
     return render(request,'top/support/policy.html')
