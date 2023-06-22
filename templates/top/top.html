@@ -53,18 +53,18 @@
             {% endfor %}
         </div>
     </div>
-    <div class="container my-2" id="start">
+    <div class="container my-2" id="start" style="height: 10vh;">
         <div class="columns">
             <div class="column m-2">
                 <div class="has-text-centered">
-                    <p class="is-size-6">NOSTA IDをお持ちの方はこちら</p>
+                    <p class="is-size-6"><b>NOSTA IDをお持ちの方はこちら</b></p>
                     <hr />
                     <a href="{% url 'login' %}" class="button is-info is-light">NOSTA IDでログイン</a>
                 </div>
             </div>
             <div class="column m-2">
                 <div class="has-text-centered">
-                    <p class="is-size-6">NOSTA IDをの新規登録はこちら</p>
+                    <p class="is-size-6"><b>NOSTA IDをの新規登録はこちら</b></p>
                     <hr />
                     <a href="{% url 'login' %}" class="button is-info is-light">NOSTA IDを新規登録</a>
                 </div>
@@ -72,21 +72,27 @@
         </div>
     </div>
     <div class="container my-4" id="about">
-        <div class="columns">
-            <div class="column is-6 m-2" style="background-color: lightgray;">
+        <div class="columns m-2">
+            <div class="column is-3">
                 <div  style="display: block; margin: auto;">
                 <img src="{% static 'image/logo_ticket.png' %}" style="max-height: 10rem;">
                 </div>
-                <h3>整理券の最適解</h3>
+            </div>
+            <div class="column is-9">
+                <h3><strong>整理券の最適解</strong></h3>
                 <p>シンプルなUIで簡単操作</p>
                 <p>店舗ディスプレイ向けの画面やダッシュボードも完備</p>
                 <a class="button is-light is-gray">さらに詳しく</a>
             </div>
-            <div class="column is-6 m-2" style="background-color: lightgray;">
+        </div>
+        <div class="columns m-2">
+            <div class="column is-3">
                 <div  style="display: block; margin: auto;">
                 <img src="{% static 'image/logo_shop.png' %}" style="max-height: 10rem;">
                 </div>
-                <h3>NOSTAの司令塔</h3>
+            </div>
+            <div class="column is-9">
+                <h3><strong>NOSTAの司令塔</strong></h3>
                 <p>NOSTAのサービスを１つの画面で管理可能</p>
                 <p>リアルタイムの確認から分析まで</p>
                 <p class="help">リリース前の機能も含みます</p>
