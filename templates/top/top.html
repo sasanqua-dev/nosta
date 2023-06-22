@@ -10,7 +10,7 @@
         </div>
 
         <!-- Hero footer: will stick at the bottom -->
-        <div class="hero-foot">
+        <div class="hero-foot is-hidden-mobile">
             <nav class="tabs is-boxed is-fullwidth">
                 <div class="container">
                     <ul>
@@ -186,7 +186,22 @@
             </div>
         </div>
     </div>
-    <div class="container my-4" id="case-study">導入事例</div>
+    <div class="container my-4" id="case-study">
+        <h3 class="has-text-centered my-6" style="font-size: min(8vw,3rem);">導入事例</h3>
+        <div class="slick carousel">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+        </div>
+        <script>
+            $(document).ready(() => {
+                $(".slick").slick({
+                    infinite: true, // ループの有効化
+                    dots: true, // ドットインジケーターの表示
+                });
+            });
+        </script>
+    </div>
     <div class="container my-4" id="support">サポート</div>
 </section>
 {% endblock %}
