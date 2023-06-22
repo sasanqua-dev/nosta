@@ -110,25 +110,23 @@
                 <ul>
                     <li class="my-2"><strong>利用者の方へ</strong></li>
                     <li class="my-2"><a href="{% url 'top:home' %}">サービスホーム</a></li>
-                    <li class="my-2"><a href="">ヘルプ</a></li>
+                    <li class="my-2"><a href="{% url 'top:guide' %}">ユーザーガイド</a></li>
                     <li class="my-4"></li>
-                    <li class="my-2"><strong>開発者の方へ</strong></li>
-                    <li class="my-2"><a href="">API申請について</a></li>
                 </ul>
             </div>
             <div class="column is-2">
                 <ul>
                     <li class="my-2"><strong>サービス</strong></li>
-                    <li class="my-2"><a href="">利用規約</a></li>
-                    <li class="my-2"><a href="">プライバシーポリシー</a></li>
-                    <li class="my-2"><a href="">ABOUT</a></li>
+                    <li class="my-2"><a href="{% url 'top:terms' %}">利用規約</a></li>
+                    <li class="my-2"><a href="{% url 'top:privacy' %}">プライバシーポリシー</a></li>
+                    <li class="my-2"><a href="{% url 'top:about' %}">ABOUT</a></li>
                 </ul>
             </div>
             <div class="column is-2">
                 <ul>
                     <li class="my-2"><strong>サポート</strong></li>
-                    <li class="my-2"><a href="">FAQ</a></li>
-                    <li class="my-2"><a href="">お問い合わせ</a></li>
+                    <li class="my-2"><a href="{% url 'top:faq' %}">FAQ</a></li>
+                    <li class="my-2"><a href="{% url 'top:contact' %}">お問い合わせ</a></li>
                 </ul>
             </div>
             <div class="column is-2">

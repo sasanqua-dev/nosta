@@ -11,3 +11,33 @@ def home(request):
         'news_important':news_important,
         'news_info':news_info
     })
+
+def s_ticket(request):
+    return HttpResponse("準備中...")
+
+def s_shop(request):
+    return HttpResponse("準備中...")
+
+def s_regi(request):
+    return HttpResponse("準備中...")
+
+def s_market(request):
+    return HttpResponse("準備中...")
+
+def guide(request):
+    return HttpResponse("準備中...")
+
+def faq(request):
+    return HttpResponse("準備中...")
+
+def about(request):
+    return HttpResponse("準備中...")
+
+def contact(request):
+    return HttpResponse("準備中...")
+
+def terms(request):
+    return render(request,'top/support/terms.html')
+    
+def policy(request):
+    return render(request,'top/support/policy.html')
