@@ -39,5 +39,5 @@ def contact(request):
 def terms(request):
     return render(request,'top/support/terms.html')
     
-def policy(request):
+def privacy(request):
     return render(request,'top/support/policy.html')
