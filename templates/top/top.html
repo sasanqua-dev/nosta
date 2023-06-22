@@ -192,7 +192,7 @@
             <br />
             <div class="is-size-4">手軽に始めるデジタル化</div>
             <hr />
-            <div class="columns has-text-centered">
+            <div class="columns has-text-centered is-hidden-mobile">
                 <div class="column"><p>店舗のタブレットでお客様がチケット発券</p></div>
                 <div class="column">
                     <p>お客様自身のスマートフォンから<br />呼び出し中の番号を確認</p>
@@ -202,11 +202,21 @@
                 </div>
                 <div class="column"><p>お呼び出し</p></div>
             </div>
-            <div class="columns">
+            <div class="columns is-hidden-mobile">
                 <div class="column"><img src="{% static 'image/top/ticket/tablet.png' %}" /></div>
                 <div class="column"><img src="{% static 'image/top/ticket/smartphone.png' %}" /></div>
                 <div class="column"><img src="{% static 'image/top/ticket/monitor.png' %}" /></div>
                 <div class="column"><img src="{% static 'image/top/ticket/people.png' %}" /></div>
+            </div>
+            <div class="columns has-text-centered is-hidden-tablet">
+                <div class="column"><p>店舗のタブレットでお客様がチケット発券</p><hr><img src="{% static 'image/top/ticket/tablet.png' %}" /></div>
+                <div class="column">
+                    <p>お客様自身のスマートフォンから<br />呼び出し中の番号を確認<hr><img src="{% static 'image/top/ticket/smartphone.png' %}" /></p>
+                </div>
+                <div class="column">
+                    <p>番号が近くなったら<br />店舗のディスプレイで<hr><img src="{% static 'image/top/ticket/monitor.png' %}" /></p>
+                </div>
+                <div class="column"><p>お呼び出し</p><hr><img src="{% static 'image/top/ticket/people.png' %}" /></div>
             </div>
         </div>
         <div class="container box mx-3">
@@ -214,7 +224,7 @@
             <br />
             <div class="is-size-4">すべてをNOSTAで</div>
             <hr />
-            <div class="columns has-text-centered">
+            <div class="columns has-text-centered is-hidden-mobile">
                 <div class="column"><p>NOSTA TICKETで整理券を発券</p></div>
                 <div class="column">
                     <p>NOSTA REGIでお会計</p>
@@ -224,11 +234,21 @@
                 </div>
                 <div class="column"><p>NOSTA SHOPで商品や顧客の分析</p></div>
             </div>
-            <div class="columns">
+            <div class="columns is-hidden-mobile">
                 <div class="column"><img src="{% static 'image/top/ticket/tablet.png' %}" /></div>
                 <div class="column"><img src="{% static 'image/top/ticket/regi.png' %}" /></div>
                 <div class="column"><img src="{% static 'image/top/ticket/pc_with_people.png' %}" /></div>
                 <div class="column"><img src="{% static 'image/top/ticket/analytics.png' %}" /></div>
+            </div>
+            <div class="columns has-text-centered  is-hidden-tablet">
+                <div class="column"><p>NOSTA TICKETで整理券を発券</p><hr><img src="{% static 'image/top/ticket/tablet.png' %}" /></div>
+                <div class="column">
+                    <p>NOSTA REGIでお会計</p><hr><div class="column"><img src="{% static 'image/top/ticket/regi.png' %}" />
+                </div>
+                <div class="column">
+                    <p>NOSTA SHOPでリアルタイムでチケットや販売状況を確認</p><hr><img src="{% static 'image/top/ticket/pc_with_people.png' %}" />
+                </div>
+                <div class="column"><p>NOSTA SHOPで商品や顧客の分析</p><hr><img src="{% static 'image/top/ticket/analytics.png' %}" /></div>
             </div>
         </div>
     </div>
