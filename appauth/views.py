@@ -46,7 +46,7 @@ def user_register(request):
 
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
-        return redirect('shop:home')
+        return redirect('ticket:home')
 
     else:
         return render(request, 'auth/register.html')
