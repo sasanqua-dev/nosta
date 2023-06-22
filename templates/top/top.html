@@ -37,24 +37,24 @@
             </nav>
         </div>
     </div>
-    <div class="container my-2" id="start" style="min-height: 200px;background-color: #00517c; color: azure;vertical-align: middle;">
-        <h1 class="has-text-centered is-size-1">NOSTAをはじめよう</h1>
+    <div class="container my-2" id="start" style="min-height: 200px;background-color: #00517c; color: azure;vertical-align: middle;vertical-align: middle;">
+        <h1 class="has-text-centered is-size-1 p-6">NOSTAをはじめよう</h1>
         <div class="columns">
             <div class="column m-2">
                 <div class="has-text-centered">
                     <p class="is-size-6"><b>NOSTA IDをお持ちの方はこちら</b></p>
-                    <a href="{% url 'login' %}" class="button is-gray is-light m-4">NOSTA IDでログイン</a>
+                    <a href="{% url 'login' %}" class="button is-info is-light m-4">NOSTA IDでログイン</a>
                 </div>
             </div>
             <div class="column m-2">
                 <div class="has-text-centered">
                     <p class="is-size-6"><b>NOSTA IDをの新規登録はこちら</b></p>
-                    <a href="{% url 'login' %}" class="button is-gray is-light m-4">NOSTA IDを新規登録</a>
+                    <a href="{% url 'login' %}" class="button is-info is-light m-4">NOSTA IDを新規登録</a>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container mt-4" id="news">
+    <div class="container mt-6" id="news">
         <div class="container box p-4" style="min-height: 20vh">
             <strong class="m-2" style="color: #00517c">重要なおしらせ</strong>
             {% for content in news_important %}
@@ -78,9 +78,11 @@
                 </div>
             </div>
             <div class="column is-9">
-                <h3><strong>整理券の最適解</strong></h3>
+                <h3 class="is-size-3"><strong>整理券の最適解</strong></h3>
+                <hr>
                 <p>シンプルなUIで簡単操作</p>
                 <p>店舗ディスプレイ向けの画面やダッシュボードも完備</p>
+                <div class="mt-2"></div>
                 <a class="button is-light is-gray">さらに詳しく</a>
             </div>
         </div>
@@ -91,26 +93,40 @@
                 </div>
             </div>
             <div class="column is-9">
-                <h3><strong>NOSTAの司令塔</strong></h3>
+                <h3><strong class="is-size-3">店舗を包み込む</strong></h3>
+                <hr>
                 <p>NOSTAのサービスを１つの画面で管理可能</p>
                 <p>リアルタイムの確認から分析まで</p>
                 <p class="help">リリース前の機能も含みます</p>
+                <div class="mt-2">
                 <a class="button is-light is-gray">さらに詳しく</a>
             </div>
         </div>
-        <div class="columns">
-            <div class="column is-6 m-2" style="background-color: lightgray;">
+        <div class="columns m-2">
+            <div class="column is-3">
                 <div  style="display: block; margin: auto;">
                 <img src="{% static 'image/logo_regi.png' %}" style="max-height: 10rem;">
                 </div>
-                <h3>近日提供予定</h3>
+            </div>
+            <div class="column is-9">
+                <h3><strong class="is-size-3">会計から在庫管理まで</strong></h3>
+                <hr>
+                <p>近日提供予定</p>
+                <div class="mt-2">
                 <a class="button is-light is-gray">さらに詳しく</a>
             </div>
-            <div class="column is-6 m-2" style="background-color: lightgray;">
+        </div>
+        <div class="columns m-2">
+            <div class="column is-3">
                 <div  style="display: block; margin: auto;">
                 <img src="{% static 'image/logo_market.png' %}" style="max-height: 10rem;">
+                </div>
             </div>
-                <h3>近日提供予定</h3>
+            <div class="column is-9">
+                <h3><strong class="is-size-3">オンラインでも自分のお店を</strong></h3>
+                <hr>
+                <p>近日提供予定</p>
+                <div class="mt-2">
                 <a class="button is-light is-gray">さらに詳しく</a>
             </div>
         </div>
