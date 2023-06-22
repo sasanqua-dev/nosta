@@ -15,9 +15,6 @@
                 <div class="container">
                     <ul>
                         <li>
-                            <a href="#news">お知らせ</a>
-                        </li>
-                        <li>
                             <a href="#start">スタート</a>
                         </li>
                         <li>
@@ -25,9 +22,6 @@
                         </li>
                         <li>
                             <a href="#model-case">活用法</a>
-                        </li>
-                        <li>
-                            <a href="#case-study">導入事例</a>
                         </li>
                         <li>
                             <a href="#support">サポート</a>
@@ -186,22 +180,17 @@
             </div>
         </div>
     </div>
-    <div class="container my-4" id="case-study">
-        <h3 class="has-text-centered my-6" style="font-size: min(8vw,3rem);">導入事例</h3>
-        <div class="slick carousel">
-            <div>1</div>
-            <div>2</div>
-            <div>3</div>
+    <div class="container my-4" id="support">
+        <div class="box">
+            <div class="has-text-centered" style="font-size: min(5vw,1.5rem);">
+                サポート
+            </div>
+            <hr>
+            <p class="is-size-6">導入の際の質問やご利用中の疑問まで<b>24時間365日</b><c style="font-size: 10px;">※１</c>>サポート</p>
+            <p class="help">お問い合わせ時期や送信内容によりお時間をいただく場合がございます</p>
+            <div class="mt-3"></div>
+            <a class="button is-light is-info">ご相談はこちら</a>
         </div>
-        <script>
-            $(document).ready(() => {
-                $(".slick").slick({
-                    infinite: true, // ループの有効化
-                    dots: true, // ドットインジケーターの表示
-                });
-            });
-        </script>
     </div>
-    <div class="container my-4" id="support">サポート</div>
 </section>
 {% endblock %}
