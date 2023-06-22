@@ -52,32 +52,18 @@
             <hr />
             {% endfor %}
         </div>
-        <div class="container box p-4" style="min-height: 20vh">
-            <strong class="m-2" style="color: #00517c">おしらせ</strong>
-            {% for content in news_info %}
-            <div class="m-1 columns" style="width: 100%">
-                <a href="" style="color: dimgray; display: inline; width: 100%">
-                    <c class="column is-3" style="display: inline-block">{{ content.created_at }}</c>
-                    <c class="column is-2" style="display: inline-block">{{ content.tag }}</c>
-                    <c class="column is-5" style="display: inline-block">{{ content.title }}</c>
-                    <c class="column is-1" style="display: inline-block"><span class="dli-chevron-right"></span></c>
-                </a>
-            </div>
-            <hr />
-            {% endfor %}
-        </div>
     </div>
-    <div class="container box my-2" id="start">
+    <div class="container my-2" id="start">
         <div class="columns">
             <div class="column m-2">
-                <div class="">
+                <div class="has-text-centered">
                     <p class="is-size-6">NOSTA IDをお持ちの方はこちら</p>
                     <hr />
                     <a href="{% url 'login' %}" class="button is-info is-light">NOSTA IDでログイン</a>
                 </div>
             </div>
             <div class="column m-2">
-                <div class="">
+                <div class="has-text-centered">
                     <p class="is-size-6">NOSTA IDをの新規登録はこちら</p>
                     <hr />
                     <a href="{% url 'login' %}" class="button is-info is-light">NOSTA IDを新規登録</a>
@@ -85,7 +71,41 @@
             </div>
         </div>
     </div>
-    <div class="container my-4" id="about">サービス紹介</div>
+    <div class="container my-4" id="about">
+        <div class="columns">
+            <div class="column is-6 m-2" style="background-color: lightgray;">
+                <img src="{% static 'image/ticket.png' %}">
+                <h4>整理券の最適解</h4>
+                <p>シンプルなUIで簡単操作</p>
+                <p>店舗ディスプレイ向けの画面やダッシュボードも完備</p>
+                <hr>
+                <a class="button is-light is-gray">さらに詳しく</a>
+            </div>
+            <div class="column is-6 m-2" style="background-color: lightgray;">
+                <img src="{% static 'image/shop.png' %}">
+                <h4>NOSTAの司令塔</h4>
+                <p>NOSTAのサービスを１つの画面で管理可能</p>
+                <p>リアルタイムの確認から分析まで</p>
+                <p class="help">リリース前の機能も含みます</p>
+                <hr>
+                <a class="button is-light is-gray">さらに詳しく</a>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-6 m-2" style="background-color: lightgray;">
+                <img src="{% static 'image/regi.png' %}">
+                <h4>近日提供予定</h4>
+                <hr>
+                <a class="button is-light is-gray">さらに詳しく</a>
+            </div>
+            <div class="column is-6 m-2" style="background-color: lightgray;">
+                <img src="{% static 'image/market.png' %}">
+                <h4>近日提供予定</h4>
+                <hr>
+                <a class="button is-light is-gray">さらに詳しく</a>
+            </div>
+        </div>
+    </div>
     <div class="container my-4" id="model-case">活用法</div>
     <div class="container my-4" id="case-study">導入事例</div>
     <div class="container my-4" id="support">サポート</div>
