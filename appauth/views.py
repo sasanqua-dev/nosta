@@ -41,7 +41,7 @@ def user_register(request):
             username=username,
             email=userid,
             password=password,
-            is_active="active"
+            is_active="True"
             )
 
         user.backend = 'django.contrib.auth.backends.ModelBackend'
