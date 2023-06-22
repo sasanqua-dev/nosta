@@ -24,8 +24,6 @@ def user_register(request):
         userid = request.POST['userid']
         username = request.POST['username']
         password = request.POST['password']
-        firstname = request.POST['firstname']
-        lastname = request.POST['lastname']
         password2 = request.POST['password2']
         if User.objects.filter(email = userid).count() > 0:
             error_message = "このメールアドレスはすでに登録されています(E002)"
