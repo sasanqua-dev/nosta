@@ -33,46 +33,69 @@
                 <a class="navbar-item is-size-2 pt-1 pr-6" style="font-family: 'Noto Sans JP', sans-serif; color: #00517c" href="{% url 'top:home' %}"
                     ><img src="{% static 'image/long_logo.png' %}" style="max-height: 3.75rem" alt="ロゴ"
                 /></a>
-                <div class="navbar-item m-2">
-                    <a style="color: dimgray">TOP</a>
-                </div>
-                <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
-                    <a class="navbar-link" href="https://bulma.io/documentation/overview/start/" style="color: dimgray"> TICKET </a>
-                    <div class="navbar-dropdown is-boxed">
-                        <a class="navbar-item" href="" style="color: dimgray"> サービス </a>
-                        <a class="navbar-item" href="" style="color: dimgray"> ユーザーガイド </a>
-                        <a class="navbar-item" href="" style="color: dimgray"> サポート </a>
-                    </div>
-                </div>
-                <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
-                    <a class="navbar-link" href="https://bulma.io/documentation/overview/start/" style="color: dimgray"> REGI </a>
-                    <div class="navbar-dropdown is-boxed">
-                        <a class="navbar-item" href="" style="color: dimgray"> 近日リリース予定 </a>
-                    </div>
-                </div>
-                <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
-                    <a class="navbar-link" href="https://bulma.io/documentation/overview/start/" style="color: dimgray"> SHOP </a>
-                    <div class="navbar-dropdown is-boxed">
-                        <a class="navbar-item" href="" style="color: dimgray"> 近日リリース予定 </a>
-                    </div>
-                </div>
-                <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
-                    <a class="navbar-link" href="https://bulma.io/documentation/overview/start/" style="color: dimgray"> MARKET </a>
-                    <div class="navbar-dropdown is-boxed">
-                        <a class="navbar-item" href="" style="color: dimgray"> 近日リリース予定 </a>
-                    </div>
-                </div>
-                <div class="navbar-item m-2">
-                    <a style="color: dimgray">サポート</a>
-                </div>
-                
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="nav-menu">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
             </div>
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <a href="{% url 'login' %}" class="button is-light is-info">NOSTA IDでログイン</a>
+            <div class="navbar-munu" id="nav-menu">
+                <div class="navbar-start">
+                    <div class="navbar-item m-2">
+                        <a style="color: dimgray">TOP</a>
+                    </div>
+                    <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
+                        <a class="navbar-link" href="https://bulma.io/documentation/overview/start/" style="color: dimgray"> TICKET </a>
+                        <div class="navbar-dropdown is-boxed">
+                            <a class="navbar-item" href="" style="color: dimgray"> サービス </a>
+                            <a class="navbar-item" href="" style="color: dimgray"> ユーザーガイド </a>
+                            <a class="navbar-item" href="" style="color: dimgray"> サポート </a>
+                        </div>
+                    </div>
+                    <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
+                        <a class="navbar-link" href="https://bulma.io/documentation/overview/start/" style="color: dimgray"> REGI </a>
+                        <div class="navbar-dropdown is-boxed">
+                            <a class="navbar-item" href="" style="color: dimgray"> 近日リリース予定 </a>
+                        </div>
+                    </div>
+                    <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
+                        <a class="navbar-link" href="https://bulma.io/documentation/overview/start/" style="color: dimgray"> SHOP </a>
+                        <div class="navbar-dropdown is-boxed">
+                            <a class="navbar-item" href="" style="color: dimgray"> 近日リリース予定 </a>
+                        </div>
+                    </div>
+                    <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
+                        <a class="navbar-link" href="https://bulma.io/documentation/overview/start/" style="color: dimgray"> MARKET </a>
+                        <div class="navbar-dropdown is-boxed">
+                            <a class="navbar-item" href="" style="color: dimgray"> 近日リリース予定 </a>
+                        </div>
+                    </div>
+                    <div class="navbar-item m-2">
+                        <a style="color: dimgray">サポート</a>
+                    </div>
+                </div>
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <a href="{% url 'login' %}" class="button is-light is-info">NOSTA IDでログイン</a>
+                    </div>
                 </div>
             </div>
         </nav>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const $navbarBurgers = document.querySelectorAll('.navbar-burger');
+                if ($navbarBurgers.length > 0) {
+                    $navbarBurgers.forEach( el => {
+                        el.addEventListener('click', () => {
+                            const target = el.dataset.target;
+                            const $target = document.getElementById(target);
+                            el.classList.toggle('is-active');
+                            $target.classList.toggle('is-active');
+                        });
+                    });
+                }
+            });
+        </script>
     </head>
     <body>
         {% block content %}{% endblock %}
@@ -83,8 +106,7 @@
             <div class="column is-2">
                 <a href=""><img src="{% static 'image/long_logo.png' %}" style="max-height: 4.75rem" /></a>
                 <hr />
-                <p style="font-size: 12px">チケットや行列のストレスから</p>
-                <p class="ml-6" style="font-size: 12px">解放されるミライをめざして</p>
+                <p style="font-size: 12px">入店から退店までのフルサポート</p>
             </div>
             <div class="column is-1"></div>
             <div class="column is-2">
