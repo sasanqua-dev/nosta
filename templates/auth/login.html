@@ -5,6 +5,7 @@
     <input type="password" name="password" name="password" class="input my-2" placeholder="パスワード" required />
     <p class="help has-text-danger">{{ error }}</p>
     <input type="submit" class="button is-rounded is-fullwidth my-4 is-info is-light" value="ログイン" />
+    <p><a href="{% url 'password_reset' %}">パスワードを忘れた場合はこちら</a></p>
 </form>
 <hr class="hr-text" data-content="OR" style="background-color: white" />
 <div class="px-6 mb-4">
