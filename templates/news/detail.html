@@ -2,7 +2,7 @@
 <div class="container box mt-6" style="height: 80vh">
     <p class="is-size-3 mt-5">{{ news.title }}</p>
     <p>{{ news.created_at | date:"Y/m/d"}}</p>
-    <hr color="#00517c" style="background-color: #00517c" />
+    <hr style="background-color: #00517c" />
     <p class="is-size-6">{{ news.message | linebreaksbr }}</p>
 </div>
 {% endblock %}
