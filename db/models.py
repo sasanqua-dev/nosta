@@ -30,7 +30,7 @@ class Shop(models.Model):
     is_active = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.code  # モデルの文字列表現
+        return self.name
     
 class Ticket(models.Model):
     # フィールドの定義
@@ -85,6 +85,8 @@ class News(models.Model):
     message = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.title
 
 class CStype(models.Model):
     shop = models.ForeignKey(Shop, on_delete=models.SET_NULL,null=True)
@@ -112,6 +114,8 @@ class FAQ(models.Model):
     answer = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.title
 
 class Contact(models.Model):
     orgname = models.CharField(max_length=100)
@@ -121,3 +125,5 @@ class Contact(models.Model):
     status = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.usrname
