@@ -10,14 +10,13 @@ from django.urls import reverse_lazy
 # Create your views here.
 def user_login(request):
     if request.method == 'POST':
-        next_url = request.GET['next']
         userid = request.POST['userid']
         password = request.POST['password']
         user = authenticate(request, email=userid, password=password)
         if user is not None:
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
-            return redirect(next_url) # ログイン後にリダイレクトするURLを指定します
+            return redirect('home') # ログイン後にリダイレクトするURLを指定します
         else:
             # ログイン失敗時の処理
             return render(request, 'auth/login.html', {'error': 'ユーザーIDまたはパスワードが間違っています(E001)'})
