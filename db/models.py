@@ -10,10 +10,10 @@ class Shop(models.Model):
     grade = models.CharField(max_length=100,default="Lite")
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=100)
-    description = models.CharField(max_length=1000)
+    description = models.TextField()
 
     website = models.CharField(max_length=1000)
-    message = models.CharField(max_length=1000)
+    message = models.URLField()
 
     people_min = models.IntegerField()
     people_max = models.IntegerField()
@@ -39,7 +39,7 @@ class Ticket(models.Model):
 
     people = models.IntegerField()
     cstype = models.CharField(max_length=100)
-    location = models.CharField(max_length=1000)
+    location = models.CharField(max_length=100)
 
     status = models.CharField(max_length=50)
     day = models.CharField(max_length=50)
@@ -58,7 +58,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     price_sell = models.IntegerField()
     price_buy = models.IntegerField()
-    description = models.CharField(max_length=1000)
+    description = models.TextField()
     Images = models.ImageField(upload_to='')
     is_active = models.CharField(max_length=50)
 
@@ -82,26 +82,42 @@ class News(models.Model):
     title = models.CharField(max_length=100)
     tag = models.CharField(max_length=100)
     channel = models.CharField(max_length=100)
-    message = models.CharField(max_length=2000)
+    message = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
 class CStype(models.Model):
     shop = models.ForeignKey(Shop, on_delete=models.SET_NULL,null=True)
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
+    description = models.TextField()
 
 class UserControl(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
     shopconsole = models.CharField(max_length=50,null=True)
     ticket = models.CharField(max_length=50,null=True)
     market = models.CharField(max_length=50,null=True)
+    
+class UserAdmin(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+    permission = models.CharField(max_length=50,null=True)
+    department = models.CharField(max_length=50,null=True)
+    team = models.CharField(max_length=50,null=True)
+    is_active = models.CharField(max_length=50,null=True)
 
 class FAQ(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
     category = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
-    question = models.CharField(max_length=5000)
-    answer = models.CharField(max_length=5000)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    question = models.TextField()
+    answer = models.TextField()
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+class Contact(models.Model):
+    orgname = models.CharField(max_length=100)
+    usrname = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    content = models.TextField()
+    status = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
