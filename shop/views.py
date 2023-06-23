@@ -33,7 +33,7 @@ def register(request):
             sic=sic,
             category=category
         )
-        return redirect('home',shop.code)
+        return redirect('service',shop.code)
 
     else:
         return render(request, 'shop/register.html')
