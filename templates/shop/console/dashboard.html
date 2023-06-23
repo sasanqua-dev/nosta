@@ -43,7 +43,7 @@
                 <strong class="m-2" style="color: #00517c">INFO</strong>
                 {% for content in news %}
                 <div class="m-1 columns" style="width: 100%">
-                    <a href="" style="color: dimgray; display: inline; width: 100%">
+                    <a href="{% url 'news:detail' content.id %}" style="color: dimgray; display: inline; width: 100%">
                         <c class="column is-3" style="display: inline-block">{{ content.created_at }}</c>
                         <c class="column is-2" style="display: inline-block">{{ content.tag }}</c>
                         <c class="column is-5" style="display: inline-block">{{ content.title }}</c>

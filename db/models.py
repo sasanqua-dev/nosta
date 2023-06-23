@@ -83,8 +83,8 @@ class News(models.Model):
     tag = models.CharField(max_length=100)
     channel = models.CharField(max_length=100)
     message = models.CharField(max_length=2000)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
 class CStype(models.Model):
     shop = models.ForeignKey(Shop, on_delete=models.SET_NULL,null=True)
