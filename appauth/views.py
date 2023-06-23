@@ -50,7 +50,7 @@ def user_register(request):
 
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
-        return redirect('service')
+        return redirect('home')
 
     else:
         return render(request, 'auth/register.html')
