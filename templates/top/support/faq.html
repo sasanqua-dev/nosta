@@ -43,10 +43,10 @@
             {% for content in general %}
             <div class="container box">
                 <h1 class="is-size-5">Q. {{ content.title }}</h1>
-                <p class="m-3">{{ content.question }}</p>
+                <p class="m-3">{{ content.question | linebreaksbr }}</p>
                 <hr />
                 <h3><strong>回答</strong></h3>
-                <p>{{ content.answer }}</p>
+                <p>{{ content.answer | linebreaksbr }}</p>
                 <hr />
                 <p>作成日: {{ content.created_at | date:"y/n/j" }}</p>
                 <p>更新日: {{ content.updated_at | date:"y/n/j" }}</p>
@@ -57,10 +57,10 @@
             {% for content in ticket %}
             <div class="container box">
                 <h1 class="is-size-5">Q. {{ content.title }}</h1>
-                <p class="m-3">{{ content.question }}</p>
+                <p class="m-3">{{ content.question | linebreaksbr }}</p>
                 <hr />
                 <h3><strong>回答</strong></h3>
-                <p>{{ content.answer }}</p>
+                <p>{{ content.answer | linebreaksbr }}</p>
                 <hr />
                 <p>作成日: {{ content.created_at | date:"y/n/j" }}</p>
                 <p>更新日: {{ content.updated_at | date:"y/n/j" }}</p>
@@ -71,10 +71,10 @@
             {% for content in shop %}
             <div class="container box">
                 <h1 class="is-size-5">Q. {{ content.title }}</h1>
-                <p class="m-3">{{ content.question }}</p>
+                <p class="m-3">{{ content.question | linebreaksbr}}</p>
                 <hr />
                 <h3><strong>回答</strong></h3>
-                <p>{{ content.answer }}</p>
+                <p>{{ content.answer | linebreaksbr }}</p>
                 <hr />
                 <p>作成日: {{ content.created_at | date:"y/n/j" }}</p>
                 <p>更新日: {{ content.updated_at | date:"y/n/j" }}</p>
@@ -85,10 +85,10 @@
             {% for content in regi %}
             <div class="container box">
                 <h1 class="is-size-5">Q. {{ content.title }}</h1>
-                <p class="m-3">{{ content.question }}</p>
+                <p class="m-3">{{ content.question | linebreaksbr }}</p>
                 <hr />
                 <h3><strong>回答</strong></h3>
-                <p>{{ content.answer }}</p>
+                <p>{{ content.answer | linebreaksbr }}</p>
                 <hr />
                 <p>作成日: {{ content.created_at | date:"y/n/j" }}</p>
                 <p>更新日: {{ content.updated_at | date:"y/n/j" }}</p>
@@ -99,10 +99,10 @@
             {% for content in market %}
             <div class="container box">
                 <h1 class="is-size-5">Q. {{ content.title }}</h1>
-                <p class="m-3">{{ content.question }}</p>
+                <p class="m-3">{{ content.question | linebreaksbr }}</p>
                 <hr />
                 <h3><strong>回答</strong></h3>
-                <p>{{ content.answer }}</p>
+                <p>{{ content.answer | linebreaksbr }}</p>
                 <hr />
                 <p>作成日: {{ content.created_at | date:"y/n/j" }}</p>
                 <p>更新日: {{ content.updated_at | date:"y/n/j" }}</p>
@@ -113,10 +113,10 @@
             {% for content in other %}
             <div class="container box">
                 <h1 class="is-size-5">Q. {{ content.title }}</h1>
-                <p class="m-3">{{ content.question }}</p>
+                <p class="m-3">{{ content.question | linebreaksbr }}</p>
                 <hr />
                 <h3><strong>回答</strong></h3>
-                <p>{{ content.answer }}</p>
+                <p>{{ content.answer | linebreaksbr }}</p>
                 <hr />
                 <p>作成日: {{ content.created_at | date:"y/n/j" }}</p>
                 <p>更新日: {{ content.updated_at | date:"y/n/j" }}</p>
