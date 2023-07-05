@@ -55,29 +55,16 @@
             <div class="navbar-menu" id="nav-menu">
                 <div class="navbar-start">
                     <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
-                        <a class="navbar-link" style="color: dimgray"> TICKET </a>
+                        <a class="navbar-link" style="color: dimgray"> サービス </a>
                         <div class="navbar-dropdown is-boxed">
-                            <a class="navbar-item" href="" style="color: dimgray"> サービス </a>
-                            <a class="navbar-item" href="" style="color: dimgray"> ユーザーガイド </a>
-                            <a class="navbar-item" href="" style="color: dimgray"> サポート </a>
+                            <a class="navbar-item" href="" style="color: dimgray"> Ticket </a>
                         </div>
                     </div>
                     <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
-                        <a class="navbar-link" style="color: dimgray"> REGI </a>
+                        <a class="navbar-link" style="color: dimgray"> ドキュメント </a>
                         <div class="navbar-dropdown is-boxed">
-                            <a class="navbar-item" href="" style="color: dimgray"> 近日リリース予定 </a>
-                        </div>
-                    </div>
-                    <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
-                        <a class="navbar-link" style="color: dimgray"> SHOP </a>
-                        <div class="navbar-dropdown is-boxed">
-                            <a class="navbar-item" href="" style="color: dimgray"> 近日リリース予定 </a>
-                        </div>
-                    </div>
-                    <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
-                        <a class="navbar-link" style="color: dimgray"> MARKET </a>
-                        <div class="navbar-dropdown is-boxed">
-                            <a class="navbar-item" href="" style="color: dimgray"> 近日リリース予定 </a>
+                            <a class="navbar-item" href="{% url 'top:terms' %}" style="color: dimgray"> 利用規約 </a>
+                            <a class="navbar-item" href="{% url 'top:privacy' %}" style="color: dimgray"> プライバシーポリシー </a>
                         </div>
                     </div>
                     <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
@@ -89,12 +76,15 @@
                     </div>
                 </div>
                 <div class="navbar-end">
+                    {% if request.user.is_authenticated %}
                     <div class="navbar-item">
                         <a href="{% url 'home' %}" class="button is-light is-info">アカウントホーム</a>
                     </div>
+                    {% else %}
                     <div class="navbar-item">
                         <a href="{% url 'login' %}" class="button is-light is-info">NOSTA IDでログイン</a>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </nav>
