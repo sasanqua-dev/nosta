@@ -1,37 +1,52 @@
 {% extends 'page_base.html' %}{% load static %}{% block content %}
-<section>
-    <div class="hero">
-        <div class="hero-body has-text-centered">
-            <p class="title">FAQ</p>
-            <p>解決しない場合はお問い合わせください</p>
-            <a class="button is-info is-light mt-3" href="{% url 'top:contact' %}">お問い合わせ</a>
-        </div>
-    </div>
-</section>
-<section class="columns p-4 m-0">
+<section class="columns p-4 m-0" style="min-height: 50vh">
     <!-- ここにサイドバーの部品を配置 -->
-    <div class="submenu column is-4" style="display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+    <div class="submenu column is-4" style="max-width: 300px">
         <aside class="box menu">
+            <section>
+                <div class="">
+                    <div class="has-text-centered">
+                        <p class="title">FAQ</p>
+                        <p>解決しない場合は<br />お問い合わせください</p>
+                        <a class="button is-info is-light mt-3" href="{% url 'top:contact' %}">お問い合わせ</a>
+                    </div>
+                </div>
+            </section>
             <p class="menu-label">一般</p>
             <ul class="menu-list">
+                {% if general.count != 0 %}
                 <li><a href="#General">NOSTA全般</a></li>
+                {% endif %}
             </ul>
             <p class="menu-label">サービス</p>
             <ul class="menu-list">
+                {% if ticket.count != 0 %}
                 <li>
                     <a href="#Ticket">TICKET</a>
                 </li>
+                {% endif %} {% if shop.count != 0 %}
                 <li>
                     <a href="#Shop">SHOP</a>
                 </li>
+                {% endif %} {% if regi.count != 0 %}
+                <li>
+                    <a href="#Regi">REGI</a>
+                </li>
+                {% endif %} {% if market.count != 0 %}
+                <li>
+                    <a href="#Market">MARKET</a>
+                </li>
+                {% endif %}
             </ul>
             <p class="menu-label">その他</p>
+            {% if other.count != 0 %}
             <ul class="menu-list">
                 <li><a href="#Other">その他</a></li>
             </ul>
+            {% endif %}
         </aside>
     </div>
-    <div class="column">
+    <div class="column is-8">
         <!-- General -->
         <div class="container m-3" id="General">
             {% for content in general %}

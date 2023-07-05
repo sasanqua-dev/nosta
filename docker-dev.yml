@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+    nosta_app:
+        build: .
+        command: python3 manage.py runserver 0.0.0.0:8000 --insecure
+        volumes:
+            - .:/code
+        ports:
+            - 8080:8000
+        container_name: nosta_app
