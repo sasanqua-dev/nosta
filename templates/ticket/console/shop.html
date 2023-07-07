@@ -22,152 +22,150 @@
 </nav>
 <div class="columns">
     <div class="column is-10 m-4 mb-6">
-        <h1 id="info" class="m-2"><strong>店舗情報</strong></h1>
-        <p>店舗情報の登録・修正を行います</p>
-        <div class="columns is-multiline my-4">
-            <div class="column is-2 has-text-centered">
-                <label>店舗名</label>
+        <form>
+            <h1 id="info" class="m-2"><strong>店舗情報</strong></h1>
+            <p>店舗情報の登録・修正を行います</p>
+            <div class="columns is-multiline my-4">
+                <div class="column is-2 has-text-centered">
+                    <label>店舗名</label>
+                </div>
+                <div class="column is-5">
+                    <input class="input settingform" placeholder="店舗名" value="{{ shop.name }}" id="shop_name" />
+                </div>
+                <div class="column is-5"></div>
+                <div class="column is-2 has-text-centered">
+                    <label>店舗コード</label>
+                </div>
+                <div class="column is-5">
+                    <input class="input" placeholder="店舗コード" type="text" disabled value="{{ shop.code }}" />
+                    <p class="help has-text-danger">店舗コードは変更できません</p>
+                </div>
+                <div class="column is-5"></div>
             </div>
-            <div class="column is-5">
-                <div class="columns">
-                    <div class="column is-10">
-                        <input class="input" placeholder="店舗名" value="{{ shop.name }}" id="shop_name"/>
+            <h1 id="cs_general" class="m-2"><strong>チケット一般設定</strong></h1>
+            <p>チケットの基本的な内容について設定を行います</p>
+            <div class="columns is-multiline my-4">
+                <div class="column is-2 has-text-centered">
+                    <label>ユーザー種別</label>
+                </div>
+                <div class="column is-5">
+                    <table class="table">
+                        <tbody>
+                            {% for cstype_item in cstype_list %}
+                            <tr>
+                                <td>{{ cstype_item.name }}</td>
+                                <td><a class="cstype_list has-text-danger" data-target="{{ cstype_item.id }}">削除</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="columns">
+                        <div class="column is-10">
+                            <input class="input" placeholder="追加する名前を入力" type="text" id="cstype_new_input" />
+                        </div>
+                        <div class="column is-2"><a class="button is-outlined" id="cstype_new_btn">追加</a></div>
                     </div>
-                    <div class="column is-2"><a class="button is-outlined" id="shop_name_btn">保存</a></div>
+                </div>
+                <div class="column is-5"></div>
+                <div class="column is-2 has-text-centered">
+                    <label>最小人数</label>
+                </div>
+                <div class="column is-5">
+                    <input class="input settingform" type="number" placeholder="最小人数" id="min_number" min="1" value="{{ shop.people_min }}" />
+                </div>
+                <div class="column is-5"></div>
+                <div class="column is-2 has-text-centered">
+                    <label>最大人数</label>
+                </div>
+                <div class="column is-5">
+                    <input class="input settingform" type="number" placeholder="最大人数" id="max_number" min="1" value="{{ shop.people_max }}" />
+                </div>
+                <div class="column is-5"></div>
+            </div>
+            <h1 id="cs_webpage" class="m-2"><strong>WEBページ設定</strong></h1>
+            <p>WEBページについて設定を行います</p>
+            <div class="columns is-multiline my-4">
+                <div class="column is-2 has-text-centered">
+                    <label>メッセージ</label>
+                </div>
+                <div class="column is-5">
+                    <textarea class="input settingform" style="height: 10vh" id="shop_message"></textarea>
+                    <p class="help">ここで入力した内容が呼び出し番号表示ページ内の「店舗からのお知らせ」として表示されます</p>
+                </div>
+                <div class="column is-5"></div>
+                <div class="column is-2 has-text-centered"><label>オンライン発券</label><span class="tag is-link is-light">Beta</span></div>
+                <div class="column is-5">
+                    <p class="help">オンライン上から来店せずにチケットを発券することができるようになります</p>
+                    <p class="help">オンライン発券チケットはチケット一覧でオンラインチケットとして表示されます</p>
+                </div>
+                <div class="column is-5">
+                    <button class="button is-danger settingform" disabled>無効</button>
+                </div>
+                <div class="column is-2 has-text-centered"><label>ユーザー認証</label><span class="tag is-link is-light">Beta</span></div>
+                <div class="column is-5">
+                    <p class="help">同一ユーザーからのオンライン発券を1回に制限します</p>
+                    <p class="help">認証にはメールアドレスを使用します、また発券されたチケットが「呼び出し済み」「スキップ」になった場合は再度発券することが可能です</p>
+                </div>
+                <div class="column is-5">
+                    <button class="button is-danger settingform" disabled>無効</button>
+                </div>
+                <div class="column is-2 has-text-centered">
+                    <label>メール定型文</label>
+                </div>
+                <div class="column is-5">
+                    <textarea class="input settingform" style="height: 10vh" id="email_message"></textarea>
+                    <p class="help">ここで入力した内容がメールを送信する際のテンプレートして表示されます</p>
+                </div>
+                <div class="column is-5"></div>
+            </div>
+            <h1 id="payments" class="m-2"><strong>Payments</strong></h1>
+            <div class="columns is-multiline my-4">
+                <div class="column is-2 has-text-centered">
+                    <label>アカウントステータス</label>
+                </div>
+                <div class="column is-5">
+                    <label>Free</label>
+                    <div class="help">アカウントのアップグレードはユーザーアカウント設定から行うことができます</div>
+                </div>
+                <div class="column is-5">
+                    <div class="is-size-3"><a class="is-light is-link button" href="{% url 'shop:dashboard' shop.code %}">アカウント設定</a></div>
                 </div>
             </div>
-            <div class="column is-5"></div>
-            <div class="column is-2 has-text-centered">
-                <label>店舗コード</label>
-            </div>
-            <div class="column is-5">
-                <div class="columns">
-                    <div class="column is-10">
-                        <input class="input" placeholder="店舗コード" type="text" disabled value="{{ shop.code }}"/>
-                        <p class="help has-text-danger">店舗コードは変更できません</p>
-                    </div>
-                    <div class="column is-2"></div>
-                </div>
-            </div>
-            <div class="column is-5"></div>
-        </div>
-        <h1 id="cs_general" class="m-2"><strong>チケット一般設定</strong></h1>
-        <p>チケットの基本的な内容について設定を行います</p>
-        <div class="columns is-multiline my-4">
-            <div class="column is-2 has-text-centered">
-                <label>ユーザー種別</label>
-            </div>
-            <div class="column is-5">
-                <table class="table">
-                    <tbody>
-                        {% for cstype_item in cstype_list %}
-                        <tr>
-                            <td>{{ cstype_item.name }}</td>
-                            <td><a class="cstype_list has-text-danger" data-target="{{ cstype_item.id }}">削除</a></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <div class="columns">
-                    <div class="column is-10">
-                        <input class="input" placeholder="追加する名前を入力" type="text" id="cstype_new_input"/>
-                    </div>
-                    <div class="column is-2"><a class="button is-outlined" id="cstype_new_btn">追加</a></div>
-                </div>
-            </div>
-            <div class="column is-5"></div>
-            <div class="column is-2 has-text-centered">
-                <label>最小人数</label>
-            </div>
-            <div class="column is-5">
-                <div class="columns">
-                    <div class="column is-10">
-                        <input class="input" type="number" placeholder="最小人数" id="min_number" value="{{ shop.people_min }}"/>
-                    </div>
-                    <div class="column is-2"><a class="button is-outlined"id="min_number_btn">変更</a></div>
-                </div>
-            </div>
-            <div class="column is-5"></div>
-            <div class="column is-2 has-text-centered">
-                <label>最大人数</label>
-            </div>
-            <div class="column is-5">
-                <div class="columns">
-                    <div class="column is-10">
-                        <input class="input" type="number" placeholder="最大人数" id="max_number"  value="{{ shop.people_max }}"/>
-                    </div>
-                    <div class="column is-2"><a class="button is-outlined"id="max_number_btn">変更</a></div>
-                </div>
-            </div>
-            <div class="column is-5"></div>
-        </div>
-        <h1 id="cs_webpage" class="m-2"><strong>WEBページ設定</strong></h1>
-        <p>WEBページについて設定を行います</p>
-        <div class="columns is-multiline my-4">
-            <div class="column is-2 has-text-centered">
-                <label>メッセージ</label>
-            </div>
-            <div class="column is-5">
-                <div class="columns">
-                    <div class="column is-10">
-                        <textarea class="input" style="height: 10vh" id="shop_message"></textarea>
-                        <p class="help">ここで入力した内容が呼び出し番号表示ページ内の「店舗からのお知らせ」として表示されます</p>
-                    </div>
-                    <div class="column is-2"><a class="button is-outlined" id="shop_message_btn">保存</a></div>
-                </div>
-            </div>
-            <div class="column is-5"></div>
-        </div>
-        <h1 id="payments" class="m-2"><strong>Payments</strong></h1>
-        <p class="has-text-danger m-4">現在、このサービスでは有料サービスは提供されていません</p>
-        <p class="has-text-danger m-4">すべての機能が無料でお使い頂けます</p>
-        <div class="is-size-3"><a class="is-light is-link button" href="{% url 'shop:dashboard' shop.id %}">支払いやプランの確認はこちら</a></div>
+        </form>
     </div>
     <script>
-        function ajax_handler(command,value){
+        window.addEventListener('DOMContentLoaded', function () {
+            // チェックボックスを全て取得
+            let settingforms = document.getElementsByClassName('settingform');
+            if (0 < settingforms.length) {
+                for (let item of settingforms) {
+                    item.addEventListener('change', function () {
+                        document.getElementById('savehelper').textContent = '変更が保存されていません';
+                    });
+                }
+            }
+        });
+        function ajax_handler(command, value) {
             $.ajax({
-                    url: "{% url 'ticket:ajax' %}",
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        command: command,
-                        shopID: '{{ shop.id }}',
-                        value: value
-                    },
+                url: "{% url 'ticket:ajax' %}",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    command: command,
+                    shopID: '{{ shop.id }}',
+                    value: value,
+                },
+            })
+                .done(function (response) {
+                    window.alert('変更しました');
                 })
-                    .done(function (response) {
-                        window.alert("変更しました")
-                    })
-                    .fail(function (xhr) {
-                        window.alert("失敗しました(E007)")
-                    })
+                .fail(function (xhr) {
+                    window.alert('失敗しました(E007)');
+                });
         }
-        document.getElementById('shop_name_btn').addEventListener('click', function(){
-            var name = document.getElementById('shop_name').value
-            ajax_handler("shop_rename",name)
-        });
-        document.getElementById('cstype_new_btn').addEventListener('click', function(){
-            var value = document.getElementById('cstype_new_input').value
-            ajax_handler("shop_cstype_add",value)
-        });
-        document.getElementById('min_number_btn').addEventListener('click', function(){
-            var value = document.getElementById('min_number').value
-            ajax_handler("shop_change_min_number",value)
-        });
-        document.getElementById('max_number_btn').addEventListener('click', function(){
-            var value = document.getElementById('max_number').value
-            ajax_handler("shop_change_max_number",value)
-        });
-        document.getElementById('shop_message_btn').addEventListener('click', function(){
-            ajax_handler("shop_message",document.getElementById("shop_message").value)
-        });
-        (document.querySelectorAll('.cstype_list') || []).forEach(($trigger) => {
-            const $target = $trigger.dataset.target;
-            $trigger.addEventListener('click', () => {
-                ajax_handler("shop_cstype_delete",$target)
-                window.onload()
-            });
-        });
+        function testhandler() {
+            document.getElementById('savehelper').textContent = '';
+        }
     </script>
     <div class="column is-2 m-4 mr-4">
         <aside class="menu container box shopsidebar" style="position: fixed; top: 50px; right: 20px">
@@ -184,6 +182,10 @@
             <ul class="menu-list">
                 <li><a href="#payments">Payments</a></li>
             </ul>
+            <div class="my-4">
+                <p class="help is-danger has-text-centered my-2" id="savehelper"></p>
+                <button class="button is-light is-info is-rounded my-2" onclick="testhandler()">変更を保存する</button>
+            </div>
         </aside>
     </div>
 </div>
