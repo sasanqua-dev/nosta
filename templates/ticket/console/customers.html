@@ -38,6 +38,11 @@
                                 <div class="has-text-centered mb-6">
                                     <b class="is-size-4 mx-4" style="width: 100%">呼び出し中</b>
                                 </div>
+                                {% if tickets_calling.count == 0 %}
+                                    <div class="card card-content">
+                                        現在呼び出し中のチケットはありません
+                                    </div>
+                                {% endif %}
                                 {% for ticket in tickets_calling %}
                                 <div class="columns card card-content">
                                     <div class="column is-2"><b class="is-size-3">{{ ticket.number }}</b></div>
@@ -54,6 +59,11 @@
                                 </div>
                                 {% endfor %}
                             </div>
+                            {% if tickets_yet.count == 0 %}
+                                <div class="card card-content">
+                                    現在呼び出し待ちのチケットはありません
+                                </div>
+                            {% endif %}
                             {% for ticket in tickets_yet %}
                             <div class="columns card card-content">
                                 <div class="column is-2"><b class="is-size-3">{{ ticket.number }}</b></div>
@@ -72,6 +82,11 @@
                         </div>
                     </div>
                     <div id="already" class="tab-pane animated m-2 p-6" style="min-height: 500px; width: 100%">
+                        {% if tickets_already.count == 0 %}
+                            <div class="card card-content">
+                                呼び出し済みのチケットはありません
+                            </div>
+                        {% endif %}
                         {% for ticket in tickets_already %}
                         <div class="columns card card-content">
                             <div class="column is-2"><b class="is-size-3">{{ ticket.number }}</b></div>
