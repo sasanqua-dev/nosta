@@ -41,17 +41,20 @@
         <div id="Dashboard">
             <div class="container box p-4 m-3" style="min-height: 20vh; border: 2.5px solid #00517c">
                 <strong class="m-2" style="color: #00517c">INFO</strong>
-                {% for content in news %}
+                {% if news.count == 0 %}
+                <p class="hero hero-body subtitle">配信されているおしらせはありません</p>
+                {% endif %} {% for content in news %}
                 <div class="m-1 columns" style="width: 100%">
                     <a href="{% url 'news:detail' content.id %}" style="color: dimgray; display: inline; width: 100%">
                         <c class="column is-3" style="display: inline-block">{{ content.created_at | date:"Y/m/d"}}</c>
-                        <c class="column is-2" style="display: inline-block">{{ content.tag }}</c>
+                        <c class="column is-2" style="display: inline-block"><span class="tag is-link is-Success">{{ content.tag }}</span></c>
                         <c class="column is-5" style="display: inline-block">{{ content.title }}</c>
                         <c class="column is-1" style="display: inline-block"><span class="dli-chevron-right"></span></c>
                     </a>
                 </div>
                 <hr />
                 {% endfor %}
+                <div class="has-text-centered"><a class="button is-light is-info" href="{% url 'top:news' %}">ニュース一覧を見る</a></div>
             </div>
             <div class="container">
                 <div class="columns p-2 mt-4">
@@ -120,37 +123,34 @@
                 <strgon class="is-size-4">サービス連携状況</strgon>
                 <div class="columns mt-2">
                     <div class="column m-2 has-text-centered">
-                        <strong>店舗発券</strong>
-                        <hr />
-                        <b class="has-text-center is-size-1">Unlink</b>
-                        <hr />
-                        <p>NOSTA TICKET</p>
-                    </div>
-                    <div class="column m-2 has-text-centered">
                         <strong>WEB発券</strong>
                         <hr />
-                        <b class="has-text-center is-size-1">Unlink</b>
+                        {% if shop.online_ticket == true %}
+                        <b class="has-text-center is-size-3 has-text-primary">有効</b>
+                        {% else %}
+                        <b class="has-text-center is-size-3">無効</b>
+                        {% endif %}
                         <hr />
                         <p>NOSTA TICKET</p>
                     </div>
                     <div class="column m-2 has-text-centered">
                         <strong>WEBカート</strong>
                         <hr />
-                        <b class="has-text-center is-size-1">Unlink</b>
+                        <b class="has-text-center is-size-3">無効</b>
                         <hr />
                         <p>NOSTA MARKET</p>
                     </div>
                     <div class="column m-2 has-text-centered">
                         <strong>レジ</strong>
                         <hr />
-                        <b class="has-text-center is-size-1">Unlink</b>
+                        <b class="has-text-center is-size-3">無効</b>
                         <hr />
                         <p>NOSTA REGI</p>
                     </div>
                     <div class="column m-2 has-text-centered">
                         <strong>商品受け渡し</strong>
                         <hr />
-                        <b class="has-text-center is-size-1">Unlink</b>
+                        <b class="has-text-center is-size-3">無効</b>
                         <hr />
                         <p>NOSTA REGI</p>
                     </div>

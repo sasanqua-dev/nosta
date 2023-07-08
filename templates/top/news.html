@@ -1,0 +1,37 @@
+{% extends 'page_base.html' %}{% load static %}{% block content %}
+<section>
+    <div class="hero">
+        <!-- Hero content: will be in the middle -->
+        <div class="hero-body" style="min-height: 300px; background-color: #00517c; color: azure; vertical-align: middle; vertical-align: middle">
+            <div class="container my-2" id="start">
+                <h1 class="has-text-centered p-6" style="font-size: min(8vw, 3rem)">NEWS</h1>
+            </div>
+        </div>
+        <div class="hero-foot">
+            <nav class="breadcrumb mx-3  my-1" aria-label="breadcrumbs">
+                <ul>
+                    <li><a class="is-size-6 mx-1" href="{% url 'top:home' %}" aria-current="page"  style="color: #00517c">トップ</a></li>
+                    <li><a class="is-size-6 mx-1" href="#" aria-current="page"  style="color: #323232">ニュース</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="container mt-6 p-4" id="news">
+        <div class="container box p-4">
+            {% if news.count == 0 %}
+            <p class="hero hero-body subtitle">配信されているおしらせはありません</p>
+            {% endif %} {% for content in news %}
+            <div class="m-1 columns" style="width: 100%">
+                <a href="{% url 'news:detail' content.id %}" style="color: dimgray; display: inline; width: 100%">
+                    <c class="column is-3" style="display: inline-block">{{ content.created_at |date:"Y/m/d" }}</c>
+                    <c class="column is-2" style="display: inline-block"><span class="tag is-link is-Success">{{ content.tag }}</span></c></c>
+                    <c class="column is-5" style="display: inline-block">{{ content.title }}</c>
+                    <c class="column is-1" style="display: inline-block"><span class="dli-chevron-right"></span></c>
+                </a>
+            </div>
+            <hr />
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

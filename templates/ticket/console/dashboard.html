@@ -40,18 +40,21 @@
     <main class="content mt-4 mr-2 ml-2" style="overflow-y: auto; overflow-x: hidden">
         <div id="Dashboard">
             <div class="container box p-4 m-3" style="min-height: 20vh; border: 2.5px solid #00517c">
-                <strong  class="m-2" style="color: #00517c;">INFO</strong>
-                {% for content in news %}
+                <strong class="m-2" style="color: #00517c">INFO</strong>
+                {% if news.count == 0 %}
+                <p class="hero hero-body subtitle">配信されているおしらせはありません</p>
+                {% endif %} {% for content in news %}
                 <div class="m-1 columns" style="width: 100%">
                     <a href="{% url 'news:detail' content.id %}" style="color: dimgray; display: inline; width: 100%">
                         <c class="column is-3" style="display: inline-block">{{ content.created_at | date:"Y/m/d"}}</c>
-                        <c class="column is-2" style="display: inline-block">{{ content.tag }}</c>
+                        <c class="column is-2" style="display: inline-block"><span class="tag is-link is-Success">{{ content.tag }}</span></c>
                         <c class="column is-5" style="display: inline-block">{{ content.title }}</c>
                         <c class="column is-1" style="display: inline-block"><span class="dli-chevron-right"></span></c>
                     </a>
                 </div>
                 <hr />
                 {% endfor %}
+                <div class="has-text-centered"><a class="button is-light is-info" href="{% url 'top:news' %}">ニュース一覧を見る</a></div>
             </div>
             <div class="container">
                 <div class="columns p-2 mt-4">
@@ -65,7 +68,7 @@
                                 var nowHour = nowTime.getHours(); // 時を抜き出す
                                 var nowMin = nowTime.getMinutes(); // 分を抜き出す
                                 var nowSec = nowTime.getSeconds(); // 秒を抜き出す
-                                var msg = ('0' + nowHour).slice(-2) + ':' + ('0' + nowMin).slice(-2) + '<c class="is-size-2">:' + ('0' + nowSec).slice(-2)+"</c>";
+                                var msg = ('0' + nowHour).slice(-2) + ':' + ('0' + nowMin).slice(-2) + '<c class="is-size-2">:' + ('0' + nowSec).slice(-2) + '</c>';
                                 document.getElementById('clock').innerHTML = msg;
                             }
                             setInterval('clock()', 1000);
@@ -75,7 +78,6 @@
                         <strong>本日の来客数</strong>
                         <hr />
                         <b class="has-text-center is-size-1">{% if peoplesum != None %}{{peoplesum }}{% else %}0{% endif %}</b><c class="is-size-3">人</c>
-
                     </div>
                     <div class="column box m-2 has-text-centered">
                         <strong>総来客数</strong>

@@ -16,10 +16,15 @@ def get_dayformat():
     formatted = str(now.strftime("%Y-%m-%d"))
     return formatted
 
-def consolo_access(request,shopCODE):
+def consolo_access(request,shopCODE,authtype=None):
     userdomain = request.user.email.split("@")[1]
     shop = Shop.objects.get(code=shopCODE)
-    if(shop.owner == request.user) or (shop.code in userdomain):
+    if authtype:
+        if(shop.owner == request.user) or (shop.code in userdomain):
+            return True,shop
+        else:
+            return False,dummy
+    if(shop.owner == request.user) or (shop.code in userdomain): 
         formatted = get_dayformat()
         tickets = Ticket.objects.all().filter(Q(shopID=shop.id) & Q(day=formatted)& Q(shopID=shop.id)).count()
         tickets_already = Ticket.objects.all().filter((Q(status="Canceled") | Q(status="Skipped")| Q(status="Called"))& Q(day=formatted)& Q(shopID=shop.id))
@@ -150,56 +155,21 @@ def system_ajax(request):
             ticket.save()
             return HttpResponse("OK!")
     
-        case 'shop_rename':
-            shop = Shop.objects.get(id=request.POST["shopID"])
-            shop.name = request.POST["value"]
-            shop.save()
-            return HttpResponse("OK!")
+        case 'setting':
+            tf,shop = consolo_access(request,request.POST["shopcode"],"AUTH")
+            if tf == True:
+                shop.name = request.POST["shop_name"]
+                shop.message = request.POST["shop_message"]
+                shop.people_min = request.POST["min_number"]
+                shop.people_max = request.POST["max_number"]
+                #shop.online_ticket = request.POST["reception_online"]
+                #shop.online_auth = request.POST["userauth"]
+                shop.email_message = request.POST["email_message"]
+                shop.save()
+                return HttpResponse("OK!")
 
-        case 'shop_change_min_number':
-            shop = Shop.objects.get(id=request.POST["shopID"])
-            shop.people_min = request.POST["value"]
-            shop.save()
-            return HttpResponse("OK!")
-        
-        case 'shop_change_max_number':
-            shop = Shop.objects.get(id=request.POST["shopID"])
-            shop.people_max = request.POST["value"]
-            shop.save()
-            return HttpResponse("OK!")
-        
-        case 'online_ticket_valid':
-            shop = Shop.objects.get(id=request.POST["shopID"])
-            shop.online_ticket = request.POST["value"]
-            shop.save()
-            return HttpResponse("OK!")
-        
-        case 'online_ticket_invalid':
-            shop = Shop.objects.get(id=request.POST["shopID"])
-            shop.online_ticket = request.POST["value"]
-            shop.save()
-            return HttpResponse("OK!")
-        
-        case 'shop_message':
-            shop = Shop.objects.get(id=request.POST["shopID"])
-            shop.message = request.POST["value"]
-            shop.save()
-            return HttpResponse("OK!")
-        
-        case 'shop_cstype_add':
-            shop = Shop.objects.get(id=request.POST["shopID"])
-            CStype.objects.create(
-                shop=shop,
-                name=request.POST["value"],
-                description=""
-            )
-            return HttpResponse("OK!")
-        
-        case 'shop_cstype_delete':
-            shop = Shop.objects.get(id=request.POST["shopID"])
-            cstype = CStype.objects.get(id=request.POST["value"])
-            cstype.delete()
-            return HttpResponse("OK!")
+            else:
+                return
 
 def customerview(request,shopCODE):
     shop = Shop.objects.get(code=shopCODE)
