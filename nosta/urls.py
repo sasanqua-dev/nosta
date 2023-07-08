@@ -19,7 +19,7 @@ from django.contrib.auth import views as auth_views
 import dotenv
 
 from django.views.static import serve 
-import settings
+import *
 
 #.envから環境変数を読み込む
 dotenv.load_dotenv()
