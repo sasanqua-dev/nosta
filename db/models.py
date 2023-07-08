@@ -12,13 +12,16 @@ class Shop(models.Model):
     code = models.CharField(max_length=100)
     description = models.TextField()
 
-    website = models.CharField(max_length=1000)
-    message = models.URLField()
+    message = models.CharField(max_length=1000)
+    website = models.URLField()
+
+    mail_massege = models.CharField(max_length=1000)
 
     people_min = models.IntegerField()
     people_max = models.IntegerField()
 
     online_ticket = models.CharField(max_length=10,default="false")
+    online_auth = models.CharField(max_length=10,default="false")
     
     sic = models.CharField(max_length=50)
     category = models.CharField(max_length=50)
