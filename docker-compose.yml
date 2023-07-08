@@ -3,7 +3,7 @@ version: '3'
 services:
   nosta_app:
     build: .
-    command: python3 manage.py runserver 0.0.0.0:8000 --insecure
+    command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     container_name: nosta_app
@@ -45,7 +45,7 @@ services:
       WORDPRESS_DB_PASSWORD: wordpress
     labels:
       - traefik.enable=true
-      - traefik.http.routers.docs.rule=Host(`docs.${DOMAIN}`)
+      - traefik.http.routers.docs.rule=Host(`docs.nosta.${DOMAIN}`)
       - traefik.http.routers.docs.entrypoints=https
       - traefik.http.routers.docs.tls=true
       - traefik.http.routers.docs.tls.certresolver=${CERT_RESOLVER}
