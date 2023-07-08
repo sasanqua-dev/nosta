@@ -10,7 +10,7 @@ services:
     networks:
       - prasic
     environment:
-      - DJANGO_SETTINGS_MODULE="production"
+      - DJANGO_SETTINGS_MODULE="nosta.settings.production"
     labels:
       - traefik.enable=true
       - traefik.http.routers.nosta_app.rule=Host(`nosta.${DOMAIN}`)
@@ -21,6 +21,7 @@ services:
   
   docs_wp_db:
     image: mariadb:10.4
+    container_name: nosta_db
     volumes:
       - docs_wp_db_data:/var/lib/mysql
     restart: always
@@ -35,6 +36,7 @@ services:
       - docs_wp_db
     image: wordpress:latest
     restart: always
+    container_name: nosta_docs
     volumes:
       - docs_wp_data:/var/www/html
     environment:
