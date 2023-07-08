@@ -14,8 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include,re_path
 from django.contrib.auth import views as auth_views
+import dotenv
+
+#.envから環境変数を読み込む
+dotenv.load_dotenv()
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,5 +28,6 @@ urlpatterns = [
     path('ticket/', include('ticket.urls')),
     path('auth/', include('appauth.urls')),
     path('news/',include('news.urls')),
-    path('', include('top.urls'))
+    path('', include('top.urls')),
+    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.production.STATIC_ROOT}), 
 ]

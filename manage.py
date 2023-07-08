@@ -8,7 +8,6 @@ import dotenv
 def main():
     #.envから環境変数を読み込む
     dotenv.load_dotenv()
-
     #環境変数にDJANGO_SETTINGS_MODULEがなければ開発用の設定ファイルを読み込む
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nosta.settings.development')
 
