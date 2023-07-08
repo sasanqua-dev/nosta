@@ -51,6 +51,11 @@
     <div class="container mt-6" id="news">
         <div class="container box p-4" style="min-height: 20vh">
             <strong class="m-2" style="color: #00517c">重要なおしらせ</strong>
+            {% if news.count == 0 %}
+                <p class="hero hero-body subtitle">
+                    配信されているおしらせはありません
+                </p>
+            {% endif %}
             {% for content in news %}
             <div class="m-1 columns" style="width: 100%">
                 <a href="{% url 'news:detail' content.id %}" style="color: dimgray; display: inline; width: 100%">

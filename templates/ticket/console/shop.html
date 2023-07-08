@@ -45,28 +45,50 @@
             <h1 id="cs_general" class="m-2"><strong>チケット一般設定</strong></h1>
             <p>チケットの基本的な内容について設定を行います</p>
             <div class="columns is-multiline my-4">
-                <div class="column is-2 has-text-centered">
-                    <label>ユーザー種別</label>
-                </div>
+                <!--
+                <div class="column is-2 has-text-centered"><label>ユーザー種別</label><span class="tag is-link is-light">Beta</span></div>
                 <div class="column is-5">
+                    <div class="columns">
+                        <div class="column is-10">
+                            <input class="input settingform" placeholder="追加する名前を入力" type="text" id="cstype_new_input" />
+                        </div>
+                        <div class="column is-2"><a class="button is-outlined" id="cstype_new_btn" disabled>追加</a></div>
+                    </div>
                     <table class="table">
-                        <tbody>
+                        <tbody id="cstype_table">
                             {% for cstype_item in cstype_list %}
                             <tr>
-                                <td>{{ cstype_item.name }}</td>
-                                <td><a class="cstype_list has-text-danger" data-target="{{ cstype_item.id }}">削除</a></td>
+                                <td class="cstype_label">{{ cstype_item.name }}</td>
+                                <td><a class="cstype_delete has-text-danger" onclick="remove(this)">削除</a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-                    <div class="columns">
-                        <div class="column is-10">
-                            <input class="input" placeholder="追加する名前を入力" type="text" id="cstype_new_input" />
-                        </div>
-                        <div class="column is-2"><a class="button is-outlined" id="cstype_new_btn">追加</a></div>
-                    </div>
+                    <script>
+                        document.getElementById('cstype_new_btn').addEventListener('click', function () {
+                            const newTr = document.createElement('tr');
+                            const newTd_label = document.createElement('td');
+                            newTd_label.classList.add('cstype_label');
+                            newTd_label.textContent = document.getElementById('cstype_new_input').value;
+                            document.getElementById('cstype_new_input').value = '';
+                            const newTd_delete = document.createElement('td');
+                            const delete_button = document.createElement('a');
+                            delete_button.setAttribute('onclick', 'remove(this)');
+                            delete_button.classList.add('has-text-danger');
+                            delete_button.textContent = '削除';
+                            newTd_delete.appendChild(delete_button);
+                            newTr.appendChild(newTd_label);
+                            newTr.appendChild(newTd_delete);
+                            document.getElementById('cstype_table').appendChild(newTr);
+                        });
+                        function remove(item) {
+                            document.getElementById('savehelper').textContent = '変更が保存されていません';
+                            item.parentNode.parentNode.remove();
+                        }
+                    </script>
                 </div>
                 <div class="column is-5"></div>
+                -->
                 <div class="column is-2 has-text-centered">
                     <label>最小人数</label>
                 </div>
@@ -93,6 +115,7 @@
                     <p class="help">ここで入力した内容が呼び出し番号表示ページ内の「店舗からのお知らせ」として表示されます</p>
                 </div>
                 <div class="column is-5"></div>
+                <!--
                 <div class="column is-2 has-text-centered"><label>オンライン発券</label><span class="tag is-link is-light">Beta</span></div>
                 <div class="column is-5">
                     <p class="help">オンライン上から来店せずにチケットを発券することができるようになります</p>
@@ -107,8 +130,9 @@
                     <p class="help">認証にはメールアドレスを使用します、また発券されたチケットが「呼び出し済み」「スキップ」になった場合は再度発券することが可能です</p>
                 </div>
                 <div class="column is-5">
-                    <button class="button is-danger settingform" disabled>無効</button>
+                    <button class="button is-danger settingform" id="userauth" disabled>無効</button>
                 </div>
+                -->
                 <div class="column is-2 has-text-centered">
                     <label>メール定型文</label>
                 </div>
@@ -124,7 +148,7 @@
                     <label>アカウントステータス</label>
                 </div>
                 <div class="column is-5">
-                    <label>Free</label>
+                    <label>{{ shop.grade }}</label>
                     <div class="help">アカウントのアップグレードはユーザーアカウント設定から行うことができます</div>
                 </div>
                 <div class="column is-5">
@@ -145,26 +169,30 @@
                 }
             }
         });
-        function ajax_handler(command, value) {
+        function ajax_handler() {
+            let cstype = '';
+            for (let item of document.getElementsByClassName('cstype_label')) {
+                cstype += item.textContent + ',';
+            }
             $.ajax({
                 url: "{% url 'ticket:ajax' %}",
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    command: command,
-                    shopID: '{{ shop.id }}',
-                    value: value,
+                    command: 'setting',
+                    shopcode: '{{ shop.code }}',
+                    shop_name: document.getElementById('shop_name').value,
+                    shop_cstype: cstype,
+                    min_number: document.getElementById('min_number').value,
+                    max_number: document.getElementById('max_number').value,
+                    shop_message: document.getElementById('shop_message').value,
+                    reception_online: document.getElementById('resption_online').textContent,
+                    userauth: document.getElementById('userauth').textContent,
+                    email_message: document.getElementById('email_message').value,
                 },
-            })
-                .done(function (response) {
-                    window.alert('変更しました');
-                })
-                .fail(function (xhr) {
-                    window.alert('失敗しました(E007)');
-                });
-        }
-        function testhandler() {
-            document.getElementById('savehelper').textContent = '';
+            }).catch(function (response) {
+                document.getElementById('savehelper').textContent = '';
+            });
         }
     </script>
     <div class="column is-2 m-4 mr-4">
@@ -184,7 +212,7 @@
             </ul>
             <div class="my-4">
                 <p class="help is-danger has-text-centered my-2" id="savehelper"></p>
-                <button class="button is-light is-info is-rounded my-2" onclick="testhandler()">変更を保存する</button>
+                <button class="button is-light is-info is-rounded my-2" onclick="ajax_handler()">変更を保存する</button>
             </div>
         </aside>
     </div>
