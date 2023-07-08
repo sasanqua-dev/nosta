@@ -9,6 +9,8 @@ services:
     container_name: nosta_app
     networks:
       - prasic
+    environment:
+      - DJANGO_SETTINGS_MODULE="production"
     labels:
       - traefik.enable=true
       - traefik.http.routers.nosta_app.rule=Host(`nosta.${DOMAIN}`)

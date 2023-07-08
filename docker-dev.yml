@@ -7,5 +7,5 @@ services:
         volumes:
             - .:/code
         ports:
-            - 8000:8000
+            - 80:8000
         container_name: nosta_app
