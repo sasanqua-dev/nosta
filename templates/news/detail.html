@@ -1,9 +1,8 @@
 {% extends 'page_base.html' %} {% load static %}{% block content %}
 <div class="container box mt-6" style="height: 80vh">
-    <span class="tag is-link is-light">{{ content.tag }}</span><br />
+    <span class="tag is-link is-light">{{ news.tag }}</span>
     <p class="is-size-3 mt-5">{{ news.title }}</p>
-    <p>配信日:{{ news.created_at | date:"Y/m/d"}}</p>
-    <p>更新日:{{ news.updated_at | date:"Y/m/d"}}</p>
+    <p>配信日:{{ news.updated_at | date:"Y/m/d"}} / 更新日:{{ news.created_at | date:"Y/m/d"}}</p>
     <hr style="background-color: #00517c" />
     <p class="is-size-6">{{ news.message | linebreaksbr }}</p>
 </div>
