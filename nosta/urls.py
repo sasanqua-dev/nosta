@@ -32,5 +32,5 @@ urlpatterns = [
     path('auth/', include('appauth.urls')),
     path('news/',include('news.urls')),
     path('', include('top.urls')),
-    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.TATIC_ROOT}), 
+    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
 ]
