@@ -47,7 +47,7 @@
                 <div class="m-1 columns" style="width: 100%">
                     <a href="{% url 'news:detail' content.id %}" style="color: dimgray; display: inline; width: 100%">
                         <c class="column is-3" style="display: inline-block">{{ content.created_at | date:"Y/m/d"}}</c>
-                        <c class="column is-2" style="display: inline-block"><span class="tag is-link is-Success">{{ content.tag }}</span></c>
+                        <c class="column is-2" style="display: inline-block"><span class="tag is-link is-light">{{ content.tag }}</span></c>
                         <c class="column is-5" style="display: inline-block">{{ content.title }}</c>
                         <c class="column is-1" style="display: inline-block"><span class="dli-chevron-right"></span></c>
                     </a>
