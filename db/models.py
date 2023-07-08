@@ -15,7 +15,7 @@ class Shop(models.Model):
     message = models.CharField(max_length=1000)
     website = models.URLField()
 
-    mail_massege = models.CharField(max_length=1000)
+    email_massege = models.CharField(max_length=1000)
 
     people_min = models.IntegerField()
     people_max = models.IntegerField()
