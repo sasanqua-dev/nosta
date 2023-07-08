@@ -16,13 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include,re_path
 from django.contrib.auth import views as auth_views
-import dotenv
-
 from django.views.static import serve 
 from django.conf import settings
-
-#.envから環境変数を読み込む
-dotenv.load_dotenv()
 
 urlpatterns = [
     path('admin/', admin.site.urls),

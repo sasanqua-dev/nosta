@@ -10,7 +10,7 @@ services:
     networks:
       - prasic
     environment:
-      - DJANGO_SETTINGS_MODULE="nosta.settings.production"
+      - DJANGO_SETTINGS_MODULE=nosta.settings.production
     labels:
       - traefik.enable=true
       - traefik.http.routers.nosta_app.rule=Host(`nosta.${DOMAIN}`)
