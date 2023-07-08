@@ -2,11 +2,16 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import dotenv
 
 
 def main():
-    """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nosta.settings')
+    #.envから環境変数を読み込む
+    dotenv.load_dotenv()
+
+    #環境変数にDJANGO_SETTINGS_MODULEがなければ開発用の設定ファイルを読み込む
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nosta.settings.development')
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

@@ -27,18 +27,20 @@
             <div class="p-3 m-1 mt-3">
                 <div class="tabs">
                     <ul>
-                        <li class="tab"><a href="#waiting">来店待ち</a></li>
+                        <li class="tab is-active"><a href="#waiting">来店待ち</a></li>
                         <li class="tab"><a href="#already">来店済み</a></li>
                     </ul>
                 </div>
                 <div class="tab-content is-flex">
-                    <div id="waiting" class="tab-pane animated m-2" style="min-height: 500px; width: 100%">
+                    <div id="waiting" class="tab-pane animated m-2 is-active" style="min-height: 500px; width: 100%">
                         <div class="mb-6">
                             <div class="container mx-4 p-6 mb-6" style="border: solid 3px #5383c3">
                                 <div class="has-text-centered mb-6">
                                     <b class="is-size-4 mx-4" style="width: 100%">呼び出し中</b>
                                 </div>
-                                {% for ticket in tickets_calling %}
+                                {% if tickets_calling.count == 0 %}
+                                <div class="card card-content">現在呼び出し中のチケットはありません</div>
+                                {% endif %} {% for ticket in tickets_calling %}
                                 <div class="columns card card-content">
                                     <div class="column is-2"><b class="is-size-3">{{ ticket.number }}</b></div>
                                     <div class="column is-2"><c style="font-size: 12px">人数</c><br />{{ ticket.people }}</div>
@@ -54,7 +56,9 @@
                                 </div>
                                 {% endfor %}
                             </div>
-                            {% for ticket in tickets_yet %}
+                            {% if tickets_yet.count == 0 %}
+                            <div class="card card-content">現在呼び出し待ちのチケットはありません</div>
+                            {% endif %} {% for ticket in tickets_yet %}
                             <div class="columns card card-content">
                                 <div class="column is-2"><b class="is-size-3">{{ ticket.number }}</b></div>
                                 <div class="column is-2"><c style="font-size: 12px">人数</c><br />{{ ticket.people }}</div>
@@ -72,7 +76,9 @@
                         </div>
                     </div>
                     <div id="already" class="tab-pane animated m-2 p-6" style="min-height: 500px; width: 100%">
-                        {% for ticket in tickets_already %}
+                        {% if tickets_already.count == 0 %}
+                        <div class="card card-content">呼び出し済みのチケットはありません</div>
+                        {% endif %} {% for ticket in tickets_already %}
                         <div class="columns card card-content">
                             <div class="column is-2"><b class="is-size-3">{{ ticket.number }}</b></div>
                             <div class="column is-1"><c style="font-size: 12px">人数</c><br />{{ ticket.people }}</div>
