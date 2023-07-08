@@ -171,9 +171,9 @@
         });
         function ajax_handler() {
             let cstype = '';
-            for (let item of document.getElementsByClassName('cstype_label')) {
-                cstype += item.textContent + ',';
-            }
+            //for (let item of document.getElementsByClassName('cstype_label')) {
+            //    cstype += item.textContent + ',';
+            //}
             $.ajax({
                 url: "{% url 'ticket:ajax' %}",
                 type: 'POST',
@@ -186,8 +186,8 @@
                     min_number: document.getElementById('min_number').value,
                     max_number: document.getElementById('max_number').value,
                     shop_message: document.getElementById('shop_message').value,
-                    reception_online: document.getElementById('resption_online').textContent,
-                    userauth: document.getElementById('userauth').textContent,
+                    //reception_online: document.getElementById('resption_online').textContent,
+                    //userauth: document.getElementById('userauth').textContent,
                     email_message: document.getElementById('email_message').value,
                 },
             }).catch(function (response) {

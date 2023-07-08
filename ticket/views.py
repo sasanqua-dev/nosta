@@ -162,8 +162,8 @@ def system_ajax(request):
                 shop.message = request.POST["shop_message"]
                 shop.people_min = request.POST["min_number"]
                 shop.people_max = request.POST["max_number"]
-                shop.online_ticket = request.POST["reception_online"]
-                shop.online_auth = request.POST["userauth"]
+                #shop.online_ticket = request.POST["reception_online"]
+                #shop.online_auth = request.POST["userauth"]
                 shop.email_message = request.POST["email_message"]
                 shop.save()
                 return HttpResponse("OK!")

@@ -1,4 +1,11 @@
 {% extends 'page_base.html' %}{% load static %}{% block content %}
+<div style="height: 30px"></div>
+<nav class="breadcrumb mx-3 my-1" aria-label="breadcrumbs">
+    <ul>
+        <li><a class="is-size-6 mx-1" href="{% url 'top:home' %}" aria-current="page" style="color: #00517c">トップ</a></li>
+        <li><a class="is-size-6 mx-1" href="#" aria-current="page" style="color: #323232">よくあるご質問</a></li>
+    </ul>
+</nav>
 <section class="columns p-4 m-0" style="min-height: 50vh">
     <!-- ここにサイドバーの部品を配置 -->
     <div class="submenu column is-4" style="max-width: 300px">

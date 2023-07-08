@@ -13,11 +13,15 @@ def home(request):
         'news':news,
     })
 
-def s_ticket(request):
-    return HttpResponse("準備中...")
+def news(request):
+    news = News.objects.all().order_by('created_at').reverse()
+    return render(request,'top/news.html',{
+        'news':news,
+    })
 
-def s_shop(request):
-    return HttpResponse("準備中...")
+def s_ticket(request):
+    return render(request,'top/service/ticket.html',{
+    })
 
 def s_regi(request):
     return HttpResponse("準備中...")
