@@ -19,7 +19,7 @@ from django.contrib.auth import views as auth_views
 import dotenv
 
 from django.views.static import serve 
-import *
+from django.conf import settings
 
 #.envから環境変数を読み込む
 dotenv.load_dotenv()
@@ -32,5 +32,5 @@ urlpatterns = [
     path('auth/', include('appauth.urls')),
     path('news/',include('news.urls')),
     path('', include('top.urls')),
-    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.production.STATIC_ROOT}), 
+    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.TATIC_ROOT}), 
 ]
