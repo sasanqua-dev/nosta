@@ -18,42 +18,7 @@ services:
       - traefik.http.routers.nosta_app.tls=true
       - traefik.http.services.nosta_app.loadbalancer.server.port=8000
       - traefik.http.routers.nosta_app.tls.certresolver=${CERT_RESOLVER}
-  
-  docs_wp_db:
-    image: mariadb:10.4
-    container_name: nosta_db
-    volumes:
-      - docs_wp_db_data:/var/lib/mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: somewordpress
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
-
-  docs:
-    depends_on:
-      - docs_wp_db
-    image: wordpress:latest
-    restart: always
-    container_name: nosta_docs
-    volumes:
-      - docs_wp_data:/var/www/html
-    environment:
-      WORDPRESS_DB_HOST: docs_wp_db
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.docs.rule=Host(`docs.${DOMAIN}`)
-      - traefik.http.routers.docs.entrypoints=https
-      - traefik.http.routers.docs.tls=true
-      - traefik.http.routers.docs.tls.certresolver=${CERT_RESOLVER}
 
 networks:
   prasic:
     external: true
-
-volumes:
-  docs_wp_data:
-  docs_wp_db_data:
