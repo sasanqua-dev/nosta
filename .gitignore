@@ -1,1 +1,2 @@
-db.sqlite3
+production_db.sqlite3
+development_db.sqlite3
