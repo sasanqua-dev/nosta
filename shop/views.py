@@ -6,6 +6,7 @@ from django.db.models import *
 import datetime as dt 
 import pytz
 import json
+from django.template.loader import render_to_string
 
 # Create your views here.
 @login_required
@@ -125,9 +126,23 @@ def market(request,shopCODE):
 def product(request,shopCODE):
     if user_permission_auth(request,shopCODE) == "allow":
         shop = Shop.objects.get(code=shopCODE)
-        return render(request, 'shop/console/product.html',{'shop':shop})
+        categories = Product.objects.values_list('title',flat=True)
+        return render(request, 'shop/console/product.html',{'shop':shop,'categoryies':categories})
     else:
         return redirect('home')
+
+@login_required
+def product_ajax(request):
+    if user_permission_auth(request,request.POST["CODE"]):
+        if request.POST["type"] == "get_category":
+            products = Product.objects.all().filter(Q(shop=Shop.objects.get(shopCODE=request.POST["CODE"]))&Q(is_active="True")&Q(category=request.POST["category"]))
+            param = {
+                "products": products,
+            }
+            data = render_to_string('shop/console/product_list.html', param)
+            return HttpResponse(data)
+    else:
+        return HttpResponse("Permission Error")
 
 @login_required
 def order(request,shopCODE):

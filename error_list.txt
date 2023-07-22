@@ -1,0 +1,3 @@
+E-100 通信エラーが発生しました
+原因：Ajax通信エラー全般
+発生場所：shop/console/product ajax

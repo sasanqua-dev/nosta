@@ -57,12 +57,13 @@ class Ticket(models.Model):
 
 class Product(models.Model):
     product_nameid = models.CharField(max_length=100)
-    shopID = models.ForeignKey(Shop, on_delete=models.CASCADE)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
+    category = models.CharField(max_length=20)
     price_sell = models.IntegerField()
     price_buy = models.IntegerField()
     description = models.TextField()
-    Images = models.ImageField(upload_to='')
+    Images = models.ImageField(upload_to='',null=True)
     is_active = models.CharField(max_length=50)
 
 class Order(models.Model):

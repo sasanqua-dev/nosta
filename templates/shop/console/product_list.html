@@ -1,0 +1,22 @@
+<section>
+    {% if product_list.count == 0 %}
+    <section class="hero is-light" style="width: 100%">
+        <div class="hero-body">
+            <p class="title">一致する商品がありません</p>
+        </div>
+    </section>
+    {% else %} {% for product in products %}
+    <div class="columns card card-content">
+        <div class="column is-2"><b class="is-size-3">{{ product.name }}</b></div>
+        <div class="column is-2"><c style="font-size: 12px">販売価格</c><br />{{ product.price_sell }}</div>
+        <div class="column is-2"><c style="font-size: 12px">仕入れ価格</c><br />{{ product.price_buy }}</div>
+        <div class="column is-2">{{ product.discription }}</div>
+        <div class="column is-2">
+            <div class="columns is-multiline">
+                <div class="column is-12"><a class="button is-outlined is-gray ticket-called" data-id="{{ product.id }}">詳細</a></div>
+                <div class="column is-12"><a class="button is-outlined is-danger ticket-skipped" data-id="{{ product.id }}">削除</a></div>
+            </div>
+        </div>
+    </div>
+    {% endfor %} {% endif %}
+</section>
