@@ -23,7 +23,7 @@ def consolo_access(request,shopCODE,authtype=None):
         if(shop.owner == request.user) or (shop.code in userdomain):
             return True,shop
         else:
-            return False,dummy
+            return False,"dummy"
     if(shop.owner == request.user) or (shop.code in userdomain): 
         formatted = get_dayformat()
         tickets = Ticket.objects.all().filter(Q(shopID=shop.id) & Q(day=formatted)& Q(shopID=shop.id)).count()

@@ -63,7 +63,7 @@ class Product(models.Model):
     price_sell = models.IntegerField()
     price_buy = models.IntegerField()
     description = models.TextField()
-    Images = models.ImageField(upload_to='',null=True)
+    #Images = models.ImageField(upload_to='',null=True)
     is_active = models.CharField(max_length=50)
 
 class Order(models.Model):

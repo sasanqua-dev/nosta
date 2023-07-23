@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from db.models import *
 from django.db.models import *
 import datetime as dt 
@@ -126,16 +127,17 @@ def market(request,shopCODE):
 def product(request,shopCODE):
     if user_permission_auth(request,shopCODE) == "allow":
         shop = Shop.objects.get(code=shopCODE)
-        categories = Product.objects.values_list('title',flat=True)
-        return render(request, 'shop/console/product.html',{'shop':shop,'categoryies':categories})
+        categories = Product.objects.values_list('category',flat=True)
+        return render(request, 'shop/console/product.html',{'shop':shop,'categories':categories})
     else:
         return redirect('home')
 
 @login_required
 def product_ajax(request):
-    if user_permission_auth(request,request.POST["CODE"]):
+    if user_permission_auth(request,request.POST["scd"]) == "allow":
+        shop = Shop.objects.get(code=request.POST["scd"])
         if request.POST["type"] == "get_category":
-            products = Product.objects.all().filter(Q(shop=Shop.objects.get(shopCODE=request.POST["CODE"]))&Q(is_active="True")&Q(category=request.POST["category"]))
+            products = Product.objects.all().filter(Q(shop=shop)&Q(is_active="True")&Q(category=request.POST["category"]))
             param = {
                 "products": products,
             }
