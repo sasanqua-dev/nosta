@@ -11,6 +11,5 @@ urlpatterns = [
     path('console/profile/<str:shopCODE>', views.profile, name='profile'),
     path('console/market/<str:shopCODE>', views.market, name='market'),
     path('console/product/<str:shopCODE>', views.product, name='product'),
-    path('console/product/ajax', views.product_ajax, name='product_ajax'),
     path('console/order/<str:shopCODE>', views.order, name='order'),
 ]

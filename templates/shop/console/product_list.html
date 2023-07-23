@@ -6,15 +6,18 @@
         </div>
     </section>
     {% else %} {% for product in products %}
-    <div class="columns card card-content">
-        <div class="column is-2"><b class="is-size-3">{{ product.name }}</b></div>
-        <div class="column is-2"><c style="font-size: 12px">販売価格</c><br />{{ product.price_sell }}</div>
-        <div class="column is-2"><c style="font-size: 12px">仕入れ価格</c><br />{{ product.price_buy }}</div>
-        <div class="column is-2">{{ product.discription }}</div>
+    <div class="columns card card-content m-1 mr-2">
+        <div class="column is-4"><b style="font-size: max(1vw, 15px)" id="{{ product.id }}_name">{{ product.name }}</b></div>
+        <div class="column is-3">
+            <c style="font-size: 12px">仕入れ価格</c><br />￥<c id="{{ product.id }}_import">{{ product.price_buy }}</c><br />
+            <c style="font-size: 12px">販売価格</c><br />￥<c id="{{ product.id }}_export">{{ product.price_sell }}</c>
+        </div>
+        <div class="column is-3"><c style="font-size: 12px">カテゴリー</c><br /><c id="{{ product.id }}_category" style="font-size: 15px">{{ product.category }}</c></div>
+        <div hidden id="{{ product.id }}_description">{{ product.description }}</div>
         <div class="column is-2">
             <div class="columns is-multiline">
-                <div class="column is-12"><a class="button is-outlined is-gray ticket-called" data-id="{{ product.id }}">詳細</a></div>
-                <div class="column is-12"><a class="button is-outlined is-danger ticket-skipped" data-id="{{ product.id }}">削除</a></div>
+                <div class="column is-12"><a class="button is-outlined is-info js-modal-trigger" data-target="detail" data-id="{{ product.id }}">詳細情報</a></div>
+                <div class="column is-12"><a class="button is-outlined is-info js-modal-trigger" data-target="arrival" data-id="{{ product.id }}">在庫操作</a></div>
             </div>
         </div>
     </div>

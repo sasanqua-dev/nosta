@@ -1,0 +1,23 @@
+<section>
+    {% if last_import == None %}
+    <section class="hero is-light">
+        <div class="hero-body">
+            <p class="title">No Data</p>
+            <p class="subtitle">この商品の取引情報がまだ存在しません</p>
+        </div>
+    </section>
+    {% else %}
+    <div class="columns m-1">
+        <div class="column"><c style="font-size: 12px">在庫数</c><br />{{ stock }}</div>
+        <div class="column"><c style="font-size: 12px">販売率</c><br />{{ sales_rate }}%</div>
+    </div>
+    <div class="container box m-1">
+        <strong>直近の仕入れ履歴</strong>
+        <div class="columns">
+            <div class="column"><c style="font-size: 12px">日付</c><br />{{ last_import.created_at }}</div>
+            <div class="column"><c style="font-size: 12px">数量</c><br />{{ last_import.number }}</div>
+            <div class="column"><c style="font-size: 12px">備考</c><br />{{ last_import.reason }}</div>
+        </div>
+    </div>
+    {% endif %}
+</section>
