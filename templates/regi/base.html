@@ -1,0 +1,320 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <title>NOSTA</title>
+        <link rel="icon" href="{% static 'image/favicon.ico' %}" />
+        <base target="_top" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+        <link rel="stylesheet" href="{% static 'css/animation.css' %}" />
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js "></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="{% static 'js/jquery.qrcode.min.js' %}"></script>
+        <div class="columns mx-2">
+            <a class="column is-2 is-size-2 pt-1 pr-6" style="font-family: 'Noto Sans JP', sans-serif; color: #00517c" onclick="showSlide(0)"
+                ><img src="{% static 'image/logo_regi.png' %}" style="max-height: 7rem" alt="ロゴ"
+            /></a>
+            <div class="column is-6"></div>
+            <div class="column is-2 my-5">
+                <p style="font-size: 12px" class="mb-1">店舗名</p>
+                <p class="is-size-6">{{ shop.name }}</p>
+            </div>
+            <div class="column is-2 my-5">
+                <p style="font-size: 12px" class="mb-1">担当者名</p>
+                <p class="is-size-6">{{ user.username }}</p>
+            </div>
+        </div>
+    </head>
+    <body>
+        <div class="container" style="height: 100%; width: 90vw; overflow: auto">
+            <div class="loading-015" hidden id="loading">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="slide-container">
+                <div class="slide active">
+                    <!-- 0:トップページ -->
+                    <div class="columns is-multiline p-2">
+                        <a class="column is-4">
+                            <div class="box m-1 has-text-centered is-size-2" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c; font-size: 2rem">
+                                <img src="{% static 'image\icon\cash-register-solid.svg' %}" style="min-height: 5vh" class="image mx-5" />
+                                <b>レジ</b>
+                            </div>
+                        </a>
+                        <a class="column is-4">
+                            <div class="box m-1 has-text-centered" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c; font-size: 2rem">
+                                <img src="{% static 'image\icon\receipt-solid.svg' %}" style="min-height: 5vh" class="image mx-5" />
+                                <b>伝票</b>
+                            </div>
+                        </a>
+                        <a class="column is-4">
+                            <div class="box m-1 has-text-centered" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c; font-size: 1rem">
+                                <img src="{% static 'image\icon\table-list-solid.svg' %}" style="min-height: 5vh" class="image mx-5" />
+                                <b>リソース</b>
+                            </div>
+                        </a>
+                        <a class="column is-4" onclick="showSlide(5)">
+                            <div class="box m-1 has-text-centered" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c; font-size: 2rem">
+                                <img src="{% static 'image\icon\volume-high-solid.svg' %}" style="min-height: 5vh" class="image mx-5" />
+                                <b>呼出</b>
+                            </div>
+                        </a>
+                        <a class="column is-4">
+                            <div class="box m-1 has-text-centere" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c; font-size: 2rem">
+                                <img src="{% static 'image\icon\rotate-left-solid.svg' %}" style="min-height: 5vh" class="image mx-5" />
+                                <b>返品</b>
+                            </div>
+                        </a>
+                        <a class="column is-4" onclick="showSlide(6)">
+                            <div class="box m-1 has-text-centered" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c; font-size: 2rem">
+                                <img src="{% static 'image\icon\gear-solid.svg' %}" style="min-height: 5vh" class="image mx-5" />
+                                <b>設定</b>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <!-- 1:レジ画面 -->
+                </div>
+
+                <div class="slide" style="width: 80vw">
+                    <!-- 2:伝票 -->
+                </div>
+
+                <div class="slide">
+                    <!-- 3:リソース -->
+                </div>
+                <div class="slide">
+                    <!-- 4:返品 -->
+                </div>
+                <div class="slide">
+                    <!-- 5:呼び出し -->
+                    <div class="columns" style="width: 70vw; height: 70vh">
+                        <div class="column m-1 is-6" style="width: 34vw">
+                            <div class="hero hero-body title">呼び出し待ち</div>
+                            <div id="ticket_waiting" style="height: 50vh; overflow-y: auto"></div>
+                        </div>
+                        <div class="column m-1 is-6" style="width: 34vw">
+                            <div class="hero hero-body title">呼び出し済み</div>
+                            <div id="ticket_calling" style="height: 50vh; overflow-y: auto"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide">
+                    <!-- 6:設定 -->
+                    <div class="columns is-multiline p-2" style="width: 70vw; height: 70vh">
+                        <a class="column is-6" href="{% url 'home' %}">
+                            <div class="box m-1 has-text-centered is-size-2" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c">
+                                <img src="{% static 'image\icon\repeat-solid.svg' %}" style="min-height: 5vh" class="image mx-5" />
+                                <b>店舗切り替え</b>
+                            </div>
+                        </a>
+                        <a class="column is-6" href="{% url 'logout' %}">
+                            <div class="box m-1 has-text-centered is-size-2" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c">
+                                <img src="{% static 'image\icon\right-from-bracket-solid.svg' %}" style="min-height: 5vh" class="image mx-5" />
+                                <b>ログアウト</b>
+                            </div>
+                        </a>
+                        <a class="column is-3" href="{% url 'shop:dashboard' shop.code %}" target="_blank">
+                            <div class="box m-1 has-text-centered is-size-2" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c">
+                                <b>店舗管理</b>
+                            </div>
+                        </a>
+                        <a class="column is-3" href="{% url 'ticket:customers' shop.code %}" target="_blank">
+                            <div class="box m-1 has-text-centered is-size-2" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c">
+                                <b>チケット管理</b>
+                            </div>
+                        </a>
+                        <a class="column is-6" onclick="showSlide(6)">
+                            <div class="box m-1 has-text-centered is-size-2" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c">
+                                <img src="{% static 'image\icon\table-list-solid.svg' %}" style="min-height: 5vh" class="image mx-5" />
+                                <b>リソース管理</b>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // csrf_tokenの取得に使う
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === name + '=') {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+            }
+
+            let currentSlide = 0;
+            const slides = document.getElementsByClassName('slide');
+
+            function showSlide(index) {
+                if (index >= 0 && index < slides.length) {
+                    for (let i = 0; i < slides.length; i++) {
+                        slides[i].classList.remove('active');
+                    }
+                    slides[index].classList.add('active');
+                    currentSlide = index;
+                }
+            }
+
+            function previousSlide() {
+                showSlide(currentSlide - 1);
+            }
+
+            function nextSlide() {
+                showSlide(currentSlide + 1);
+            }
+        </script>
+        <script>
+            function get_ticket_calling() {
+                var csrf_token = getCookie('csrftoken');
+                path = "{% url 'regi:index' shop.code %}";
+                $.ajax({
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                        }
+                    },
+                    type: 'POST',
+                    url: path,
+                    data: {
+                        type: 'get_ticket_calling',
+                    },
+                    dataType: 'html',
+                })
+                    .done(function (data) {
+                        document.getElementById('ticket_calling').innerHTML = data;
+                        createTrigger();
+                    })
+                    .fail(function (data) {
+                        // error
+                        console.log(data);
+                        window.alert('通信エラーが発生しました(E-R100-10)');
+                    });
+            }
+            get_ticket_calling();
+
+            function get_ticket_waiting() {
+                var csrf_token = getCookie('csrftoken');
+                path = "{% url 'regi:index' shop.code %}";
+                $.ajax({
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                        }
+                    },
+                    type: 'POST',
+                    url: path,
+                    data: {
+                        type: 'get_ticket_waiting',
+                    },
+                    dataType: 'html',
+                })
+                    .done(function (data) {
+                        document.getElementById('ticket_waiting').innerHTML = data;
+                        createTrigger();
+                    })
+                    .fail(function (data) {
+                        // error
+                        console.log(data);
+                        window.alert('通信エラーが発生しました(E-R100-10)');
+                    });
+            }
+            get_ticket_waiting();
+        </script>
+        <script>
+            function createTrigger() {
+                (document.querySelectorAll('.ticket-called') || []).forEach(($trigger) => {
+                    const $id = $trigger.dataset.id;
+                    $trigger.addEventListener('click', () => {
+                        $.ajax({
+                            url: "{% url 'ticket:ajax' %}",
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                command: 'called_ticket',
+                                tid: $id,
+                            },
+                        }).always(function (response) {
+                            get_ticket_calling();
+                        });
+                    });
+                });
+                (document.querySelectorAll('.ticket-calling') || []).forEach(($trigger) => {
+                    const $id = $trigger.dataset.id;
+                    $trigger.addEventListener('click', () => {
+                        $.ajax({
+                            url: "{% url 'ticket:ajax' %}",
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                command: 'calling_ticket',
+                                tid: $id,
+                            },
+                        }).always(function (response) {
+                            get_ticket_calling();
+                            get_ticket_waiting();
+                        });
+                    });
+                });
+                (document.querySelectorAll('.ticket-skipped') || []).forEach(($trigger) => {
+                    const $id = $trigger.dataset.id;
+                    $trigger.addEventListener('click', () => {
+                        $.ajax({
+                            url: "{% url 'ticket:ajax' %}",
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                command: 'skipped_ticket',
+                                tid: $id,
+                            },
+                        }).always(function (response) {
+                            get_ticket_waiting();
+                        });
+                    });
+                });
+                (document.querySelectorAll('.ticket-canceled') || []).forEach(($trigger) => {
+                    const $id = $trigger.dataset.id;
+                    $trigger.addEventListener('click', () => {
+                        $.ajax({
+                            url: "{% url 'ticket:ajax' %}",
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                command: 'canceled_ticket',
+                                tid: $id,
+                            },
+                        }).always(function (response) {
+                            get_ticket_waiting();
+                        });
+                    });
+                });
+            }
+        </script>
+    </body>
+</html>

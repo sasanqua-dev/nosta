@@ -25,3 +25,8 @@ E-S100-15 通信エラーが発生しました
 原因：Ajax通信エラー(在庫調整)
 発生場所：shop/console/product ajax
 
+E-R100
+NOSTA REGI 通信系エラー
+E-R100-10
+原因：Ajax通信エラー(チケット更新)
+発生場所：regi/index ajax
