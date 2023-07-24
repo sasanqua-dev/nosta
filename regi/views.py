@@ -47,10 +47,28 @@ def index(request,shopCODE):
                 }
                 data = render_to_string('regi/parts/customer.html', param)
                 return HttpResponse(data)
+        
+            elif request.POST["type"] == "get_category":
+                products = Product.objects.all().filter(Q(shop=shop)&Q(is_active=True)&Q(category=request.POST["category"]))
+                param = {
+                    "products": products,
+                }
+                data = render_to_string('regi/parts/product_cell.html', param)
+                return HttpResponse(data)
+            
+            elif request.POST["type"] == "get_product":
+                products = Product.objects.all().filter(Q(shop=shop)&Q(is_active=True))
+                param = {
+                    "products": products,
+                }
+                data = render_to_string('regi/parts/product_cell.html', param)
+                return HttpResponse(data)
+            
         else:
             return HttpResponse("Permission Error")
     if user_permission_auth(request,shopCODE) == "allow":
         shop = Shop.objects.get(code=shopCODE)
-        return render(request, 'regi/base.html',{'shop':shop})
+        categories = Product.objects.filter(shop=shop).values_list('category',flat=True)
+        return render(request, 'regi/base.html',{'shop':shop,"categories":categories})
     else:
         return redirect('home')

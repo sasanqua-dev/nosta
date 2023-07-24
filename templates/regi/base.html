@@ -45,7 +45,7 @@
                 <div class="slide active">
                     <!-- 0:トップページ -->
                     <div class="columns is-multiline p-2">
-                        <a class="column is-4">
+                        <a class="column is-4" onclick="showSlide(1)">
                             <div class="box m-1 has-text-centered is-size-2" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c; font-size: 2rem">
                                 <img src="{% static 'image\icon\cash-register-solid.svg' %}" style="min-height: 5vh" class="image mx-5" />
                                 <b>レジ</b>
@@ -86,6 +86,23 @@
 
                 <div class="slide">
                     <!-- 1:レジ画面 -->
+                    <div class="columns" style="width: 80vw; height: 70vh">
+                        <div class="column is-3">
+                            <div class="is-side sidebar m-1">
+                                <aside class="menu">
+                                    <p class="menu-label" style="font-size: min(1.25vw, 1rem)">Category</p>
+                                    <ul class="menu-list">
+                                        <!--TODO フォントサイズのフレキシブル対応-->
+                                        {% for cat in categories %}
+                                        <li><a onclick="get_data('{{ cat }}')" style="font-size: min(1.5vw, 1rem)">{{ cat }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </aside>
+                            </div>
+                        </div>
+                        <div class="column is-6"><div class="columns is-multiline" id="product_list"></div></div>
+                        <div class="column is-3">ここにカート</div>
+                    </div>
                 </div>
 
                 <div class="slide" style="width: 80vw">
@@ -315,6 +332,63 @@
                     });
                 });
             }
+        </script>
+        <script>
+            function get_data(category) {
+                var csrf_token = getCookie('csrftoken');
+                path = "{% url 'regi:index' shop.code %}";
+                $.ajax({
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                        }
+                    },
+                    type: 'POST',
+                    url: path,
+                    data: {
+                        type: 'get_category',
+                        category: category,
+                    },
+                    dataType: 'html',
+                })
+                    .done(function (data) {
+                        document.getElementById('product_list').innerHTML = data;
+                        createTrigger();
+                    })
+                    .fail(function (data) {
+                        // error
+                        console.log(data);
+                        window.alert('通信エラーが発生しました(E-100)');
+                    });
+            }
+
+            function get_all_data() {
+                var csrf_token = getCookie('csrftoken');
+                path = "{% url 'regi:index' shop.code %}";
+                $.ajax({
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                        }
+                    },
+                    type: 'POST',
+                    url: path,
+                    data: {
+                        type: 'get_product',
+                    },
+                    dataType: 'html',
+                })
+                    .done(function (data) {
+                        document.getElementById('product_list').innerHTML = data;
+                        createTrigger();
+                    })
+                    .fail(function (data) {
+                        // error
+                        console.log(data);
+                        window.alert('通信エラーが発生しました(E-S100-10)');
+                    });
+            }
+            get_all_data();
         </script>
     </body>
 </html>
