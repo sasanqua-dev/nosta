@@ -92,6 +92,7 @@
                                 <aside class="menu">
                                     <p class="menu-label" style="font-size: min(1.25vw, 1rem)">Category</p>
                                     <ul class="menu-list">
+                                        <li><a onclick="get_all_data()" style="font-size: min(1.5vw, 1rem)">すべての商品</a></li>
                                         <!--TODO フォントサイズのフレキシブル対応-->
                                         {% for cat in categories %}
                                         <li><a onclick="get_data('{{ cat }}')" style="font-size: min(1.5vw, 1rem)">{{ cat }}</a></li>
@@ -380,7 +381,6 @@
                 })
                     .done(function (data) {
                         document.getElementById('product_list').innerHTML = data;
-                        createTrigger();
                     })
                     .fail(function (data) {
                         // error

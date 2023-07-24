@@ -1,7 +1,7 @@
 {% for product in products %}
-<div class="column is-2">
+<div class="column is-4 box p-2">
     <p style="font-size: 12px;">{{ product.category }}</p>
     <strong>{{ product.name }}</strong>
-    <p class="is-size-6">{{ product.price_sell }}</p>
+    <p class="is-size-6">￥{{ product.price_sell }}</p>
 </div>
 {% endfor %}
