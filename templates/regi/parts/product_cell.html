@@ -1,7 +1,7 @@
 {% for product in products %}
 <div class="column is-3">
     <a onclick="add_cart('{{ product.id }}')">
-        <div class="p-2 product_cell" style="height: 130px">
+        <div class="p-2 product_cell" style="height: 130px; color: black;">
             <p style="font-size: 12px" id="product_{{ product.id }}_category">{{ product.category }}</p>
             <strong style="font-size: min(1.5vw, 1rem)" id="product_{{ product.id }}_name">{{ product.name }}</strong>
             <p class="is-size-6" id="product_{{ product.id }}_price">￥{{ product.price_sell }}</p>
