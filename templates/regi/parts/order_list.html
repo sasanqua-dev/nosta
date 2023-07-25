@@ -1,0 +1,22 @@
+<section style="width: 100vw">
+    {% if orders.count == 0 %}
+    <section class="hero is-light" style="width: 100%">
+        <div class="hero-body">
+            <p class="title">一致する商品がありません</p>
+        </div>
+    </section>
+    {% else %} {% for order in orders reversed %}
+    <div class="columns card card-content m-2">
+        <div class="column is-2"><b style="font-size: max(1vw, 15px)">{{ order.created_at }}</b></div>
+        <div class="column is-2"><c style="font-size: 12px">個数</c><br />{{ order.number }}個</div>
+        <div class="column is-2"><c style="font-size: 12px">合計金額</c><br />{{ order.total_price }}円</div>
+        <div class="column is-2"><c style="font-size: 12px">担当者</c><br />{{ order.user.username }}</div>
+        <div class="column is-2"><c style="font-size: 12px">状態</c><br />{{ order.status }}</div>
+        <div class="column is-2">
+            <div class="columns is-multiline">
+                <div class="column is-12"><a class="button is-outlined is-info js-modal-trigger" onclick="order_get_data('{{ order.id }}')">詳細</a></div>
+            </div>
+        </div>
+    </div>
+    {% endfor %} {% endif %}
+</section>

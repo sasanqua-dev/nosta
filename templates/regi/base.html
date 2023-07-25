@@ -51,16 +51,15 @@
                                 <b>レジ</b>
                             </div>
                         </a>
-                        <a class="column is-4">
+                        <a class="column is-4" onclick="order_get_list()">
                             <div class="box m-1 has-text-centered" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c; font-size: 2rem">
                                 <img src="{% static 'image\icon\receipt-solid.svg' %}" style="min-height: 5vh" class="image mx-5" />
                                 <b>伝票</b>
                             </div>
                         </a>
-                        <a class="column is-4">
-                            <div class="box m-1 has-text-centered" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c; font-size: 1rem">
-                                <img src="{% static 'image\icon\table-list-solid.svg' %}" style="min-height: 5vh" class="image mx-5" />
-                                <b>リソース</b>
+                        <a class="column is-4" href="{% url 'shop:dashboard' shop.code %}" target="_blank">
+                            <div class="box m-1 has-text-centered" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c; font-size: 2rem">
+                                <b>店舗管理</b>
                             </div>
                         </a>
                         <a class="column is-4" onclick="showSlide(5)">
@@ -70,9 +69,9 @@
                             </div>
                         </a>
                         <a class="column is-4">
-                            <div class="box m-1 has-text-centere" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c; font-size: 2rem">
-                                <img src="{% static 'image\icon\rotate-left-solid.svg' %}" style="min-height: 5vh" class="image mx-5" />
-                                <b>返品</b>
+                            <div class="box m-1 has-text-centered" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c; font-size: 1rem">
+                                <img src="{% static 'image\icon\table-list-solid.svg' %}" style="min-height: 5vh" class="image mx-5" />
+                                <b>リソース</b>
                             </div>
                         </a>
                         <a class="column is-4" onclick="showSlide(6)">
@@ -99,25 +98,193 @@
                             <div class="p-3 columns is-multiline" id="product_list" style="overflow-y: auto; height: 70vh"></div>
                         </div>
                         <div class="column is-4">
-                            <div style="height: 70vh; overflow-y: auto;"><a class="button is-outlined m-2 is-danger" style="width: 200px;" onclick="cart_clear()">クリア</a><div id="cart_list" ></div></div>
-                            <div style="height: 10vh;">
+                            <div style="height: 70vh; overflow-y: auto">
+                                <a class="button is-outlined m-2 is-danger" style="width: 200px" onclick="cart_clear()">クリア</a>
+                                <div id="cart_list"></div>
+                            </div>
+                            <div style="height: 10vh">
                                 <div class="columns">
                                     <div class="column is-8">
                                         <div class="columns">
-                                            <div class="column is-3" style="display: flex; justify-content: center; align-items: center;"><c style="font-size: 12px;">合計 </c></div>
-                                            <div class="column is-7" style="display: flex; justify-content: center; align-items: center;"><b class="is-size-4" id="cart_sum">0</b></div>
-                                            <div class="column is-2"  style="display: flex; justify-content: center; align-items: center;">円</div>
+                                            <div class="column is-3" style="display: flex; justify-content: center; align-items: center"><c style="font-size: 12px">合計 </c></div>
+                                            <div class="column is-7" style="display: flex; justify-content: center; align-items: center"><b class="is-size-4" id="cart_sum">0</b></div>
+                                            <div class="column is-2" style="display: flex; justify-content: center; align-items: center">円</div>
                                         </div>
                                     </div>
-                                    <div class="column is-4"><a class="button is-outlined m-2 is-info" onclick="showSlide(7)" style="width: 80px;">会計</a></div>
+                                    <div class="column is-4"><a class="button is-outlined m-2 is-info" onclick="showSlide(7)" style="width: 80px">会計</a></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="slide" style="width: 80vw">
+                <div class="slide" style="width: 100vw">
                     <!-- 2:伝票 -->
+                    <div>
+                        <div id="order_list"></div>
+                    </div>
+                    <div class="modal" id="detail">
+                        <div class="modal-background"></div>
+                        <div class="modal-card">
+                            <section class="modal-card-body">
+                                <div class="content">
+                                    <section>
+                                        <input type="hidden" id="o_id" />
+                                        <div class="my-3"><strong class="is-size-6 mt-3">購入詳細情報</strong></div>
+                                        <div id="order_detail_data" class="box"></div>
+                                        <div class="my-3"><strong class="is-size-6 mt-3 my-6">購入商品情報</strong></div>
+                                        <div id="order_product_data"></div>
+                                    </section>
+                                </div>
+                            </section>
+                            <footer class="modal-card-foot">
+                                <a class="button is-danger is-fullwidth is-outlined" onclick="order_treat('return')">返品</a>
+                            </footer>
+                        </div>
+                    </div>
+                    <script>
+                        function order_get_data(id) {
+                            var csrf_token = getCookie('csrftoken');
+                            path = "{% url 'shop:order' shop.code %}";
+                            document.getElementById('o_id').textContent = id;
+                            $.ajax({
+                                beforeSend: function (xhr, settings) {
+                                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                        xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                                    }
+                                },
+                                type: 'POST',
+                                url: path,
+                                data: {
+                                    type: 'get_detail',
+                                    id: id,
+                                },
+                                dataType: 'html',
+                            })
+                                .done(function (data) {
+                                    document.getElementById('order_detail_data').innerHTML = data;
+                                })
+                                .fail(function (data) {
+                                    // error
+                                    console.log(data);
+                                    window.alert('通信エラーが発生しました(E-R100-50)');
+                                });
+
+                            $.ajax({
+                                beforeSend: function (xhr, settings) {
+                                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                        xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                                    }
+                                },
+                                type: 'POST',
+                                url: path,
+                                data: {
+                                    type: 'get_order_products',
+                                    id: id,
+                                },
+                                dataType: 'html',
+                            })
+                                .done(function (data) {
+                                    document.getElementById('order_product_data').innerHTML = data;
+                                })
+                                .fail(function (data) {
+                                    // error
+                                    console.log(data);
+                                    window.alert('通信エラーが発生しました(E-R100-60)');
+                                });
+                            openModal(document.getElementById('detail'));
+                        }
+                        function openModal($el) {
+                            $el.classList.add('is-active');
+                        }
+                        function closeModal($el) {
+                            $el.classList.remove('is-active');
+                        }
+                        function createTrigger() {
+                            (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+                                const $target = $close.closest('.modal');
+                                $close.addEventListener('click', () => {
+                                    closeModal($target);
+                                });
+                            });
+                        }
+                        createTrigger();
+                        function order_treat(type) {
+                            var csrf_token = getCookie('csrftoken');
+                            path = "{% url 'shop:order' shop.code %}";
+                            id = document.getElementById('o_id').textContent;
+                            $.ajax({
+                                beforeSend: function (xhr, settings) {
+                                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                        xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                                    }
+                                },
+                                type: 'POST',
+                                url: path,
+                                data: {
+                                    type: 'post_order_treat',
+                                    method: type,
+                                    id: id,
+                                },
+                                dataType: 'text',
+                            })
+                                .done(function (data) {
+                                    window.alert('情報を更新しました');
+                                })
+                                .fail(function (data) {
+                                    // error
+                                    console.log(data);
+                                    window.alert('通信エラーが発生しました(E-R100-70)');
+                                });
+                        }
+                        // csrf_tokenの取得に使う
+                        function getCookie(name) {
+                            var cookieValue = null;
+                            if (document.cookie && document.cookie !== '') {
+                                var cookies = document.cookie.split(';');
+                                for (var i = 0; i < cookies.length; i++) {
+                                    var cookie = jQuery.trim(cookies[i]);
+                                    // Does this cookie string begin with the name we want?
+                                    if (cookie.substring(0, name.length + 1) === name + '=') {
+                                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                        break;
+                                    }
+                                }
+                            }
+                            return cookieValue;
+                        }
+                        function csrfSafeMethod(method) {
+                            // these HTTP methods do not require CSRF protection
+                            return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+                        }
+                        function order_get_list() {
+                            var csrf_token = getCookie('csrftoken');
+                            showSlide(2);
+                            path = "{% url 'regi:index' shop.code %}";
+                            $.ajax({
+                                beforeSend: function (xhr, settings) {
+                                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                        xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                                    }
+                                },
+                                type: 'POST',
+                                url: path,
+                                data: {
+                                    type: 'get_list',
+                                },
+                                dataType: 'html',
+                            })
+                                .done(function (data) {
+                                    document.getElementById('order_list').innerHTML = data;
+                                })
+                                .fail(function (data) {
+                                    // error
+                                    console.log(data);
+                                    window.alert('通信エラーが発生しました(E-R100-70)');
+                                });
+                            createTrigger();
+                        }
+                    </script>
                 </div>
 
                 <div class="slide">
@@ -154,12 +321,7 @@
                                 <b>ログアウト</b>
                             </div>
                         </a>
-                        <a class="column is-3" href="{% url 'shop:dashboard' shop.code %}" target="_blank">
-                            <div class="box m-1 has-text-centered is-size-5" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c">
-                                <b>店舗管理</b>
-                            </div>
-                        </a>
-                        <a class="column is-3" href="{% url 'ticket:customers' shop.code %}" target="_blank">
+                        <a class="column is-6" href="{% url 'ticket:customers' shop.code %}" target="_blank">
                             <div class="box m-1 has-text-centered is-size-5" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c">
                                 <b>チケット管理</b>
                             </div>
@@ -177,92 +339,147 @@
                     <div class="columns" style="width: 100vw; height: 80vh">
                         <div class="column is-6 px-6">
                             <div class="columns is-multiline">
-                                <div class="column is-4"><a onclick="tr_recive(1)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">1</a></div>
-                                <div class="column is-4"><a onclick="tr_recive(2)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">2</a></div>
-                                <div class="column is-4"><a onclick="tr_recive(3)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">3</a></div>
-                                <div class="column is-4"><a onclick="tr_recive(4)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">4</a></div>
-                                <div class="column is-4"><a onclick="tr_recive(5)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">5</a></div>
-                                <div class="column is-4"><a onclick="tr_recive(6)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">6</a></div>
-                                <div class="column is-4"><a onclick="tr_recive(7)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">7</a></div>
-                                <div class="column is-4"><a onclick="tr_recive(8)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">8</a></div>
-                                <div class="column is-4"><a onclick="tr_recive(9)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">9</a></div>
-                                <div class="column is-4"><a onclick="tr_treat('backspace')" class="m-2" style="display: flex; justify-content: center; align-items: center;  width: 10vw; height: 10vw; font-size: 2vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">BS</a></div>
-                                <div class="column is-4"><a onclick="tr_recive(0)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">0</a></div>
-                                <div class="column is-4"><a onclick="tr_treat('delete')" class="m-2" style="display: flex; justify-content: center; align-items: center;  width: 10vw; height: 10vw; font-size: 2vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">Del</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(1)" class="m-2 number_display">1</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(2)" class="m-2 number_display">2</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(3)" class="m-2 number_display">3</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(4)" class="m-2 number_display">4</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(5)" class="m-2 number_display">5</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(6)" class="m-2 number_display">6</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(7)" class="m-2 number_display">7</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(8)" class="m-2 number_display">8</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(9)" class="m-2 number_display">9</a></div>
+                                <div class="column is-4"><a onclick="tr_treat('backspace')" class="m-2 number_display">BS</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(0)" class="m-2 number_display">0</a></div>
+                                <div class="column is-4"><a onclick="tr_treat('delete')" class="m-2 number_display">Del</a></div>
                             </div>
                         </div>
                         <div class="column is-4">
                             <div class="my-5">
                                 <b>
                                     <p class="is-size-6">購入金額：</p>
-                                    <c class="is-size-2" id="treasurer_cart_sum" style="width: 1000px;"></c>円
+                                    <c class="is-size-2" id="treasurer_cart_sum" style="width: 1000px"></c>円
                                 </b>
                             </div>
                             <div class="my-5">
                                 <b>
                                     <p class="is-size-6">お預かり金額：</p>
-                                    <c class="is-size-2" id="treasurer_cs_sum"  style="width: 1000px;">0</c>円
+                                    <c class="is-size-2" id="treasurer_cs_sum" style="width: 1000px">0</c>円
                                 </b>
                             </div>
                             <div class="my-5">
                                 <b>
                                     <p class="is-size-6">おつり：</p>
-                                    <c class="is-size-2" id="remaining"  style="width: 1000px;"></c>円
+                                    <c class="is-size-2" id="remaining" style="width: 1000px"></c>円
+                                </b>
+                            </div>
+                            <div class="my-5">
+                                <b>
+                                    <p class="is-size-6">チケットID：</p>
+                                    <input class="input m-2" type="number" min="0" placeholder="0" id="ticket_id" />
                                 </b>
                             </div>
                             <div class="my-5">
                                 <p class="is-size-4 has-text-centered has-text-danger" id="tr_message">金額が不足しています</p>
-                                <a class="button is-outlined is-info m-2"  style="width: 200px; height:  50px;" id="tr_next" disabled>次へ</a>
+                                <a class="button is-outlined is-info m-2" style="width: 200px; height: 50px" id="tr_next" disabled onclick="tr_send()">次へ</a>
                             </div>
                         </div>
                         <div class="column is-2">
-                            <div class="">
-                                <a class="button is-outlined is-danger m-2" style="width: 150px;" onclick="tr_clear()">クリア</a>
-                                <a class="button is-outlined is-info m-2" onclick="showSlide(1)"  style="width: 150px;">商品登録に戻る</a>
-                                <a class="button is-outlined is-info m-2"  style="width: 150px;">個別支払い</a>
-                                <a class="button is-outlined is-info m-2"  style="width: 150px;">クーポン(値引き)</a>
-                                <a class="button is-outlined is-info m-2"  style="width: 150px;">クーポン(割引)</a>
+                            <div>
+                                <a class="button is-outlined is-danger m-2" style="width: 120px" onclick="tr_clear()">クリア</a>
+                            </div>
+                            <div>
+                                <a class="button is-outlined is-info m-2" onclick="showSlide(1)" style="width: 120px">商品登録に戻る</a>
+                            </div>
+                            <div>
+                                <a class="button is-outlined is-info m-2" style="width: 120px">値引き</a>
+                            </div>
+                            <div>
+                                <a class="button is-outlined is-info m-2" style="width: 120px">割引</a>
                             </div>
                         </div>
                     </div>
                     <script>
-                        function treasurer_setup(){
-                            document.getElementById("treasurer_cart_sum").textContent = document.getElementById("cart_sum").textContent
-                            cal_remaining()
+                        function treasurer_setup() {
+                            document.getElementById('treasurer_cart_sum').textContent = document.getElementById('cart_sum').textContent;
+                            cal_remaining();
                         }
-                        function cal_remaining(){
-                            document.getElementById("remaining").textContent = Number(document.getElementById("treasurer_cs_sum").textContent) - Number(document.getElementById("treasurer_cart_sum").textContent)
-                            if (Number(document.getElementById("remaining").textContent)>= 0){
-                                document.getElementById("tr_message").textContent = ""
-                                document.getElementById("tr_next").removeAttribute("disabled")
-                            }else{
-                                document.getElementById("tr_message").textContent = "金額が不足しています"
-                                document.getElementById("tr_next").setAttribute("disabled","")
+                        function cal_remaining() {
+                            document.getElementById('remaining').textContent =
+                                Number(document.getElementById('treasurer_cs_sum').textContent) - Number(document.getElementById('treasurer_cart_sum').textContent);
+                            if (Number(document.getElementById('remaining').textContent) >= 0) {
+                                document.getElementById('tr_message').textContent = '';
+                                document.getElementById('tr_next').removeAttribute('disabled');
+                            } else {
+                                document.getElementById('tr_message').textContent = '金額が不足しています';
+                                document.getElementById('tr_next').setAttribute('disabled', '');
                             }
                         }
-                        function tr_recive(number){
-                            if (document.getElementById("treasurer_cs_sum").textContent == 0){
-                                document.getElementById("treasurer_cs_sum").textContent = number
-                            }else{
-                                document.getElementById("treasurer_cs_sum").textContent += number
+                        function tr_recive(number) {
+                            if (document.getElementById('treasurer_cs_sum').textContent == 0) {
+                                document.getElementById('treasurer_cs_sum').textContent = number;
+                            } else {
+                                document.getElementById('treasurer_cs_sum').textContent += number;
                             }
-                            cal_remaining()
+                            cal_remaining();
                         }
-                        function tr_treat(method){
-                            if (method == "backspace"){
-                                document.getElementById("treasurer_cs_sum").textContent = document.getElementById("treasurer_cs_sum").textContent.slice(0,-1)
-                                if(document.getElementById("treasurer_cs_sum").textContent == ""){
-                                    document.getElementById("treasurer_cs_sum").textContent = 0
+                        function tr_treat(method) {
+                            if (method == 'backspace') {
+                                document.getElementById('treasurer_cs_sum').textContent = document.getElementById('treasurer_cs_sum').textContent.slice(0, -1);
+                                if (document.getElementById('treasurer_cs_sum').textContent == '') {
+                                    document.getElementById('treasurer_cs_sum').textContent = 0;
                                 }
-                            }else if(method == "delete"){
-                                document.getElementById("treasurer_cs_sum").textContent = 0
+                            } else if (method == 'delete') {
+                                document.getElementById('treasurer_cs_sum').textContent = 0;
                             }
+                            cal_remaining();
                         }
-                        function tr_clear(){
-                            document.getElementById("treasurer_cs_sum").textContent = 0
-                            cal_remaining()
-                            cart_clear()
-                            showSlide(1)
+                        function tr_clear() {
+                            document.getElementById('treasurer_cs_sum').textContent = 0;
+                            cal_remaining();
+                            cart_clear();
+                            showSlide(1);
+                        }
+                        function tr_send() {
+                            let products = document.getElementsByClassName('product_cell_id');
+                            let cart_numbers = document.getElementsByClassName('cart_number');
+                            let product_ids = new Array();
+                            let product_numbers = new Array();
+                            for (let i = 0; i < products.length; i++) {
+                                let id = products[i].id.replace('cart_', '');
+                                let number = cart_numbers[i].value;
+                                product_ids.push(id);
+                                product_numbers.push(number);
+                            }
+                            var csrf_token = getCookie('csrftoken');
+                            path = "{% url 'regi:index' shop.code %}";
+                            $.ajax({
+                                beforeSend: function (xhr, settings) {
+                                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                        xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                                    }
+                                },
+                                type: 'POST',
+                                url: path,
+                                data: {
+                                    type: 'post_treasurer',
+                                    products_ids: JSON.stringify(product_ids),
+                                    products_numbers: JSON.stringify(product_numbers),
+                                    ticket: document.getElementById('ticket_id').value,
+                                    number: products.length,
+                                    total_price: document.getElementById('treasurer_cart_sum').textContent,
+                                    cs_price: document.getElementById('treasurer_cs_sum').textContent,
+                                    remaining_price: document.getElementById('remaining').textContent,
+                                },
+                                dataType: 'text',
+                            })
+                                .done(function (data) {
+                                    tr_clear();
+                                })
+                                .fail(function (data) {
+                                    // error
+                                    console.log(data);
+                                    window.alert('通信エラーが発生しました(E-R100-20)');
+                                });
                         }
                     </script>
                 </div>
@@ -295,8 +512,8 @@
             const slides = document.getElementsByClassName('slide');
 
             function showSlide(index) {
-                if (index == 7){
-                    treasurer_setup()
+                if (index == 7) {
+                    treasurer_setup();
                 }
                 if (index >= 0 && index < slides.length) {
                     for (let i = 0; i < slides.length; i++) {
@@ -449,65 +666,65 @@
                 }
                 document.getElementById('tab_' + category).classList.add('regi_tab_active');
             }
-            function add_cart(id){
-                if(document.getElementById("cart_"+id) != null){
-                    document.getElementById("cart_"+id+"_number").value = Number(document.getElementById("cart_"+id+"_number").value) + 1
-                    cal_cart_sum()
-                }else{
-                    parent = document.createElement("div")
-                    parent.id = "cart_" + id
-                    parent.classList.add("columns","is-multiline","m-1")
-                    child_left = document.createElement("div")
-                    child_left.classList.add("column","is-8")
-                    child_left_category = document.createElement("p")
-                    child_left_category.style = "font-size: 12px"
-                    child_left_category.textContent = document.getElementById("product_"+id+"_category").textContent
-                    child_left_name = document.createElement("strong")
-                    child_left_name.textContent = document.getElementById("product_"+id+"_name").textContent
-                    child_left.appendChild(child_left_category)
-                    child_left.appendChild(child_left_name)
-                    child_right = document.createElement("div")
-                    child_right.classList.add("column","is-4")
-                    child_right_price = document.createElement("b")
-                    child_right_price.classList.add("is-size-4")
-                    child_right_price.textContent = "￥"
-                    child_right_price_in = document.createElement("c")
-                    child_right_price_in.classList.add("cart_price")
-                    child_right_price_in.textContent = document.getElementById("product_"+id+"_price").textContent
-                    child_right_price.appendChild(child_right_price_in)
-                    child_right_number = document.createElement("input")
-                    child_right_number.classList.add("input","m-1","cart_number")
-                    child_right_number.value = 1
-                    child_right_number.type = "number"
-                    child_right_number.min = 0
-                    child_right_number.id = "cart_" + id + "_number"
-                    child_right_price.appendChild(child_right_price_in)
-                    child_right.appendChild(child_right_price)
-                    child_right.appendChild(child_right_number)
-                    parent.appendChild(child_left)
-                    parent.appendChild(child_right)
-                    document.getElementById("cart_list").appendChild(parent)
+            function add_cart(id) {
+                if (document.getElementById('cart_' + id) != null) {
+                    document.getElementById('cart_' + id + '_number').value = Number(document.getElementById('cart_' + id + '_number').value) + 1;
+                    cal_cart_sum();
+                } else {
+                    parent = document.createElement('div');
+                    parent.id = 'cart_' + id;
+                    parent.classList.add('columns', 'is-multiline', 'm-1', 'product_cell_id');
+                    child_left = document.createElement('div');
+                    child_left.classList.add('column', 'is-8');
+                    child_left_category = document.createElement('p');
+                    child_left_category.style = 'font-size: 12px';
+                    child_left_category.textContent = document.getElementById('product_' + id + '_category').textContent;
+                    child_left_name = document.createElement('strong');
+                    child_left_name.textContent = document.getElementById('product_' + id + '_name').textContent;
+                    child_left.appendChild(child_left_category);
+                    child_left.appendChild(child_left_name);
+                    child_right = document.createElement('div');
+                    child_right.classList.add('column', 'is-4');
+                    child_right_price = document.createElement('b');
+                    child_right_price.classList.add('is-size-4');
+                    child_right_price.textContent = '￥';
+                    child_right_price_in = document.createElement('c');
+                    child_right_price_in.classList.add('cart_price');
+                    child_right_price_in.textContent = document.getElementById('product_' + id + '_price').textContent;
+                    child_right_price.appendChild(child_right_price_in);
+                    child_right_number = document.createElement('input');
+                    child_right_number.classList.add('input', 'm-1', 'cart_number');
+                    child_right_number.value = 1;
+                    child_right_number.type = 'number';
+                    child_right_number.min = 0;
+                    child_right_number.id = 'cart_' + id + '_number';
+                    child_right_price.appendChild(child_right_price_in);
+                    child_right.appendChild(child_right_price);
+                    child_right.appendChild(child_right_number);
+                    parent.appendChild(child_left);
+                    parent.appendChild(child_right);
+                    document.getElementById('cart_list').appendChild(parent);
                     child_right_number.addEventListener('change', function () {
-                        if (child_right_number.value == 0){
-                            parent.remove()
+                        if (child_right_number.value == 0) {
+                            parent.remove();
                         }
-                        cal_cart_sum()
+                        cal_cart_sum();
                     });
-                    cal_cart_sum()
+                    cal_cart_sum();
                 }
             }
-            function cal_cart_sum(){
-                let sum = 0
-                let cart_numbers = document.getElementsByClassName("cart_number")
-                let cart_prices = document.getElementsByClassName("cart_price")
-                for(let i=0;i<cart_numbers.length;i++){
-                    sum += cart_numbers[i].value * cart_prices[i].textContent
+            function cal_cart_sum() {
+                let sum = 0;
+                let cart_numbers = document.getElementsByClassName('cart_number');
+                let cart_prices = document.getElementsByClassName('cart_price');
+                for (let i = 0; i < cart_numbers.length; i++) {
+                    sum += cart_numbers[i].value * cart_prices[i].textContent;
                 }
-                document.getElementById("cart_sum").textContent = sum
+                document.getElementById('cart_sum').textContent = sum;
             }
-            function cart_clear(){
-                document.getElementById("cart_list").innerHTML = ""
-                cal_cart_sum()
+            function cart_clear() {
+                document.getElementById('cart_list').innerHTML = '';
+                cal_cart_sum();
             }
             function get_data(category) {
                 var csrf_token = getCookie('csrftoken');
@@ -534,7 +751,7 @@
                     .fail(function (data) {
                         // error
                         console.log(data);
-                        window.alert('通信エラーが発生しました(E-100)');
+                        window.alert('通信エラーが発生しました(E-R100-30)');
                     });
             }
 
@@ -561,7 +778,7 @@
                     .fail(function (data) {
                         // error
                         console.log(data);
-                        window.alert('通信エラーが発生しました(E-S100-10)');
+                        window.alert('通信エラーが発生しました(E-R100-40)');
                     });
             }
             get_all_data();

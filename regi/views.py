@@ -64,6 +64,49 @@ def index(request,shopCODE):
                 data = render_to_string('regi/parts/product_cell.html', param)
                 return HttpResponse(data)
             
+            elif request.POST["type"] == "post_treasurer":
+                shop = Shop.objects.get(code=shopCODE)
+                if(shop.regi_ticket):
+                    status = "recived"
+                else:
+                    status = "complete"
+                if request.POST["ticket"] == "":
+                    ticket_data = None
+                else:
+                    ticket_data = Ticket.objects.get(id=request.POST["ticket"])
+
+                order = Order.objects.create(
+                    user = request.user,
+                    shop = Shop.objects.get(code=shopCODE),
+                    status = status,
+                    day = get_dayformat(),
+                    ticket = ticket_data,
+                    total_price = request.POST["total_price"],
+                    cs_price = request.POST["cs_price"],
+                    remaining_price = request.POST["remaining_price"],
+                    number = request.POST["number"],
+                )
+                for product_id,product_number in zip(json.loads(request.POST["products_ids"]),json.loads(request.POST["products_numbers"])):
+                    product = Product.objects.get(id=product_id)
+                    CellProduct.objects.create(
+                        product=product,
+                        order=order,
+                        shop=shop,
+                        number=product_number,
+                        style="sold",
+                        price=product.price_sell,
+                        day = get_dayformat()
+                    )
+                return HttpResponse("OK!")
+            
+            elif request.POST["type"] == "get_list":
+                orders = Order.objects.all().filter(shop=shop)
+                param = {
+                    "orders": orders,
+                }
+                data = render_to_string('regi/parts/order_list.html', param)
+                return HttpResponse(data)
+            
         else:
             return HttpResponse("Permission Error")
     if user_permission_auth(request,shopCODE) == "allow":

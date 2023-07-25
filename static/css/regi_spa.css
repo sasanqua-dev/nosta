@@ -58,6 +58,22 @@
     animation: animation-loading-015 3s infinite forwards;
 }
 
+.number_display {
+    display: flex;  
+    font-size: 4vw;
+    color: #00517c;
+    font-weight: bold;
+    border-radius: 20px;
+    border: 2px solid #00517c;
+    justify-content: center; 
+    align-items: center;
+    padding: 10px;
+}
+
+.number_display:hover{
+    color: #00517c;
+}
+
 .loading-015 span {
     position: absolute;
     top: -24px;

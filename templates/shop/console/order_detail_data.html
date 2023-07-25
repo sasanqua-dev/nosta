@@ -1,0 +1,19 @@
+<section>
+    {% if product_list.count == 0 %}
+    <section class="hero is-light" style="width: 100%">
+        <div class="hero-body">
+            <p class="title">一致する商品がありません</p>
+        </div>
+    </section>
+    {% else %}
+    <p><c style="font-size: 12px">処理日時</c><br /><b style="font-size: max(1vw, 15px)">{{ order.created_at }}</b></p>
+    <p><c style="font-size: 12px">個数</c><br />{{ order.number }}</p>
+    <p><c style="font-size: 12px">合計金額</c><br />{{ order.total_price }}円</p>
+    <p><c style="font-size: 12px">お預かり金額</c><br />{{ order.cs_price }}円</p>
+    <p><c style="font-size: 12px">お釣り</c><br />{{ order.remaining_price }}円</p>
+    <p><c style="font-size: 12px">担当者</c><br />{{ order.user.username}}<br />{{ order.user.email}}</p>
+    <p><c style="font-size: 12px">状態</c><br />{{ order.status }}</p>
+    <p><c style="font-size: 12px">チケットID</c><br />{{ order.ticket.id }}</p>
+    <p><c style="font-size: 12px">種別</c><br />{{ order.ticket.cs_type }}</p>
+    {% endif %}
+</section>

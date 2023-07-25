@@ -227,7 +227,40 @@ def product(request,shopCODE):
 @login_required
 def order(request,shopCODE):
     if user_permission_auth(request,shopCODE) == "allow":
-        shop = Shop.objects.get(code=shopCODE)
-        return render(request, 'shop/console/order.html',{'shop':shop})
+        if request.method == "POST":
+            order = Order.objects.get(id=request.POST["id"])
+            if request.POST["type"] == "get_detail":
+                param = {
+                    "order":order
+                }
+                data_detail = render_to_string("shop/console/order_detail_data.html",param)
+                return HttpResponse(data_detail)
+                
+            elif request.POST["type"] == "get_order_products":
+                products = CellProduct.objects.all().filter(order=order)
+                param = {
+                    "products":products
+                }
+                data_product = render_to_string("shop/console/order_product.html",param)
+                return HttpResponse(data_product)
+                
+            elif request.POST["type"] == "post_order_treat":
+                if request.POST["method"] == "delete":
+                    Order.objects.get(id=request.POST["id"]).delete()
+                elif request.POST["method"] == "return":
+                    order = Order.objects.get(id=request.POST["id"])
+                    order.status = "return"
+                    order.save()
+                    products = CellProduct.objects.all().filter(order=order)
+                    for product in products:
+                        product.price = 0
+                        product.save()
+                return HttpResponse("OK!")
+
+
+        else:
+            shop = Shop.objects.get(code=shopCODE)
+            orders = Order.objects.all().filter(shop=shop)
+            return render(request, 'shop/console/order.html',{'shop':shop,'orders':orders})
     else:
         return redirect('home')

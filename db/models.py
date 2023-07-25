@@ -30,7 +30,9 @@ class Shop(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    is_active = models.CharField(max_length=50)
+    regi_ticket = models.BooleanField()
+
+    is_active = models.BooleanField()
 
     def __str__(self):
         return self.name
@@ -75,6 +77,10 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField(auto_now=True)
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE,null=True)
+    number = models.IntegerField()
+    total_price = models.IntegerField()
+    cs_price = models.IntegerField()
+    remaining_price = models.IntegerField()
 
 class CellProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL,null=True)
