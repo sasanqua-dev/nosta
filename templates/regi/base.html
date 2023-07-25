@@ -388,8 +388,6 @@
                 let cart_prices = document.getElementsByClassName("cart_price")
                 for(let i=0;i<cart_numbers.length;i++){
                     sum += cart_numbers[i].value * cart_prices[i].textContent
-                    console.log(cart_numbers[i].value)
-                    console.log(cart_prices[i].textContent)
                 }
                 document.getElementById("cart_sum").textContent = sum
             }
