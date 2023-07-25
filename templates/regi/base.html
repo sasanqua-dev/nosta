@@ -373,12 +373,20 @@
                     child_right_number = document.createElement("input")
                     child_right_number.classList.add("input","m-1","cart_number")
                     child_right_number.value = 1
+                    child_right_number.type = "number"
+                    child_right_number.min = 0
                     child_right_number.id = "cart_" + id + "_number"
                     child_right.appendChild(child_right_price)
                     child_right.appendChild(child_right_number)
                     parent.appendChild(child_left)
                     parent.appendChild(child_right)
                     document.getElementById("cart_list").appendChild(parent)
+                    child_right_number.addEventListener('change', function () {
+                        if (child_right_number.value == 0){
+                            parent.remove()
+                        }
+                        cal_cart_sum()
+                    });
                     cal_cart_sum()
                 }
             }
