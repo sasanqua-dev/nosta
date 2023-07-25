@@ -344,9 +344,9 @@
                 }else{
                     parent = document.createElement("div")
                     parent.id = "cart_" + id
-                    parent.classList.add("columns is-multiline m-1")
+                    parent.class = "columns is-multiline m-1"
                     child_left = document.createElement("div")
-                    child_left.classList.add("column is-8")
+                    child_left.class = "column is-8"
                     child_left_category = document.createElement("p")
                     child_left_category.style = "font-size: 12px"
                     child_left_category.textContent = document.getElementById("product_"+id+"_category").textContent
@@ -357,10 +357,10 @@
                     child_right = documet.createElement("div")
                     child_right.classList.add("column is-4")
                     child_right_price = documrnt.createElement("b")
-                    child_right_price.classList.add("is-size-4")
+                    child_right_price.class = "is-size-4"
                     child_right_price.textContent = document.getElementById("product_"+id+"_price").textContent
                     child_right_number = documet.createElement("input")
-                    child_right_number.classList("input m-1")
+                    child_right_number.class = "input m-1"
                     child_right_number.value = 1
                     child_right_number.id = "cart_" + id + "_number"
                     child_right.appendChild(child_right_price)
