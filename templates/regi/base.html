@@ -98,7 +98,17 @@
                             </div>
                             <div class="columns is-multiline p-3" id="product_list" style="overflow-y: auto; height: 70vh"></div>
                         </div>
-                        <div class="column is-4"><div id="cart_list"></div></div>
+                        <div class="column is-4">
+                            <div id="cart_list" style="height: 60vh; overflow-y: auto;"></div>
+                            <div style="height: 10vh;">
+                                <div class="columns">
+                                    <div class="column is-9">
+                                        <b class="is-size-4" id="cart_sum"></b>
+                                    </div>
+                                    <div class="column is-3"><a class="button is-outline is-info">会計</a></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -341,6 +351,7 @@
             function add_cart(id){
                 if(document.getElementById("cart_"+id) != null){
                     document.getElementById("cart_"+id+"_number").value = Number(document.getElementById("cart_"+id+"_number").value) + 1
+                    cal_cart_sum()
                 }else{
                     parent = document.createElement("div")
                     parent.id = "cart_" + id
@@ -357,10 +368,10 @@
                     child_right = document.createElement("div")
                     child_right.classList.add("column","is-4")
                     child_right_price = document.createElement("b")
-                    child_right_price.classList.add("is-size-4")
+                    child_right_price.classList.add("is-size-4","cart_price")
                     child_right_price.textContent = document.getElementById("product_"+id+"_price").textContent
                     child_right_number = document.createElement("input")
-                    child_right_number.classList.add("input","m-1")
+                    child_right_number.classList.add("input","m-1","cart_number")
                     child_right_number.value = 1
                     child_right_number.id = "cart_" + id + "_number"
                     child_right.appendChild(child_right_price)
@@ -368,7 +379,17 @@
                     parent.appendChild(child_left)
                     parent.appendChild(child_right)
                     document.getElementById("cart_list").appendChild(parent)
+                    cal_cart_sum()
                 }
+            }
+            function cal_cart_sum(){
+                let sum = 0
+                let cart_numbers = document.getElementsByClassName("cart_number")
+                let cart_prices = document.getElementsByClassName("cart_price")
+                for(let i=0;i<cart_numbers.length;i++){
+                    sum += cart_numbers[0].value * cart_prices[i].textContent
+                }
+                document.getElementById("cart_sum").textContent = sum
             }
             function get_data(category) {
                 var csrf_token = getCookie('csrftoken');
