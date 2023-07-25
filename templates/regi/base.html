@@ -340,13 +340,13 @@
             }
             function add_cart(id){
                 if(document.getElementById("cart_"+id) != null){
-                    document.getElementById("cart_"+id+"_number").value += 1
+                    document.getElementById("cart_"+id+"_number").value = Number(document.getElementById("cart_"+id+"_number").value) + 1
                 }else{
                     parent = document.createElement("div")
                     parent.id = "cart_" + id
-                    parent.class = "columns is-multiline m-1"
+                    parent.classList.add("columns is-multiline m-1")
                     child_left = document.createElement("div")
-                    child_left.class = "column is-8"
+                    child_left.classList.add("column is-8")
                     child_left_category = document.createElement("p")
                     child_left_category.style = "font-size: 12px"
                     child_left_category.textContent = document.getElementById("product_"+id+"_category").textContent
@@ -355,12 +355,12 @@
                     child_left.appendChild(child_left_category)
                     child_left.appendChild(child_left_name)
                     child_right = document.createElement("div")
-                    child_right.class = "column is-4"
+                    child_right.classList.add("column is-4")
                     child_right_price = document.createElement("b")
-                    child_right_price.class = "is-size-4"
+                    child_right_price.classList.add("is-size-4")
                     child_right_price.textContent = document.getElementById("product_"+id+"_price").textContent
                     child_right_number = document.createElement("input")
-                    child_right_number.class = "input m-1"
+                    child_right_number.classList.add("input m-1")
                     child_right_number.value = 1
                     child_right_number.id = "cart_" + id + "_number"
                     child_right.appendChild(child_right_price)
