@@ -99,11 +99,11 @@
                             <div class="columns is-multiline p-3" id="product_list" style="overflow-y: auto; height: 70vh"></div>
                         </div>
                         <div class="column is-4">
-                            <div id="cart_list" style="height: 60vh; overflow-y: auto;"></div>
+                            <div id="cart_list" style="height: 70vh; overflow-y: auto;"></div>
                             <div style="height: 10vh;">
                                 <div class="columns">
                                     <div class="column is-9">
-                                        <c style="font-size: 12px;">合計 </c><b class="is-size-4" id="cart_sum"></b> 円
+                                        <c style="font-size: 12px;">合計 </c><b class="is-size-4" id="cart_sum">0</b> 円
                                     </div>
                                     <div class="column is-3"><a class="button is-outline is-info">会計</a></div>
                                 </div>
@@ -387,7 +387,9 @@
                 let cart_numbers = document.getElementsByClassName("cart_number")
                 let cart_prices = document.getElementsByClassName("cart_price")
                 for(let i=0;i<cart_numbers.length;i++){
-                    sum += cart_numbers[0].value * cart_prices[i].textContent
+                    sum += cart_numbers[i].value * cart_prices[i].textContent
+                    console.log(cart_numbers[i].value)
+                    console.log(cart_prices[i].textContent)
                 }
                 document.getElementById("cart_sum").textContent = sum
             }
