@@ -1,0 +1,25 @@
+{% if tickets.count == 0 %}
+<div class="card card-content">該当するチケットはありません</div>
+{% endif %} {% for ticket in tickets %}
+<div class="columns card card-content m-1">
+    <div class="column is-2"><b class="is-size-3">{{ ticket.number }}</b></div>
+    <div class="column is-6">
+        <div class="columns">
+            <div class="column"><c style="font-size: 12px">人数</c><br />{{ ticket.people }}</div>
+            <div class="column"><c style="font-size: 12px">発券</c><br />{{ ticket.location }}</div>
+        </div>
+        <c style="font-size: 12px">発券日時</c><br />{{ ticket.created_at }}
+    </div>
+    <div class="column is-4">
+        <div class="columns is-multiline">
+            {% if ticket.status == "Waiting" %}
+            <div class="column is-12"><a class="button is-outlined is-info ticket-calling" data-id="{{ ticket.id }}">呼び出し</a></div>
+            <div class="column is-12"><a class="button is-outlined is-danger ticket-canceled" data-id="{{ ticket.id }}">取り消し</a></div>
+            {% elif ticket.status == "Calling" %}
+            <div class="column is-12"><a class="button is-outlined is-success ticket-called" data-id="{{ ticket.id }}">呼出確認</a></div>
+            <div class="column is-12"><a class="button is-outlined is-danger ticket-skipped" data-id="{{ ticket.id }}">スキップ</a></div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endfor %}

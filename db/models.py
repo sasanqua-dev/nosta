@@ -38,7 +38,7 @@ class Shop(models.Model):
 class Ticket(models.Model):
     # フィールドの定義
     number = models.IntegerField()
-    shopID = models.ForeignKey(Shop, on_delete=models.CASCADE)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
 
     people = models.IntegerField()
     cstype = models.CharField(max_length=100)
@@ -48,7 +48,7 @@ class Ticket(models.Model):
     day = models.CharField(max_length=50)
 
     created_at = models.DateTimeField(auto_now_add=True)
-    finished_at = models.DateTimeField(auto_now_add=True)
+    finished_at = models.DateTimeField(auto_now=True)
     waiting = models.IntegerField()
 
     def __str__(self):
@@ -56,29 +56,36 @@ class Ticket(models.Model):
     
 
 class Product(models.Model):
-    product_nameid = models.CharField(max_length=100)
-    shopID = models.ForeignKey(Shop, on_delete=models.CASCADE)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
+    category = models.CharField(max_length=20)
     price_sell = models.IntegerField()
     price_buy = models.IntegerField()
     description = models.TextField()
-    Images = models.ImageField(upload_to='')
-    is_active = models.CharField(max_length=50)
+    #Images = models.ImageField(upload_to='',null=True)
+    is_active = models.BooleanField()
+    def __str__(self):
+        return self.name
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
-    shopID = models.ForeignKey(Shop, on_delete=models.CASCADE)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     status = models.CharField(max_length=20)
     day = models.CharField(max_length=10)
     created_at = models.DateTimeField(auto_now_add=True)
-    finished_at = models.DateTimeField(auto_now_add=True)
+    finished_at = models.DateTimeField(auto_now=True)
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE,null=True)
 
 class CellProduct(models.Model):
-    product_id = models.ForeignKey(Product, on_delete=models.SET_NULL,null=True)
-    order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
-    ticket_id = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL,null=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE,null=True)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     number = models.IntegerField()
+    style = models.CharField(max_length=10)
+    reason = models.TextField(max_length=1000,null=True)
     price = models.IntegerField()
+    day = models.CharField(max_length=10)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class News(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)

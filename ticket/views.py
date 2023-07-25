@@ -23,13 +23,13 @@ def consolo_access(request,shopCODE,authtype=None):
         if(shop.owner == request.user) or (shop.code in userdomain):
             return True,shop
         else:
-            return False,dummy
+            return False,"dummy"
     if(shop.owner == request.user) or (shop.code in userdomain): 
         formatted = get_dayformat()
-        tickets = Ticket.objects.all().filter(Q(shopID=shop.id) & Q(day=formatted)& Q(shopID=shop.id)).count()
-        tickets_already = Ticket.objects.all().filter((Q(status="Canceled") | Q(status="Skipped")| Q(status="Called"))& Q(day=formatted)& Q(shopID=shop.id))
-        tickets_calling = Ticket.objects.all().filter(Q(status="Calling") & Q(day=formatted)& Q(shopID=shop.id))
-        tickets_yet = Ticket.objects.all().filter(Q(status="Waiting")& Q(day=formatted)& Q(shopID=shop.id))
+        tickets = Ticket.objects.all().filter(Q(shop=shop) & Q(day=formatted)& Q(shop=shop)).count()
+        tickets_already = Ticket.objects.all().filter((Q(status="Canceled") | Q(status="Skipped")| Q(status="Called"))& Q(day=formatted)& Q(shop=shop))
+        tickets_calling = Ticket.objects.all().filter(Q(status="Calling") & Q(day=formatted)& Q(shop=shop))
+        tickets_yet = Ticket.objects.all().filter(Q(status="Waiting")& Q(day=formatted)& Q(shop=shop))
         return shop,tickets,tickets_already,tickets_calling,tickets_yet,formatted
     else:
         return "bad","dummy","dummy","dummy","dummy","dummy"
@@ -43,9 +43,9 @@ def dashboard(request,shopCODE):
 
     news = News.objects.all().filter(Q(channel="ticket-console") | Q(channel="all")).order_by('created_at').reverse()[:3]
     # 来店者合計を計算
-    result = Ticket.objects.filter(Q(day=formatted)&Q(shopID=shop)).aggregate(sum=models.Sum('people'))
+    result = Ticket.objects.filter(Q(day=formatted)&Q(shop=shop)).aggregate(sum=models.Sum('people'))
     peoplesum = result["sum"]
-    result = Ticket.objects.filter(Q(shopID=shop)).aggregate(sum=models.Sum('people'))
+    result = Ticket.objects.filter(Q(shop=shop)).aggregate(sum=models.Sum('people'))
     allsum = result["sum"]
     return render(request, 'ticket/console/dashboard.html',{
         'shop':shop,
@@ -97,13 +97,13 @@ def system_ajax(request):
         case 'create_tickets':
             formatted = get_dayformat()
             shop = Shop.objects.get(id=request.POST["shopID"])
-            latestnumber = Ticket.objects.all().filter(Q(shopID = shop) & Q(day=formatted)).aggregate(Max('number'))["number__max"]
-            Ticket.objects.all().filter(Q(shopID = shop) & Q(day=formatted))
+            latestnumber = Ticket.objects.all().filter(Q(shop = shop) & Q(day=formatted)).aggregate(Max('number'))["number__max"]
+            Ticket.objects.all().filter(Q(shop = shop) & Q(day=formatted))
             if latestnumber == None:
                 latestnumber = 0
             ticket = Ticket.objects.create(
                 number=latestnumber + 1,
-                shopID=shop,
+                shop=shop,
                 people=request.POST["people"],
                 cstype=request.POST["cstype"],
                 status="Waiting",
@@ -174,12 +174,12 @@ def system_ajax(request):
 def customerview(request,shopCODE):
     shop = Shop.objects.get(code=shopCODE)
     dayformat = get_dayformat()
-    tickets_calling = Ticket.objects.all().filter(Q(status="Calling") & Q(day=dayformat)& Q(shopID=shop.id))
+    tickets_calling = Ticket.objects.all().filter(Q(status="Calling") & Q(day=dayformat)& Q(shop=shop))
     return render(request,'ticket/customer/all_view.html',{'shop':shop,'tickets_calling':tickets_calling})
 
 def shopview(request,shopCODE):
     shop = Shop.objects.get(code=shopCODE)
     dayformat = get_dayformat()
-    tickets_calling = Ticket.objects.all().filter(Q(status="Calling") & Q(day=dayformat)& Q(shopID=shop.id))
-    tickets_waiting = Ticket.objects.all().filter(Q(status="Waiting") & Q(day=dayformat)& Q(shopID=shop.id))
+    tickets_calling = Ticket.objects.all().filter(Q(status="Calling") & Q(day=dayformat)& Q(shop=shop))
+    tickets_waiting = Ticket.objects.all().filter(Q(status="Waiting") & Q(day=dayformat)& Q(shop=shop))
     return render(request,'ticket/customer/shop_view.html',{'shop':shop,'tickets_calling':tickets_calling,'tickets_waiting':tickets_waiting})

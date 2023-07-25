@@ -14,6 +14,7 @@
 </nav>
 
 <div class="container is-main">
+    <!--
     <main class="content mt-4 mr-2 ml-2" style="overflow-y: auto; overflow-x: hidden">
         <section class="hero is-light" style="width: 100%;">
             <div class="hero-body">
@@ -26,5 +27,425 @@
             </div>
         </section>
     </main>
+    -->
+    <div class="columns">
+        <div class="column is-2 mt-6">
+            <div class="container is-side sidebar m-1">
+                <aside class="menu">
+                    <a class="button is-fullwidth is-info is-outlined mx-1 js-modal-trigger" data-target="new" style="font-size: min(2vw, 1rem)">作成</a>
+                    <p class="menu-label" style="font-size: min(1.25vw, 1rem)">Category</p>
+                    <ul class="menu-list">
+                        <!--TODO フォントサイズのフレキシブル対応-->
+                        {% for cat in categories %}
+                        <li><a onclick="get_data('{{ cat }}')" style="font-size: min(1.5vw, 1rem)">{{ cat }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </aside>
+            </div>
+        </div>
+        <div id="product_list" class="column is-10 mt-6"></div>
+        <div class="modal" id="detail">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <section class="modal-card-body">
+                    <div class="content">
+                        <section>
+                            <strong id="p_title"></strong>
+                            <input type="hidden" id="p_id" />
+                            <p class="is-size-6 mt-3">販売情報</p>
+                            <div id="product_sum"></div>
+                            <div class="my-4">
+                                <label for="p_name">カテゴリー</label>
+                                <input type="text" id="p_name" name="p_name" class="input" />
+                            </div>
+                            <div class="my-4">
+                                <label for="p_category">カテゴリー</label>
+                                <input type="text" id="p_category" name="p_category" class="input" list="existcategory" />
+                                <datalist id="existcategory">
+                                    {% for cat in categories %}
+                                    <option value="{{ cat }}"></option>
+                                    {% endfor %}
+                                </datalist>
+                            </div>
+                            <div class="my-4">
+                                <label for="p_description">MEMO</label>
+                                <textarea id="p_description" name="p_description" class="input" style="height: 100px"></textarea>
+                            </div>
+                            <div class="my-4 columns">
+                                <div class="column">
+                                    <label for="p_import">仕入れ価格(円)</label>
+                                    <input type="number" id="p_import" name="p_import" class="input" min="0" />
+                                </div>
+                                <div class="column">
+                                    <label for="p_export">販売価格(円)</label>
+                                    <input type="number" id="p_export" name="p_export" class="input" min="0" />
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <a class="button is-info is-fullwidth is-outlined" id="d_save" onclick="detailevent('edit')">保存</a>
+                    <a class="button is-danger is-fullwidth is-outlined" id="d_delete" onclick="detailevent('delete')">削除</a>
+                </footer>
+            </div>
+        </div>
+        <div class="modal" id="new">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <section class="modal-card-body">
+                    <div class="content">
+                        <section>
+                            <strong>新規作成</strong>
+                            <div class="my-4">
+                                <label for="c_name">商品名</label>
+                                <input type="text" id="c_name" name="c_name" class="input" />
+                            </div>
+                            <div class="my-4">
+                                <label for="c_category">カテゴリー</label>
+                                <input type="text" id="c_category" name="c_category" class="input" list="existcategory" />
+                                <datalist id="existcategory">
+                                    {% for cat in categories %}
+                                    <option value="{{ cat }}"></option>
+                                    {% endfor %}
+                                </datalist>
+                            </div>
+                            <div class="my-4">
+                                <label for="c_description">MEMO</label>
+                                <textarea id="c_description" name="c_description" class="input" style="height: 100px"></textarea>
+                            </div>
+                            <div class="my-4 columns">
+                                <div class="column">
+                                    <label for="c_import">仕入れ価格(円)</label>
+                                    <input type="number" id="c_import" name="c_import" class="input" min="0" />
+                                </div>
+                                <div class="column">
+                                    <label for="c_export">販売価格(円)</label>
+                                    <input type="number" id="c_export" name="c_export" class="input" min="0" />
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <a class="button is-info is-fullwidth is-outlined" id="d_create" onclick="create()">作成</a>
+                </footer>
+            </div>
+        </div>
+        <div class="modal" id="arrival">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <section class="modal-card-body">
+                    <div class="content">
+                        <section>
+                            <strong>在庫操作 <c id="ar_title"></c></strong>
+                            <div id="ar_id" hidden></div>
+                            <div class="my-4">
+                                <div class="select">
+                                    <select required id="ar_style">
+                                        <option value="import">入荷</option>
+                                        <option value="export">出荷/廃棄</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="my-4">
+                                <label for="ar_reason">MEMO *任意</label>
+                                <textarea id="ar_reason" name="ar_reason" class="input" style="height: 100px"></textarea>
+                            </div>
+                            <div class="my-4 columns">
+                                <div class="column">
+                                    <label for="ar_number">個数</label>
+                                    <input type="number" id="ar_number" name="ar_number" class="input" min="0" required />
+                                </div>
+                                <div class="column">
+                                    <label for="ar_price">合計価格(円) *任意</label>
+                                    <input type="number" id="ar_price" name="ar_price" class="input" min="0" default="default" />
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <a class="button is-info is-fullwidth is-outlined" id="ar_save" onclick="arsave()">保存</a>
+                </footer>
+            </div>
+        </div>
+        <script>
+            // csrf_tokenの取得に使う
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === name + '=') {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+            }
+
+            function get_data(category) {
+                var csrf_token = getCookie('csrftoken');
+                path = "{% url 'shop:product' shop.code %}";
+                $.ajax({
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                        }
+                    },
+                    type: 'POST',
+                    url: path,
+                    data: {
+                        type: 'get_category',
+                        category: category,
+                    },
+                    dataType: 'html',
+                })
+                    .done(function (data) {
+                        document.getElementById('product_list').innerHTML = data;
+                        createTrigger();
+                    })
+                    .fail(function (data) {
+                        // error
+                        console.log(data);
+                        window.alert('通信エラーが発生しました(E-100)');
+                    });
+            }
+
+            function get_all_data() {
+                var csrf_token = getCookie('csrftoken');
+                path = "{% url 'shop:product' shop.code %}";
+                $.ajax({
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                        }
+                    },
+                    type: 'POST',
+                    url: path,
+                    data: {
+                        type: 'get_product',
+                    },
+                    dataType: 'html',
+                })
+                    .done(function (data) {
+                        document.getElementById('product_list').innerHTML = data;
+                        createTrigger();
+                    })
+                    .fail(function (data) {
+                        // error
+                        console.log(data);
+                        window.alert('通信エラーが発生しました(E-S100-10)');
+                    });
+            }
+            get_all_data();
+
+            function openModal($el) {
+                $el.classList.add('is-active');
+            }
+            function closeModal($el) {
+                $el.classList.remove('is-active');
+            }
+            function createTrigger() {
+                (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+                    const target = $trigger.dataset.target;
+                    const $target = document.getElementById(target);
+                    $trigger.addEventListener('click', () => {
+                        if (target == 'detail') {
+                            const id = $trigger.dataset.id;
+                            getdetails(id);
+                        } else if (target == 'arrival') {
+                            const id = $trigger.dataset.id;
+                            setproductinfo(id);
+                        } else if (target == 'new') {
+                        }
+                        openModal($target);
+                    });
+                });
+                (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+                    const $target = $close.closest('.modal');
+                    $close.addEventListener('click', () => {
+                        closeModal($target);
+                    });
+                });
+            }
+            function getdetails(id) {
+                document.getElementById('p_title').textContent = document.getElementById(id + '_name').textContent;
+                document.getElementById('p_name').value = document.getElementById(id + '_name').textContent;
+                document.getElementById('p_category').value = document.getElementById(id + '_category').textContent;
+                document.getElementById('p_description').textContent = document.getElementById(id + '_description').textContent;
+                document.getElementById('p_import').value = document.getElementById(id + '_import').textContent;
+                document.getElementById('p_export').value = document.getElementById(id + '_export').textContent;
+                document.getElementById('p_id').textContent = id;
+
+                var csrf_token = getCookie('csrftoken');
+                path = "{% url 'shop:product' shop.code %}";
+                $.ajax({
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                        }
+                    },
+                    type: 'POST',
+                    url: path,
+                    data: {
+                        type: 'get_product_sum',
+                        id: id,
+                    },
+                    dataType: 'html',
+                })
+                    .done(function (data) {
+                        document.getElementById('product_sum').innerHTML = data;
+                    })
+                    .fail(function (data) {
+                        // error
+                        console.log(data);
+                        window.alert('通信エラーが発生しました(E-S100-11)');
+                    });
+            }
+            function detailevent(type, id) {
+                var csrf_token = getCookie('csrftoken');
+                const path = "{% url 'shop:product' shop.code %}";
+                if (type == 'edit') {
+                    document.getElementById('d_save').classList.add('is-loading');
+                    $.ajax({
+                        beforeSend: function (xhr, settings) {
+                            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                            }
+                        },
+                        type: 'POST',
+                        url: path,
+                        data: {
+                            type: 'post_product_edit',
+                            id: document.getElementById('p_id').textContent,
+                            name: document.getElementById('p_name').value,
+                            category: document.getElementById('p_category').value,
+                            description: document.getElementById('p_description').textContent,
+                            price_sell: document.getElementById('p_export').value,
+                            price_buy: document.getElementById('p_import').value,
+                        },
+                        dataType: 'text',
+                    })
+                        .done(function (data) {
+                            document.getElementById('p_title').textContent = document.getElementById('p_name').value;
+                            document.getElementById('d_save').classList.remove('is-loading');
+                            window.alert('正常に更新しました');
+                        })
+                        .fail(function (data) {
+                            // error
+                            console.log(data);
+                            document.getElementById('d_save').classList.remove('is-loading');
+                            window.alert('通信エラーが発生しました(E-S100-12)');
+                        });
+                } else if (type == 'delete') {
+                    document.getElementById('d_save').classList.add('is-loading');
+                    $.ajax({
+                        beforeSend: function (xhr, settings) {
+                            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                            }
+                        },
+                        type: 'POST',
+                        url: path,
+                        data: {
+                            type: 'post_product_delete',
+                            id: document.getElementById('p_id').textContent,
+                        },
+                        dataType: 'text',
+                    })
+                        .done(function (data) {
+                            document.getElementById('d_save').classList.remove('is-loading');
+                            window.alert('商品を削除しました');
+                        })
+                        .fail(function (data) {
+                            // error
+                            console.log(data);
+                            document.getElementById('d_save').classList.remove('is-loading');
+                            window.alert('通信エラーが発生しました(E-S100-13)');
+                        });
+                }
+            }
+            function create() {
+                var csrf_token = getCookie('csrftoken');
+                document.getElementById('d_create').classList.add('is-loading');
+                $.ajax({
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                        }
+                    },
+                    type: 'POST',
+                    url: path,
+                    data: {
+                        type: 'post_product_new',
+                        name: document.getElementById('c_name').value,
+                        category: document.getElementById('c_category').value,
+                        description: document.getElementById('c_description').textContent,
+                        price_sell: document.getElementById('c_export').value,
+                        price_buy: document.getElementById('c_import').value,
+                    },
+                    dataType: 'text',
+                })
+                    .done(function (data) {
+                        document.getElementById('d_create').classList.remove('is-loading');
+                        window.alert('商品を作成しました');
+                    })
+                    .fail(function (data) {
+                        // error
+                        console.log(data);
+                        document.getElementById('d_create').classList.remove('is-loading');
+                        window.alert('通信エラーが発生しました(E-S100-14)');
+                    });
+            }
+            function setproductinfo(id) {
+                document.getElementById('ar_title').textContent = document.getElementById(id + '_name').textContent;
+                document.getElementById('ar_id').textContent = id;
+                document.getElementById('ar_number').value = 0;
+                document.getElementById('ar_reason').textContent = '';
+                document.getElementById('ar_price').value = 'default';
+            }
+            function arsave() {
+                var csrf_token = getCookie('csrftoken');
+                document.getElementById('ar_save').classList.add('is-loading');
+                $.ajax({
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                        }
+                    },
+                    type: 'POST',
+                    url: path,
+                    data: {
+                        type: 'post_product_stock',
+                        id: document.getElementById('ar_id').textContent,
+                        style: document.getElementById('ar_style').value,
+                        reason: document.getElementById('ar_reason').textContent,
+                        number: document.getElementById('ar_number').value,
+                        price: document.getElementById('ar_price').value,
+                    },
+                    dataType: 'text',
+                })
+                    .done(function (data) {
+                        document.getElementById('ar_save').classList.remove('is-loading');
+                        window.alert('在庫情報を更新しました');
+                    })
+                    .fail(function (data) {
+                        // error
+                        console.log(data);
+                        document.getElementById('ar_save').classList.remove('is-loading');
+                        window.alert('通信エラーが発生しました(E-S100-15)');
+                    });
+            }
+        </script>
+    </div>
 </div>
 {% endblock %}

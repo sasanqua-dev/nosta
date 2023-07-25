@@ -1,0 +1,32 @@
+E-S100
+NOSTA SHOP 通信系エラー
+
+E-S100-10 通信エラーが発生しました
+原因：Ajax通信エラー全般
+発生場所：shop/console/product ajax
+
+E-S100-11 通信エラーが発生しました
+原因：Ajax通信エラー(商品詳細取得)
+発生場所：shop/console/product ajax
+
+E-S100-12 通信エラーが発生しました
+原因：Ajax通信エラー(商品情報編集)
+発生場所：shop/console/product ajax
+
+E-S100-13 通信エラーが発生しました
+原因：Ajax通信エラー(商品情報削除)
+発生場所：shop/console/product ajax
+
+E-S100-14 通信エラーが発生しました
+原因：Ajax通信エラー(商品追加)
+発生場所：shop/console/product ajax
+
+E-S100-15 通信エラーが発生しました
+原因：Ajax通信エラー(在庫調整)
+発生場所：shop/console/product ajax
+
+E-R100
+NOSTA REGI 通信系エラー
+E-R100-10
+原因：Ajax通信エラー(チケット更新)
+発生場所：regi/index ajax
