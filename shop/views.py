@@ -34,7 +34,9 @@ def register(request):
             people_max=10,
             organization="",
             sic=sic,
-            category=category
+            category=category,
+            regi_ticket=False,
+            is_active=True
         )
         return redirect('service',shop.code)
 

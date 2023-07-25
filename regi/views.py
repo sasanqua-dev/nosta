@@ -11,6 +11,8 @@ import datetime as dt
 import pytz
 import json
 
+from module.api_sold import *
+
 def user_permission_auth(request,shopCODE):
     userdomain = request.user.email.split("@")[1]
     shop = Shop.objects.get(code=shopCODE)
@@ -97,6 +99,10 @@ def index(request,shopCODE):
                         price=product.price_sell,
                         day = get_dayformat()
                     )
+                
+                if shop.regi_post != "":
+                    api_send(shop,order)
+
                 return HttpResponse("OK!")
             
             elif request.POST["type"] == "get_list":
@@ -115,3 +121,14 @@ def index(request,shopCODE):
         return render(request, 'regi/base.html',{'shop':shop,"categories":categories})
     else:
         return redirect('home')
+
+@login_required
+def app(request,shopCODE):
+        if user_permission_auth(request,shopCODE) == "allow":
+            if request.method == "POST":
+                pass
+            else:
+                shop = Shop.objects.get(code=shopCODE)
+                return render(request,'regi/app.html',{'shop':shop})
+        else:
+            return redirect('home')

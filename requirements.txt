@@ -7,3 +7,4 @@ pytz
 pillow
 django-cors-headers
 python-dotenv
+requests

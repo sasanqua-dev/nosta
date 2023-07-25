@@ -31,6 +31,7 @@ class Shop(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     regi_ticket = models.BooleanField()
+    regi_post = models.URLField(blank=True)
 
     is_active = models.BooleanField()
 
