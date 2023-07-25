@@ -372,16 +372,18 @@
                     child_right = document.createElement("div")
                     child_right.classList.add("column","is-4")
                     child_right_price = document.createElement("b")
-                    child_right_price.classList.add("is-size-4","cart_price")
-                    child_right_price.textContent = document.getElementById("product_"+id+"_price").textContent
+                    child_right_price.classList.add("is-size-4")
+                    child_right_price_in = document.createElement("p")
+                    child_right_price_in.classList.add("cart_price")
+                    child_right_price_in.textContent = document.getElementById("product_"+id+"_price").textContent
+                    child_right_price.appendChild(child_right_price_in)
                     child_right_number = document.createElement("input")
-                    child_right_number.textContent = "￥"
-                    child_right_number_in.classList.add("input","m-1","cart_number")
-                    child_right_number_in.value = 1
-                    child_right_number_in.type = "number"
-                    child_right_number_in.min = 0
-                    child_right_number_in.id = "cart_" + id + "_number"
-                    child_right_number.appendChild(child_right_number_in)
+                    child_right_number.classList.add("input","m-1","cart_number")
+                    child_right_number.value = 1
+                    child_right_number.type = "number"
+                    child_right_number.min = 0
+                    child_right_number.id = "cart_" + id + "_number"
+                    child_right_price.appendChild(child_right_price_in)
                     child_right.appendChild(child_right_price)
                     child_right.appendChild(child_right_number)
                     parent.appendChild(child_left)
