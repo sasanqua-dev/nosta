@@ -152,10 +152,10 @@ def product(request,shopCODE):
             
             elif request.POST["type"] == "get_product_sum":
                 product = Product.objects.get(id=request.POST["id"])
-                stock = CellProduct.objects.all().filter(product=product).aggregate(total_count=models.Sum("number"))["total_count"]
+                stock = CellProduct.objects.all().filter(Q(product=product)&Q(style="import")).aggregate(total_count=models.Sum("number"))["total_count"] - (CellProduct.objects.all().filter(Q(product=product)&Q(style="sold")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] + CellProduct.objects.all().filter(Q(product=product)&Q(style="export")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"])
                 all_import = CellProduct.objects.filter(Q(product=product)&Q(style="import")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"]
                 if(all_import != 0): 
-                    sales_rate = CellProduct.objects.all().filter(Q(product=product)&Q(style="sold")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] / all_import
+                    sales_rate = (CellProduct.objects.all().filter(Q(product=product)&Q(style="sold")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] / all_import) * 100
                     last_import = CellProduct.objects.all().filter(Q(product=product)&Q(style="import")).latest('id')
                 else:
                     sales_rate = 0
