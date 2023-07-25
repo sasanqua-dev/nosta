@@ -219,7 +219,7 @@ def product(request,shopCODE):
             return HttpResponse("Permission Error")
     if user_permission_auth(request,shopCODE) == "allow":
         shop = Shop.objects.get(code=shopCODE)
-        categories = Product.objects.filter(shop=shop).values_list('category',flat=True)
+        categories = set(Product.objects.filter(shop=shop).values_list('category',flat=True))
         return render(request, 'shop/console/product.html',{'shop':shop,'categories':categories})
     else:
         return redirect('home')

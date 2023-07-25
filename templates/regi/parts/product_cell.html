@@ -1,7 +1,11 @@
 {% for product in products %}
-<div class="column is-4 box p-2">
-    <p style="font-size: 12px;">{{ product.category }}</p>
-    <strong>{{ product.name }}</strong>
-    <p class="is-size-6">￥{{ product.price_sell }}</p>
+<div class="column is-3">
+    <a onclick="add_cart('{{ product.id }}')">
+        <div class="p-2 product_cell" style="height: 130px">
+            <p style="font-size: 12px" id="product_{{ product.id }}_category">{{ product.category }}</p>
+            <strong style="font-size: min(1.5vw, 1rem)" id="product_{{ product.id }}_name">{{ product.name }}</strong>
+            <p class="is-size-6" id="product_{{ product.id }}_price">￥{{ product.price_sell }}</p>
+        </div>
+    </a>
 </div>
 {% endfor %}

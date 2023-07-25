@@ -12,7 +12,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
-        <link rel="stylesheet" href="{% static 'css/animation.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/regi_spa.css' %}" />
         <script src="https://code.jquery.com/jquery-3.5.1.min.js "></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="{% static 'js/jquery.qrcode.min.js' %}"></script>
@@ -32,7 +32,7 @@
         </div>
     </head>
     <body>
-        <div class="container" style="height: 100%; width: 90vw; overflow: auto">
+        <div class="container">
             <div class="loading-015" hidden id="loading">
                 <span></span>
                 <span></span>
@@ -86,23 +86,19 @@
 
                 <div class="slide">
                     <!-- 1:レジ画面 -->
-                    <div class="columns" style="width: 80vw; height: 70vh">
-                        <div class="column is-3">
-                            <div class="is-side sidebar m-1">
-                                <aside class="menu">
-                                    <p class="menu-label" style="font-size: min(1.25vw, 1rem)">Category</p>
-                                    <ul class="menu-list">
-                                        <li><a onclick="get_all_data()" style="font-size: min(1.5vw, 1rem)">すべての商品</a></li>
-                                        <!--TODO フォントサイズのフレキシブル対応-->
-                                        {% for cat in categories %}
-                                        <li><a onclick="get_data('{{ cat }}')" style="font-size: min(1.5vw, 1rem)">{{ cat }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </aside>
+                    <div class="columns" style="width: 100vw; height: 80vh">
+                        <div class="column is-8">
+                            <div class="tab-container" style="height: 50px">
+                                <a onclick="get_all_data()" style="font-size: min(1.5vw, 1rem); min-width: 5vw"><div class="tab regi_tab_active" id="tab_all">すべての商品</div></a>
+                                <div style="overflow-x: auto; display: flex; margin-left: 50px; overflow-y: hidden">
+                                    {% for cat in categories %}
+                                    <a onclick="get_data('{{ cat }}')" style="font-size: min(1.5vw, 1rem)"><div class="tab" id="tab_{{ cat }}">{{ cat }}</div></a>
+                                    {% endfor %}
+                                </div>
                             </div>
+                            <div class="columns is-multiline p-3" id="product_list" style="overflow-y: auto; height: 70vh"></div>
                         </div>
-                        <div class="column is-6"><div class="columns is-multiline" id="product_list"></div></div>
-                        <div class="column is-3">ここにカート</div>
+                        <div class="column is-4"><div class="cart_list"></div></div>
                     </div>
                 </div>
 
@@ -145,12 +141,12 @@
                             </div>
                         </a>
                         <a class="column is-3" href="{% url 'shop:dashboard' shop.code %}" target="_blank">
-                            <div class="box m-1 has-text-centered is-size-2" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c">
+                            <div class="box m-1 has-text-centered is-size-5" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c">
                                 <b>店舗管理</b>
                             </div>
                         </a>
                         <a class="column is-3" href="{% url 'ticket:customers' shop.code %}" target="_blank">
-                            <div class="box m-1 has-text-centered is-size-2" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c">
+                            <div class="box m-1 has-text-centered is-size-5" style="display: flex; height: 15vw; align-items: center; justify-content: center; color: #00517c">
                                 <b>チケット管理</b>
                             </div>
                         </a>
@@ -335,6 +331,45 @@
             }
         </script>
         <script>
+            function swichtab(category) {
+                let current = document.getElementsByClassName('regi_tab_active');
+                for (let i = 0; i < current.length; i++) {
+                    current[i].classList.remove('regi_tab_active');
+                }
+                document.getElementById('tab_' + category).classList.add('regi_tab_active');
+            }
+            function add_cart(id){
+                if(document.getElementById("cart_"+id) != null){
+                    document.getElementById("cart_"+id+"_number").value += 1
+                }else{
+                    parent = document.createElement("div")
+                    parent.id = "cart_" + id
+                    parent.classList.add("columns is-multiline m-1")
+                    child_left = document.createElement("div")
+                    child_left.classList.add("column is-8")
+                    child_left_category = document.createElement("p")
+                    child_left_category.style = "font-size: 12px"
+                    child_left_category.textContent = document.getElementById("product_"+id+"_category").textContent
+                    child_left_name = document.createElement("strong")
+                    child_left_name.textContent = document.getElementById("product_"+id+"_name").textContent
+                    child_left.appendChild(child_left_category)
+                    child_left.appendChild(child_left_name)
+                    child_right = documet.createElement("div")
+                    child_right.classList.add("column is-4")
+                    child_right_price = documrnt.createElement("b")
+                    child_right_price.classList.add("is-size-4")
+                    child_right_price.textContent = document.getElementById("product_"+id+"_price").textContent
+                    child_right_number = documet.createElement("input")
+                    child_right_number.classList("input m-1")
+                    child_right_number.value = 1
+                    child_right_number.id = "cart_" + id + "_number"
+                    child_right.appendChild(child_right_price)
+                    child_right.appendChild(child_right_number)
+                    parent.appendChild(child_left)
+                    parent.appendChild(child_right)
+                    documrnt.getElementById("cart_list").appendChild(parent)
+                }
+            }
             function get_data(category) {
                 var csrf_token = getCookie('csrftoken');
                 path = "{% url 'regi:index' shop.code %}";
@@ -354,6 +389,7 @@
                 })
                     .done(function (data) {
                         document.getElementById('product_list').innerHTML = data;
+                        swichtab(category);
                         createTrigger();
                     })
                     .fail(function (data) {
@@ -380,6 +416,7 @@
                     dataType: 'html',
                 })
                     .done(function (data) {
+                        swichtab('all');
                         document.getElementById('product_list').innerHTML = data;
                     })
                     .fail(function (data) {
