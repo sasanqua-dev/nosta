@@ -96,10 +96,10 @@
                                     {% endfor %}
                                 </div>
                             </div>
-                            <div class="columns is-multiline p-3" id="product_list" style="overflow-y: auto; height: 70vh"></div>
+                            <div class="p-3 columns is-multiline" id="product_list" style="overflow-y: auto; height: 70vh"></div>
                         </div>
                         <div class="column is-4">
-                            <div id="cart_list" style="height: 70vh; overflow-y: auto;"></div>
+                            <div style="height: 70vh; overflow-y: auto;"><a class="button is-outlined m-2 is-danger" style="width: 200px;" onclick="cart_clear()">クリア</a><div id="cart_list" ></div></div>
                             <div style="height: 10vh;">
                                 <div class="columns">
                                     <div class="column is-8">
@@ -109,7 +109,7 @@
                                             <div class="column is-2"  style="display: flex; justify-content: center; align-items: center;">円</div>
                                         </div>
                                     </div>
-                                    <div class="column is-4"><a class="button is-outlined  is-fullwidth is-info">会計</a></div>
+                                    <div class="column is-4"><a class="button is-outlined m-2 is-info" onclick="showSlide(7)" style="width: 80px;">会計</a></div>
                                 </div>
                             </div>
                         </div>
@@ -172,6 +172,100 @@
                         </a>
                     </div>
                 </div>
+                <div class="slide">
+                    <!--7:会計-->
+                    <div class="columns" style="width: 100vw; height: 80vh">
+                        <div class="column is-6 px-6">
+                            <div class="columns is-multiline">
+                                <div class="column is-4"><a onclick="tr_recive(1)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">1</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(2)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">2</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(3)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">3</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(4)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">4</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(5)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">5</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(6)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">6</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(7)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">7</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(8)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">8</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(9)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">9</a></div>
+                                <div class="column is-4"><a onclick="tr_treat('backspace')" class="m-2" style="display: flex; justify-content: center; align-items: center;  width: 10vw; height: 10vw; font-size: 2vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">BS</a></div>
+                                <div class="column is-4"><a onclick="tr_recive(0)" class="m-2" style="display: block;  width: 10vw; height: 10vw; font-size: 5vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">0</a></div>
+                                <div class="column is-4"><a onclick="tr_treat('delete')" class="m-2" style="display: flex; justify-content: center; align-items: center;  width: 10vw; height: 10vw; font-size: 2vw;color: #00517c;font-weight: bold;border-radius: 20px;border: 2px solid #00517c;">Del</a></div>
+                            </div>
+                        </div>
+                        <div class="column is-4">
+                            <div class="my-5">
+                                <b>
+                                    <p class="is-size-6">購入金額：</p>
+                                    <c class="is-size-2" id="treasurer_cart_sum" style="width: 1000px;"></c>円
+                                </b>
+                            </div>
+                            <div class="my-5">
+                                <b>
+                                    <p class="is-size-6">お預かり金額：</p>
+                                    <c class="is-size-2" id="treasurer_cs_sum"  style="width: 1000px;">0</c>円
+                                </b>
+                            </div>
+                            <div class="my-5">
+                                <b>
+                                    <p class="is-size-6">おつり：</p>
+                                    <c class="is-size-2" id="remaining"  style="width: 1000px;"></c>円
+                                </b>
+                            </div>
+                            <div class="my-5">
+                                <p class="is-size-4 has-text-centered has-text-danger" id="tr_message">金額が不足しています</p>
+                                <a class="button is-outlined is-info m-2"  style="width: 200px; height:  50px;" id="tr_next" disabled>次へ</a>
+                            </div>
+                        </div>
+                        <div class="column is-2">
+                            <div class="">
+                                <a class="button is-outlined is-danger m-2" style="width: 150px;" onclick="tr_clear()">クリア</a>
+                                <a class="button is-outlined is-info m-2" onclick="showSlide(1)"  style="width: 150px;">商品登録に戻る</a>
+                                <a class="button is-outlined is-info m-2"  style="width: 150px;">個別支払い</a>
+                                <a class="button is-outlined is-info m-2"  style="width: 150px;">クーポン(値引き)</a>
+                                <a class="button is-outlined is-info m-2"  style="width: 150px;">クーポン(割引)</a>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        function treasurer_setup(){
+                            document.getElementById("treasurer_cart_sum").textContent = document.getElementById("cart_sum").textContent
+                            cal_remaining()
+                        }
+                        function cal_remaining(){
+                            document.getElementById("remaining").textContent = Number(document.getElementById("treasurer_cs_sum").textContent) - Number(document.getElementById("treasurer_cart_sum").textContent)
+                            if (Number(document.getElementById("remaining").textContent)>= 0){
+                                document.getElementById("tr_message").textContent = ""
+                                document.getElementById("tr_next").removeAttribute("disabled")
+                            }else{
+                                document.getElementById("tr_message").textContent = "金額が不足しています"
+                                document.getElementById("tr_next").setAttribute("disabled","")
+                            }
+                        }
+                        function tr_recive(number){
+                            if (document.getElementById("treasurer_cs_sum").textContent == 0){
+                                document.getElementById("treasurer_cs_sum").textContent = number
+                            }else{
+                                document.getElementById("treasurer_cs_sum").textContent += number
+                            }
+                            cal_remaining()
+                        }
+                        function tr_treat(method){
+                            if (method == "backspace"){
+                                document.getElementById("treasurer_cs_sum").textContent = document.getElementById("treasurer_cs_sum").textContent.slice(0,-1)
+                                if(document.getElementById("treasurer_cs_sum").textContent == ""){
+                                    document.getElementById("treasurer_cs_sum").textContent = 0
+                                }
+                            }else if(method == "delete"){
+                                document.getElementById("treasurer_cs_sum").textContent = 0
+                            }
+                        }
+                        function tr_clear(){
+                            document.getElementById("treasurer_cs_sum").textContent = 0
+                            cal_remaining()
+                            cart_clear()
+                            showSlide(1)
+                        }
+                    </script>
+                </div>
             </div>
         </div>
 
@@ -201,6 +295,9 @@
             const slides = document.getElementsByClassName('slide');
 
             function showSlide(index) {
+                if (index == 7){
+                    treasurer_setup()
+                }
                 if (index >= 0 && index < slides.length) {
                     for (let i = 0; i < slides.length; i++) {
                         slides[i].classList.remove('active');
@@ -407,6 +504,10 @@
                     sum += cart_numbers[i].value * cart_prices[i].textContent
                 }
                 document.getElementById("cart_sum").textContent = sum
+            }
+            function cart_clear(){
+                document.getElementById("cart_list").innerHTML = ""
+                cal_cart_sum()
             }
             function get_data(category) {
                 var csrf_token = getCookie('csrftoken');
