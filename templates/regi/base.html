@@ -103,7 +103,11 @@
                             <div style="height: 10vh;">
                                 <div class="columns">
                                     <div class="column is-9">
-                                        <c style="font-size: 12px;">合計 </c><b class="is-size-4" id="cart_sum">0</b> 円
+                                        <div class="columns">
+                                            <div class="column is-3"><c style="font-size: 12px;">合計 </c></div>
+                                            <div class="column is-3"><b class="is-size-4" id="cart_sum">0</b></div>
+                                            <div class="column is-3">円</div>
+                                        </div>
                                     </div>
                                     <div class="column is-3"><a class="button is-outline is-info">会計</a></div>
                                 </div>
@@ -371,11 +375,13 @@
                     child_right_price.classList.add("is-size-4","cart_price")
                     child_right_price.textContent = document.getElementById("product_"+id+"_price").textContent
                     child_right_number = document.createElement("input")
-                    child_right_number.classList.add("input","m-1","cart_number")
-                    child_right_number.value = 1
-                    child_right_number.type = "number"
-                    child_right_number.min = 0
-                    child_right_number.id = "cart_" + id + "_number"
+                    child_right_number.textContent = "￥"
+                    child_right_number_in.classList.add("input","m-1","cart_number")
+                    child_right_number_in.value = 1
+                    child_right_number_in.type = "number"
+                    child_right_number_in.min = 0
+                    child_right_number_in.id = "cart_" + id + "_number"
+                    child_right_number.appendChild(child_right_number_in)
                     child_right.appendChild(child_right_price)
                     child_right.appendChild(child_right_number)
                     parent.appendChild(child_left)
