@@ -112,8 +112,6 @@ SQR.modal = (() => {
         SQR.reader.findQR();
     };
 
-    copyBtn.addEventListener('click', copyResultText);
-
     modalClose.addEventListener('click', () => close());
 
     return {
