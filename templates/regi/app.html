@@ -32,7 +32,7 @@
                 <a class="navbar-item is-size-2 pt-1 pr-6" style="font-family: 'Noto Sans JP', sans-serif; color: #00517c" href="{% url 'top:home' %}"
                     ><img src="{% static 'image/logo_regi.png' %}" style="max-height: 7rem" alt="ロゴ"
                 /></a>
-                <p class="navbar-item is-size-2" style="color: #00517c;">Smart Reader</p>
+                <p class="navbar-item is-size-4" style="color: #00517c;">Smart Reader</p>
             </div>
         </nav>
     </head>
@@ -50,23 +50,23 @@
             <canvas id="js-canvas"></canvas>
         </div>
 
-        <div id="js-modal" class="modal-overlay">
-            <div class="modal">
-                <div class="modal-cnt">
-                    <span class="modal-title">読み取り結果</span>
-                    <textarea
-                        id="js-result"
-                        class="modal-result"
-                        value=""
-                        readonly
-                    /></textarea>
-                </div>
-                <a href="" id="js-link" class="modal-btn" target="_blank">
-                    開く
-                </a>
-                <button type="button" id="js-modal-close" class="modal-btn">
-                    閉じる
-                </button>
+        <div id="js-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <section class="modal-card-body">
+                    <div class="modal-cnt">
+                        <span class="modal-title">読み取り結果</span>
+                        <textarea
+                            id="js-result"
+                            class="modal-result"
+                            value=""
+                            readonly
+                        /></textarea>
+                    </div>
+                    <button type="button" id="js-modal-close" class="modal-btn">
+                        閉じる
+                    </button>
+                </section>
             </div>
         </div>
 
