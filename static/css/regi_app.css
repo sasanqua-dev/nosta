@@ -11,8 +11,10 @@ html,body{
 
 .reader {
     margin-top: 10vh;
-    width: 500px;
-    height: 500px;
+    width: 80vw;
+    height:80vw;
+    margin-left: 10vw;
+    margin-right: 10vw;
     position: relative;
     display: flex;
     justify-content: center;
