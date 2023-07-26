@@ -34,7 +34,9 @@ def register(request):
             people_max=10,
             organization="",
             sic=sic,
-            category=category
+            category=category,
+            regi_ticket=False,
+            is_active=True
         )
         return redirect('service',shop.code)
 
@@ -152,10 +154,10 @@ def product(request,shopCODE):
             
             elif request.POST["type"] == "get_product_sum":
                 product = Product.objects.get(id=request.POST["id"])
-                stock = CellProduct.objects.all().filter(product=product).aggregate(total_count=models.Sum("number"))["total_count"]
+                stock = CellProduct.objects.all().filter(Q(product=product)&Q(style="import")).aggregate(total_count=models.Sum("number"))["total_count"] - (CellProduct.objects.all().filter(Q(product=product)&Q(style="sold")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] + CellProduct.objects.all().filter(Q(product=product)&Q(style="export")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"])
                 all_import = CellProduct.objects.filter(Q(product=product)&Q(style="import")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"]
                 if(all_import != 0): 
-                    sales_rate = CellProduct.objects.all().filter(Q(product=product)&Q(style="sold")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] / all_import
+                    sales_rate = (CellProduct.objects.all().filter(Q(product=product)&Q(style="sold")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] / all_import) * 100
                     last_import = CellProduct.objects.all().filter(Q(product=product)&Q(style="import")).latest('id')
                 else:
                     sales_rate = 0
@@ -227,7 +229,40 @@ def product(request,shopCODE):
 @login_required
 def order(request,shopCODE):
     if user_permission_auth(request,shopCODE) == "allow":
-        shop = Shop.objects.get(code=shopCODE)
-        return render(request, 'shop/console/order.html',{'shop':shop})
+        if request.method == "POST":
+            order = Order.objects.get(id=request.POST["id"])
+            if request.POST["type"] == "get_detail":
+                param = {
+                    "order":order
+                }
+                data_detail = render_to_string("shop/console/order_detail_data.html",param)
+                return HttpResponse(data_detail)
+                
+            elif request.POST["type"] == "get_order_products":
+                products = CellProduct.objects.all().filter(order=order)
+                param = {
+                    "products":products
+                }
+                data_product = render_to_string("shop/console/order_product.html",param)
+                return HttpResponse(data_product)
+                
+            elif request.POST["type"] == "post_order_treat":
+                if request.POST["method"] == "delete":
+                    Order.objects.get(id=request.POST["id"]).delete()
+                elif request.POST["method"] == "return":
+                    order = Order.objects.get(id=request.POST["id"])
+                    order.status = "return"
+                    order.save()
+                    products = CellProduct.objects.all().filter(order=order)
+                    for product in products:
+                        product.price = 0
+                        product.save()
+                return HttpResponse("OK!")
+
+
+        else:
+            shop = Shop.objects.get(code=shopCODE)
+            orders = Order.objects.all().filter(shop=shop)
+            return render(request, 'shop/console/order.html',{'shop':shop,'orders':orders})
     else:
         return redirect('home')

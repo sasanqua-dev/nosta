@@ -14,17 +14,176 @@
 </nav>
 
 <div class="container is-main">
-    <main class="content mt-4 mr-2 ml-2" style="overflow-y: auto; overflow-x: hidden">
-        <section class="hero is-light" style="width: 100%;">
+    <section>
+        {% if orders.count == 0 %}
+        <section class="hero is-light" style="width: 100%">
             <div class="hero-body">
-                <p class="title">
-                    この機能は現在提供されていません
-                </p>
-                <p class="subtitle">
-                    近日提供予定です
-                </p>
+                <p class="title">一致する商品がありません</p>
             </div>
         </section>
-    </main>
+        {% else %} {% for order in orders reversed %}
+        <div class="columns card card-content m-1 mr-2">
+            <div class="column is-3"><b style="font-size: max(1vw, 15px)">{{ order.created_at }}</b></div>
+            <div class="column is-1"><c style="font-size: 12px">個数</c><br />{{ order.number }}</div>
+            <div class="column is-2"><c style="font-size: 12px">合計金額</c><br />{{ order.total_price }}</div>
+            <div class="column is-2"><c style="font-size: 12px">担当者</c><br />{{ order.user.username }}</div>
+            <div class="column is-2"><c style="font-size: 12px">状態</c><br />{{ order.status }}</div>
+            <div class="column is-2">
+                <div class="columns is-multiline">
+                    <div class="column is-12"><a class="button is-outlined is-info js-modal-trigger" data-target="detail" data-id="{{ order.id }}">詳細情報</a></div>
+                </div>
+            </div>
+        </div>
+        {% endfor %} {% endif %}
+    </section>
+    <div class="modal" id="detail">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <section class="modal-card-body">
+                <div class="content">
+                    <section>
+                        <input type="hidden" id="o_id" />
+                        <div class="my-3"><strong class="is-size-6 mt-3">購入詳細情報</strong></div>
+                        <div id="order_detail_data" class="box"></div>
+                        <div class="my-3"><strong class="is-size-6 mt-3 my-6">購入商品情報</strong></div>
+                        <div id="order_product_data"></div>
+                    </section>
+                </div>
+            </section>
+            <footer class="modal-card-foot">
+                <a class="button is-danger is-fullwidth is-outlined" onclick="order_treat('return')">返品</a>
+                <a class="button is-danger is-fullwidth is-outlined" onclick="order_treat('delete')">削除</a>
+            </footer>
+        </div>
+    </div>
+    <script>
+        // csrf_tokenの取得に使う
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === name + '=') {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+        }
+        function get_data(id) {
+            document.getElementById('o_id').textContent = id;
+            var csrf_token = getCookie('csrftoken');
+            path = "{% url 'shop:order' shop.code %}";
+            $.ajax({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                    }
+                },
+                type: 'POST',
+                url: path,
+                data: {
+                    type: 'get_detail',
+                    id: id,
+                },
+                dataType: 'html',
+            })
+                .done(function (data) {
+                    document.getElementById('order_detail_data').innerHTML = data;
+                })
+                .fail(function (data) {
+                    // error
+                    console.log(data);
+                    window.alert('通信エラーが発生しました(E-S100-16)');
+                });
+
+            $.ajax({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                    }
+                },
+                type: 'POST',
+                url: path,
+                data: {
+                    type: 'get_order_products',
+                    id: id,
+                },
+                dataType: 'html',
+            })
+                .done(function (data) {
+                    document.getElementById('order_product_data').innerHTML = data;
+                })
+                .fail(function (data) {
+                    // error
+                    console.log(data);
+                    window.alert('通信エラーが発生しました(E-S100-17)');
+                });
+        }
+        function order_treat(type) {
+            var csrf_token = getCookie('csrftoken');
+            path = "{% url 'shop:order' shop.code %}";
+            id = document.getElementById('o_id').textContent;
+            $.ajax({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                    }
+                },
+                type: 'POST',
+                url: path,
+                data: {
+                    type: 'post_order_treat',
+                    method: type,
+                    id: id,
+                },
+                dataType: 'text',
+            })
+                .done(function (data) {
+                    window.alert('情報を更新しました');
+                })
+                .fail(function (data) {
+                    // error
+                    console.log(data);
+                    window.alert('通信エラーが発生しました(E-S100-18)');
+                });
+            if ((type = 'delete')) {
+                location.reload();
+            }
+        }
+        function openModal($el) {
+            $el.classList.add('is-active');
+        }
+        function closeModal($el) {
+            $el.classList.remove('is-active');
+        }
+        function createTrigger() {
+            (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+                const target = $trigger.dataset.target;
+                const $target = document.getElementById(target);
+                $trigger.addEventListener('click', () => {
+                    if (target == 'detail') {
+                        const id = $trigger.dataset.id;
+                        get_data(id);
+                    }
+                    openModal($target);
+                });
+            });
+            (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+                const $target = $close.closest('.modal');
+                $close.addEventListener('click', () => {
+                    closeModal($target);
+                });
+            });
+        }
+        createTrigger();
+    </script>
 </div>
 {% endblock %}

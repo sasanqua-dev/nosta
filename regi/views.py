@@ -11,6 +11,8 @@ import datetime as dt
 import pytz
 import json
 
+from module.api_sold import *
+
 def user_permission_auth(request,shopCODE):
     userdomain = request.user.email.split("@")[1]
     shop = Shop.objects.get(code=shopCODE)
@@ -64,6 +66,53 @@ def index(request,shopCODE):
                 data = render_to_string('regi/parts/product_cell.html', param)
                 return HttpResponse(data)
             
+            elif request.POST["type"] == "post_treasurer":
+                shop = Shop.objects.get(code=shopCODE)
+                if(shop.regi_ticket):
+                    status = "recived"
+                else:
+                    status = "complete"
+                if request.POST["ticket"] == "":
+                    ticket_data = None
+                else:
+                    ticket_data = Ticket.objects.get(id=request.POST["ticket"])
+
+                order = Order.objects.create(
+                    user = request.user,
+                    shop = Shop.objects.get(code=shopCODE),
+                    status = status,
+                    day = get_dayformat(),
+                    ticket = ticket_data,
+                    total_price = request.POST["total_price"],
+                    cs_price = request.POST["cs_price"],
+                    remaining_price = request.POST["remaining_price"],
+                    number = request.POST["number"],
+                )
+                for product_id,product_number in zip(json.loads(request.POST["products_ids"]),json.loads(request.POST["products_numbers"])):
+                    product = Product.objects.get(id=product_id)
+                    CellProduct.objects.create(
+                        product=product,
+                        order=order,
+                        shop=shop,
+                        number=product_number,
+                        style="sold",
+                        price=product.price_sell,
+                        day = get_dayformat()
+                    )
+                
+                if shop.regi_post != "":
+                    api_send(shop,order)
+
+                return HttpResponse("OK!")
+            
+            elif request.POST["type"] == "get_list":
+                orders = Order.objects.all().filter(shop=shop)
+                param = {
+                    "orders": orders,
+                }
+                data = render_to_string('regi/parts/order_list.html', param)
+                return HttpResponse(data)
+            
         else:
             return HttpResponse("Permission Error")
     if user_permission_auth(request,shopCODE) == "allow":
@@ -72,3 +121,14 @@ def index(request,shopCODE):
         return render(request, 'regi/base.html',{'shop':shop,"categories":categories})
     else:
         return redirect('home')
+
+@login_required
+def app(request,shopCODE):
+        if user_permission_auth(request,shopCODE) == "allow":
+            if request.method == "POST":
+                pass
+            else:
+                shop = Shop.objects.get(code=shopCODE)
+                return render(request,'regi/app.html',{'shop':shop})
+        else:
+            return redirect('home')

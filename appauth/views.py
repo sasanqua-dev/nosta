@@ -12,7 +12,7 @@ def user_login(request):
     if request.method == 'POST':
         userid = request.POST['userid']
         password = request.POST['password']
-        user = authenticate(request, email=userid, password=password)
+        user = authenticate(request, username=userid, password=password)
         if user is not None:
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
