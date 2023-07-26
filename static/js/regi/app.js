@@ -7,11 +7,12 @@ SQR.reader = (() => {
     const showUnsuportedScreen = () => {
         document.querySelector('#js-unsupported').classList.add('is-show');
     };
-    if (!navigator.mediaDevices) {
-        showUnsuportedScreen();
-        return;
-    }
-
+    //if (navigator.mediaDevices == null) {
+    //    showUnsuportedScreen();
+    //    return;
+    //} else {
+    //    MediaDevices.getUserMedia({ video: true });
+    //}
     const video = document.querySelector('#js-video');
 
     /**
@@ -66,11 +67,7 @@ SQR.reader = (() => {
         navigator.mediaDevices
             .getUserMedia({
                 audio: false,
-                video: {
-                    facingMode: {
-                        exact: 'environment',
-                    },
-                },
+                video: { facingMode: 'environment', width: { min: 800, ideal: 1280, max: 2000 }, height: { min: 600, ideal: 720, max: 2000 }, aspectRatio: 1 },
             })
             .then((stream) => {
                 video.srcObject = stream;
@@ -79,7 +76,8 @@ SQR.reader = (() => {
                     findQR();
                 };
             })
-            .catch(() => {
+            .catch((e) => {
+                console.log(e);
                 showUnsuportedScreen();
             });
     };
@@ -112,11 +110,6 @@ SQR.modal = (() => {
     const close = () => {
         modal.classList.remove('is-show');
         SQR.reader.findQR();
-    };
-
-    const copyResultText = () => {
-        result.select();
-        document.execCommand('copy');
     };
 
     copyBtn.addEventListener('click', copyResultText);

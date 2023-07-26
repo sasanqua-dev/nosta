@@ -5,6 +5,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>NOSTA APP</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
         <link rel="stylesheet" href="{% static 'css/regi_app.css' %}" />
         <!--
         <link
@@ -26,6 +27,14 @@
             }
         </script>
         -->
+        <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item is-size-2 pt-1 pr-6" style="font-family: 'Noto Sans JP', sans-serif; color: #00517c" href="{% url 'top:home' %}"
+                    ><img src="{% static 'image/logo_regi.png' %}" style="max-height: 7rem" alt="ロゴ"
+                /></a>
+                <p class="navbar-item is-size-2" style="color: #00517c;">Smart Reader</p>
+            </div>
+        </nav>
     </head>
     <body>
         <div class="reader">
@@ -35,10 +44,6 @@
                 autoplay
                 playsinline
             ></video>
-        </div>
-
-        <div class="reticle">
-            <div class="reticle-box"></div>
         </div>
 
         <div style="display: none">
@@ -59,9 +64,6 @@
                 <a href="" id="js-link" class="modal-btn" target="_blank">
                     開く
                 </a>
-                <button id="js-copy" class="modal-btn" target="_blank">
-                    コピー
-                </button>
                 <button type="button" id="js-modal-close" class="modal-btn">
                     閉じる
                 </button>
