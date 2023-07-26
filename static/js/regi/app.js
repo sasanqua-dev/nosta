@@ -106,15 +106,16 @@ SQR.modal = (() => {
      */
     const close = () => {
         modal.classList.remove('is-show');
-        SQR.reader.findQR();
     };
-
-    modalClose.addEventListener('click', () => close());
 
     return {
         open,
     };
 })();
+function closeModal($el) {
+    $el.classList.remove('is-active');
+    SQL.reader.findQR();
+}
 (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
     const $target = $close.closest('.modal');
     $close.addEventListener('click', () => {
