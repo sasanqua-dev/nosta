@@ -104,23 +104,20 @@ SQR.modal = (() => {
     /**
      * モーダルを閉じてQR読み込みを再開
      */
-    const close = () => {
-        modal.classList.remove('is-show');
-    };
+    function closeModal($el) {
+        $el.classList.remove('is-active');
+        SQL.reader.findQR();
+    }
+    (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+        const $target = $close.closest('.modal');
+        $close.addEventListener('click', () => {
+            closeModal($target);
+        });
+    });
 
     return {
         open,
     };
 })();
-function closeModal($el) {
-    $el.classList.remove('is-active');
-    SQL.reader.findQR();
-}
-(document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
-    const $target = $close.closest('.modal');
-    $close.addEventListener('click', () => {
-        closeModal($target);
-    });
-});
 
 if (SQR.reader) SQR.reader.initCamera();
