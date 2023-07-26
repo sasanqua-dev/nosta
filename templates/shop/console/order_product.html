@@ -7,12 +7,12 @@
         </div>
     </section>
     {% else %} {% for opr in products %}
-    <div class="container box m-1">
-        <div class="columns">
-            <div class="column"><c style="font-size: 12px">商品名</c><br />{{ opr.product.name }}</div>
-            <div class="column"><c style="font-size: 12px">カテゴリー</c><br />{{ opr.product.category }}</div>
-            <div class="column"><c style="font-size: 12px">数量</c><br />{{ opr.number }}個</div>
-            <div class="column"><c style="font-size: 12px">単価</c><br />{{ opr.price }}円</div>
+    <div class="container card card-content m-1">
+        <div class="columns" style="width: 100%">
+            <div class="column is-4"><c style="font-size: 12px">商品名</c><br />{{ opr.product.name }}</div>
+            <div class="column is-4"><c style="font-size: 12px">カテゴリー</c><br />{{ opr.product.category }}</div>
+            <div class="column is-2"><c style="font-size: 12px">数量</c><br />{{ opr.number }}個</div>
+            <div class="column is-2"><c style="font-size: 12px">単価</c><br />{{ opr.price }}円</div>
         </div>
     </div>
     {% endfor %} {% endif %}
