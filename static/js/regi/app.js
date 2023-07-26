@@ -90,8 +90,6 @@ SQR.reader = (() => {
 
 SQR.modal = (() => {
     const result = document.querySelector('#js-result');
-    const link = document.querySelector('#js-link');
-    const copyBtn = document.querySelector('#js-copy');
     const modal = document.querySelector('#js-modal');
     const modalClose = document.querySelector('#js-modal-close');
 
@@ -100,8 +98,7 @@ SQR.modal = (() => {
      */
     const open = (url) => {
         result.value = url;
-        link.setAttribute('href', url);
-        modal.classList.add('is-show');
+        modal.classList.add('is-active');
     };
 
     /**
