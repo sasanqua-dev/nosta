@@ -91,7 +91,6 @@ SQR.reader = (() => {
 SQR.modal = (() => {
     const result = document.querySelector('#js-result');
     const modal = document.querySelector('#js-modal');
-    const modalClose = document.querySelector('#js-modal-close');
 
     /**
      * 取得した文字列を入れ込んでモーダルを開く
@@ -104,14 +103,14 @@ SQR.modal = (() => {
     /**
      * モーダルを閉じてQR読み込みを再開
      */
-    function closeModal($el) {
-        $el.classList.remove('is-active');
-        SQL.reader.findQR();
-    }
+    const close = () => {
+        modal.classList.remove('is-active');
+        SQR.reader.findQR();
+    };
     (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
         const $target = $close.closest('.modal');
         $close.addEventListener('click', () => {
-            closeModal($target);
+            close();
         });
     });
 
