@@ -32,7 +32,7 @@
         </script>
     </head>
     <body>
-        <section class="columns is-gapless" style="min-height: 100vh; overflow: auto">
+        <section class="columns is-gapless is-hidden-mobile" style="min-height: 100vh; overflow: auto">
             <section class="column is-2" style="background-color: #eaf4fc">
                 <nav class="navbar" role="navigation" aria-label="main navigation" style="background-color: #eaf4fc">
                     <div class="navbar-brand" style="margin: auto; display: block">
@@ -114,5 +114,16 @@
             </section>
             <section class="column is-10" style="overflow-y: hidden; overflow-x: hidden">{% block content %}{% endblock %}</section>
         </section>
+        <div class="is-hidden-tablet">
+            <section class="hero is-large is-danger" style="background-color: #00517c">
+                <div class="hero-body">
+                    <b class="has-text-centered title is-size-5">お使いの端末ではご利用頂けません</b>
+                    <p class="has-text-centered title is-size-6">パソコンやタブレットなどからご利用ください</p>
+                    <div class="columns my-6">
+                        <div class="column has-text-centered"><a class="button is-light" style="width: 80vw" href="{% url 'service' shop.code %}">サービストップ</a></div>
+                    </div>
+                </div>
+            </section>
+        </div>
     </body>
 </html>
