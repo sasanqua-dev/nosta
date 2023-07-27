@@ -7,6 +7,7 @@
         <title>NOSTA APP</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
         <link rel="stylesheet" href="{% static 'css/regi_app.css' %}" />
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js "></script>
         <!--
         <link
             rel="apple-touch-icon"
@@ -29,45 +30,63 @@
         -->
         <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item is-size-2 pt-1 pr-6" style="font-family: 'Noto Sans JP', sans-serif; color: #00517c" href="{% url 'top:home' %}"
+                <a class="navbar-item is-size-2 pt-1 pr-6" style="font-family: 'Noto Sans JP', sans-serif; color: #00517c" href="{% url 'regi:index' shop.code %}"
                     ><img src="{% static 'image/logo_regi.png' %}" style="max-height: 7rem" alt="ロゴ"
                 /></a>
-                <p class="navbar-item is-size-2" style="color: #00517c;">Smart Reader</p>
+                <p class="navbar-item is-size-4" style="color: #00517c">Smart Reader</p>
             </div>
         </nav>
     </head>
-    <body>
-        <div class="reader">
-            <video
-                id="js-video"
-                class="reader-video"
-                autoplay
-                playsinline
-            ></video>
+    <body style="margin-top: 150px">
+        <div class="tabs is-fullwidth is-togle">
+            <ul>
+                <li class="is-active tab-item">
+                    <a class="has-text-centered" onclick="showSlide(0)">照会</a>
+                </li>
+                <li class="tab-item">
+                    <a class="has-text-centered" onclick="showSlide(1)">取引</a>
+                </li>
+            </ul>
         </div>
 
         <div style="display: none">
             <canvas id="js-canvas"></canvas>
         </div>
 
-        <div id="js-modal" class="modal-overlay">
-            <div class="modal">
-                <div class="modal-cnt">
-                    <span class="modal-title">読み取り結果</span>
-                    <textarea
-                        id="js-result"
-                        class="modal-result"
-                        value=""
-                        readonly
-                    /></textarea>
+        <div class="columns mx-0" style="margin: 0px">
+            <div class="column" style="padding-left: 0px; padding-right: 0px">
+                <div class="reader">
+                    <video id="js-video" class="reader-video" autoplay playsinline></video>
                 </div>
-                <a href="" id="js-link" class="modal-btn" target="_blank">
-                    開く
-                </a>
-                <button type="button" id="js-modal-close" class="modal-btn">
-                    閉じる
-                </button>
+                <div class="columns m-3">
+                    <div class="column is-8">
+                        <input class="input" type="text" id="code" placeholder="リーダーやキーボードも使用できます" />
+                    </div>
+                    <div class="column is-4">
+                        <a class="button is-outlined" onclick='SQR.modal.open(document.getElementById("code").value)'>実行</a>
+                    </div>
+                    <script>
+                        const path = "{% url 'regi:app' shop.code %}";
+                    </script>
+                </div>
             </div>
+            <div class="column">
+                <div class="content">
+                    <div class=""><strong class="has-text-centered">バーコード・QRコードを読み取ってください</strong></div>
+                </div>
+                <div class="content">
+                    <div class=""><strong class="has-text-centered">現在この機能は利用できません</strong></div>
+                </div>
+            </div>
+        </div>
+        <div id="js-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <div class="box">
+                    <div id="modal-content-body"></div>
+                </div>
+            </div>
+            <button class="modal-close is-large" aria-label="close" id="modal-close"></button>
         </div>
 
         <div id="js-unsupported" class="unsupported">

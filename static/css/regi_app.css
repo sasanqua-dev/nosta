@@ -4,10 +4,22 @@
     box-sizing: border-box;
 }
 
+html {
+    height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+.tabs li.is-active a {
+    border-bottom-color: #00517C;
+    color: #00517C;
+}
+
 .reader {
-    margin-top: 10vh;
-    width: 500px;
-    height: 500px;
+    width: min(90vw,500px);
+    height: min(90vw,500px);
+    margin-right: 5vw;
+    margin-left: 5vw;
     position: relative;
     display: flex;
     justify-content: center;
@@ -19,6 +31,18 @@
     width: 100%;
     height: 100%;
     object-fit: fill;
+}
+
+.content {
+    display: none !important;
+    flex-shrink: 0;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.content.active {
+    display: flex !important;
 }
 
 @-webkit-keyframes move_reticle {
@@ -40,64 +64,6 @@
         width: 75vw;
         height: 75vw;
     }
-}
-
-.modal-overlay {
-    display: none;
-    position: fixed;
-    justify-content: center;
-    align-items: center;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 10;
-}
-
-.modal-overlay.is-show {
-    display: flex;
-}
-
-.modal {
-    width: 80%;
-    background: #fff;
-    border-radius: 10px;
-}
-
-.modal-cnt {
-    padding: 30px 15px;
-}
-
-.modal-title {
-    display: block;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.modal-result {
-    resize: none;
-    word-break: break-all;
-    border: none;
-    width: 100%;
-    height: auto;
-    font-size: 16px;
-}
-
-.modal-btn {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    display: block;
-    background: none;
-    border: none;
-    border-top: 1px solid #ddd;
-    width: 100%;
-    color: #333;
-    padding: 20px;
-    text-align: center;
-    font-size: 18px;
-    text-decoration: none;
 }
 
 .unsupported {
