@@ -67,7 +67,7 @@ SQR.reader = (() => {
         navigator.mediaDevices
             .getUserMedia({
                 audio: false,
-                video: { facingMode: 'environment', width: { min: 800, ideal: 1280, max: 2000 }, height: { min: 600, ideal: 720, max: 2000 }, aspectRatio: 1 },
+                video: { facingMode: 'environment', width: { min: 1280, ideal: 1980, max: 3000 }, height: { min: 720, ideal: 1080, max: 3000 }, aspectRatio: 1 },
             })
             .then((stream) => {
                 video.srcObject = stream;
@@ -90,28 +90,84 @@ SQR.reader = (() => {
 
 SQR.modal = (() => {
     const result = document.querySelector('#js-result');
+    const content = document.querySelector('#modal-content-body');
     const modal = document.querySelector('#js-modal');
+    const modalClose = document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button');
 
     /**
      * 取得した文字列を入れ込んでモーダルを開く
      */
-    const open = (url) => {
-        result.value = url;
+    const open = (code) => {
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === name + '=') {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+        }
+        var csrf_token = getCookie('csrftoken');
+        $.ajax({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                }
+            },
+            type: 'POST',
+            url: path,
+            data: {
+                type: 'get_code',
+                code: code,
+            },
+            dataType: 'html',
+        })
+            .done(function (data) {
+                content.innerHTML = data;
+            })
+            .fail(function (data) {
+                // error
+                console.log(data);
+                content.innerHTML = "<div class='hero hero-body is-size-4 has-text-centered'>通信エラーが発生しました</div>";
+            });
         modal.classList.add('is-active');
     };
 
-    /**
-     * モーダルを閉じてQR読み込みを再開
-     */
-    const close = () => {
-        modal.classList.remove('is-active');
-        SQR.reader.findQR();
-    };
     (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+        const $target = $close.closest('.modal');
+
         $close.addEventListener('click', () => {
-            close();
+            closeModal($target);
         });
     });
+
+    // Add a keyboard event to close all modals
+    document.addEventListener('keydown', (event) => {
+        if (event.code === 'Escape') {
+            closeAllModals();
+        }
+    });
+
+    const closeModal = ($el) => {
+        $el.classList.remove('is-active');
+        SQR.reader.findQR();
+    };
+
+    const closeAllModals = () => {
+        (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+            closeModal($modal);
+        });
+    };
 
     return {
         open,
@@ -119,3 +175,19 @@ SQR.modal = (() => {
 })();
 
 if (SQR.reader) SQR.reader.initCamera();
+
+let currentSlide = 0;
+const tabs = document.getElementsByClassName('tab-item');
+const slides = document.getElementsByClassName('content');
+function showSlide(index) {
+    if (index >= 0 && index < slides.length) {
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].classList.remove('active');
+            tabs[i].classList.remove('is-active');
+        }
+        slides[index].classList.add('active');
+        tabs[index].classList.add('is-active');
+        currentSlide = index;
+    }
+}
+showSlide(0);
