@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 
 from db.models import *
 from django.db.models import *
+from django.db.models.functions import Coalesce
 import datetime as dt 
 import pytz
 import json
@@ -126,7 +127,46 @@ def index(request,shopCODE):
 def app(request,shopCODE):
         if user_permission_auth(request,shopCODE) == "allow":
             if request.method == "POST":
-                pass
+                shop = Shop.objects.get(code=shopCODE)
+                match request.POST["type"]:
+                    case "get_code":
+                        code = request.POST["code"]
+                        if "ticket" in code:
+                            return HttpResponse(render_to_string('regi/app/unsupport.html',{}))
+                        elif "order" in code:
+                            return HttpResponse(render_to_string('regi/app/unsupport.html',{}))
+                        else:
+                            day = get_dayformat()
+                            products = Product.objects.all().filter(Q(shop=shop)&Q(code=code))
+                            if products.count() == 0:
+                                return HttpResponse(render_to_string('regi/app/unsupport.html',{}))
+                            products_sold = []
+                            products_stock = []
+                            for product in products:
+                                stock = CellProduct.objects.all().filter(Q(product=product)&Q(style="import")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] - (CellProduct.objects.all().filter(Q(product=product)&Q(style="sold")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] + CellProduct.objects.all().filter(Q(product=product)&Q(style="export")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"])
+                                sold = CellProduct.objects.all().filter(Q(product=product)&Q(style="sold")&Q(day=day)).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"]
+                                temp_stock = {
+                                    "name" : product.name,
+                                    "category" : product.category,
+                                    "stock" : stock
+                                }
+                                products_stock.append(temp_stock)
+                                temp_sold = {
+                                    "name" : product.name,
+                                    "category" : product.category,
+                                    "sold" : sold
+                                }
+                                products_sold.append(temp_sold)
+
+                            param = {
+                                'products_object':products,
+                                'products_sold':products_sold,
+                                'products_stock':products_stock
+                            }
+                            data = render_to_string('regi/app/products.html', param)
+                            return HttpResponse(data)
+                    case _:
+                        return HttpResponse(render_to_string('regi/app/unsupport.html',{}))
             else:
                 shop = Shop.objects.get(code=shopCODE)
                 return render(request,'regi/app.html',{'shop':shop})

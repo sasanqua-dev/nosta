@@ -1,0 +1,77 @@
+<section>
+    <div class="hero hero-body">
+        <b class="title has-text-centered">商品情報照会</b>
+    </div>
+    <div class="mx-1">
+        <div class="has-text-centered">
+            <strong>対象の商品が{{ products_object.count }}件見つかりました</strong><br />
+            <p></p>
+        </div>
+        <div class="my-3">
+            <p class="sub-title my-2 has-text-centered is-size-4">在庫情報</p>
+            <div class="columns is-multiline m-1">
+                {% if products_stock.count == 0 %}
+                <div class="hero hero-body box column is-12">
+                    <p>該当のデータなし</p>
+                </div>
+                {% endif %} {% for ps in products_stock %}
+                <div style="border-bottom: 1px solid" class="column is-12 columns my-2">
+                    <div class="column is-8"><c style="font-size: 12px">{{ ps.category }}</c><br />{{ ps.name }}</div>
+                    <div class="column is-4" style="text-align: right"><b>{{ ps.stock }}</b>個</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="my-3">
+            <p class="sub-title my-2 has-text-centered is-size-4">本日の販売情報</p>
+            <div class="columns is-multiline m-1">
+                {% if products_sold.count == 0 %}
+                <div class="hero hero-body box m-1 column is-12 my-2">
+                    <p>該当のデータなし</p>
+                </div>
+                {% endif %} {% for pso in products_sold %}
+                <div style="border-bottom: 1px solid" class="columns column is-12 my-2">
+                    <div class="column is-8"><c style="font-size: 12px">{{ pso.category }}</c><br />{{ pso.name }}</div>
+                    <div class="column is-3" style="text-align: right"><b>{{ pso.sold }}</b>個</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="my-3">
+            <p class="sub-title my-4 has-text-centered is-size-4">詳細情報</p>
+            <div class="columns is-multiline m-1">
+                {% for product in products_object %}
+                <div class="column is-12 box">
+                    <div>
+                        <c style="font-size: 12px">登録名</c>
+                        <br />
+                        {{ product.name }}
+                    </div>
+                    <div>
+                        <c style="font-size: 12px">カテゴリー</c>
+                        <br />
+                        {{ product.category }}
+                    </div>
+                    <div class="columns">
+                        <div class="column">
+                            <c style="font-size: 12px">仕入れ価格</c>
+                            <br />
+                            {{ product.price_buy }}円
+                        </div>
+                        <div class="column">
+                            <c style="font-size: 12px">販売価格</c>
+                            <br />
+                            {{ product.price_sell }}円
+                        </div>
+                    </div>
+                    <div style="min-height: 50px">
+                        <c style="font-size: 12px">MEMO</c>
+                        <br />
+                        {{ product.description | linebreaksbr }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>

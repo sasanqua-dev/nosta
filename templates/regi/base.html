@@ -444,11 +444,13 @@
                             let cart_numbers = document.getElementsByClassName('cart_number');
                             let product_ids = new Array();
                             let product_numbers = new Array();
+                            let product_number_sum = 0;
                             for (let i = 0; i < products.length; i++) {
                                 let id = products[i].id.replace('cart_', '');
                                 let number = cart_numbers[i].value;
                                 product_ids.push(id);
                                 product_numbers.push(number);
+                                product_number_sum += number;
                             }
                             var csrf_token = getCookie('csrftoken');
                             path = "{% url 'regi:index' shop.code %}";
@@ -465,7 +467,7 @@
                                     products_ids: JSON.stringify(product_ids),
                                     products_numbers: JSON.stringify(product_numbers),
                                     ticket: document.getElementById('ticket_id').value,
-                                    number: products.length,
+                                    number: product_number_sum,
                                     total_price: document.getElementById('treasurer_cart_sum').textContent,
                                     cs_price: document.getElementById('treasurer_cs_sum').textContent,
                                     remaining_price: document.getElementById('remaining').textContent,

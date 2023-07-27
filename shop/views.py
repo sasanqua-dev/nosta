@@ -154,7 +154,7 @@ def product(request,shopCODE):
             
             elif request.POST["type"] == "get_product_sum":
                 product = Product.objects.get(id=request.POST["id"])
-                stock = CellProduct.objects.all().filter(Q(product=product)&Q(style="import")).aggregate(total_count=models.Sum("number"))["total_count"] - (CellProduct.objects.all().filter(Q(product=product)&Q(style="sold")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] + CellProduct.objects.all().filter(Q(product=product)&Q(style="export")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"])
+                stock = CellProduct.objects.all().filter(Q(product=product)&Q(style="import")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] - (CellProduct.objects.all().filter(Q(product=product)&Q(style="sold")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] + CellProduct.objects.all().filter(Q(product=product)&Q(style="export")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"])
                 all_import = CellProduct.objects.filter(Q(product=product)&Q(style="import")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"]
                 if(all_import != 0): 
                     sales_rate = (CellProduct.objects.all().filter(Q(product=product)&Q(style="sold")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] / all_import) * 100
@@ -179,6 +179,7 @@ def product(request,shopCODE):
                 product.description = request.POST["description"]
                 product.price_sell = request.POST["price_sell"]
                 product.price_buy = request.POST["price_buy"]
+                product.code = request.POST["code"]
                 product.save()
                 return HttpResponse("OK")
             
@@ -190,6 +191,7 @@ def product(request,shopCODE):
                     price_sell=request.POST["price_sell"],
                     price_buy=request.POST["price_buy"],
                     description=request.POST["description"],
+                    code=request.POST["code"],
                     is_active=True
                 )
                 return HttpResponse("OK")

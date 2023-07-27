@@ -71,6 +71,10 @@
                                 <label for="p_description">MEMO</label>
                                 <textarea id="p_description" name="p_description" class="input" style="height: 100px"></textarea>
                             </div>
+                            <div class="my-4">
+                                <label for="p_code">コード</label>
+                                <input id="p_code" name="p_code" class="input" />
+                            </div>
                             <div class="my-4 columns">
                                 <div class="column">
                                     <label for="p_import">仕入れ価格(円)</label>
@@ -98,11 +102,11 @@
                         <section>
                             <strong>新規作成</strong>
                             <div class="my-4">
-                                <label for="c_name">商品名</label>
+                                <label for="c_name"><span class="tag is-danger is-light">必須</span>商品名</label>
                                 <input type="text" id="c_name" name="c_name" class="input" />
                             </div>
                             <div class="my-4">
-                                <label for="c_category">カテゴリー</label>
+                                <label for="c_category"><span class="tag is-danger is-light">必須</span>カテゴリー</label>
                                 <input type="text" id="c_category" name="c_category" class="input" list="existcategory" />
                                 <datalist id="existcategory">
                                     {% for cat in categories %}
@@ -114,13 +118,17 @@
                                 <label for="c_description">MEMO</label>
                                 <textarea id="c_description" name="c_description" class="input" style="height: 100px"></textarea>
                             </div>
+                            <div class="my-4">
+                                <label for="c_code">コード</label>
+                                <input id="c_code" name="c_code" class="input" />
+                            </div>
                             <div class="my-4 columns">
                                 <div class="column">
-                                    <label for="c_import">仕入れ価格(円)</label>
+                                    <label for="c_import"><span class="tag is-danger is-light">必須</span>仕入れ価格(円)</label>
                                     <input type="number" id="c_import" name="c_import" class="input" min="0" />
                                 </div>
                                 <div class="column">
-                                    <label for="c_export">販売価格(円)</label>
+                                    <label for="c_export"><span class="tag is-danger is-light">必須</span>販売価格(円)</label>
                                     <input type="number" id="c_export" name="c_export" class="input" min="0" />
                                 </div>
                             </div>
@@ -149,16 +157,16 @@
                                 </div>
                             </div>
                             <div class="my-4">
-                                <label for="ar_reason">MEMO *任意</label>
+                                <label for="ar_reason">MEMO</label>
                                 <textarea id="ar_reason" name="ar_reason" class="input" style="height: 100px"></textarea>
                             </div>
                             <div class="my-4 columns">
                                 <div class="column">
-                                    <label for="ar_number">個数</label>
+                                    <label for="ar_number"><span class="tag is-danger is-light">必須</span>個数</label>
                                     <input type="number" id="ar_number" name="ar_number" class="input" min="0" required />
                                 </div>
                                 <div class="column">
-                                    <label for="ar_price">合計価格(円) *任意</label>
+                                    <label for="ar_price">合計価格(円)</label>
                                     <input type="number" id="ar_price" name="ar_price" class="input" min="0" default="default" />
                                 </div>
                             </div>
@@ -282,6 +290,7 @@
                 document.getElementById('p_name').value = document.getElementById(id + '_name').textContent;
                 document.getElementById('p_category').value = document.getElementById(id + '_category').textContent;
                 document.getElementById('p_description').textContent = document.getElementById(id + '_description').textContent;
+                document.getElementById('p_code').value = document.getElementById(id + '_code').textContent;
                 document.getElementById('p_import').value = document.getElementById(id + '_import').textContent;
                 document.getElementById('p_export').value = document.getElementById(id + '_export').textContent;
                 document.getElementById('p_id').textContent = id;
@@ -330,6 +339,7 @@
                             name: document.getElementById('p_name').value,
                             category: document.getElementById('p_category').value,
                             description: document.getElementById('p_description').textContent,
+                            code: document.getElementById('p_code').value,
                             price_sell: document.getElementById('p_export').value,
                             price_buy: document.getElementById('p_import').value,
                         },
@@ -390,6 +400,7 @@
                         name: document.getElementById('c_name').value,
                         category: document.getElementById('c_category').value,
                         description: document.getElementById('c_description').textContent,
+                        code: document.getElementById('c_code').value,
                         price_sell: document.getElementById('c_export').value,
                         price_buy: document.getElementById('c_import').value,
                     },
