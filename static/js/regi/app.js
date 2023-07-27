@@ -89,15 +89,15 @@ SQR.reader = (() => {
 })();
 
 SQR.modal = (() => {
-    const result = document.querySelector('#js-result');
     const content = document.querySelector('#modal-content-body');
     const modal = document.querySelector('#js-modal');
-    const modalClose = document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button');
+    const code_input = document.querySelector('#code');
 
     /**
      * 取得した文字列を入れ込んでモーダルを開く
      */
     const open = (code) => {
+        code_input.value = code;
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -159,6 +159,7 @@ SQR.modal = (() => {
     });
 
     const closeModal = ($el) => {
+        code_input.value = '';
         $el.classList.remove('is-active');
         SQR.reader.findQR();
     };
