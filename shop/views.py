@@ -268,3 +268,45 @@ def order(request,shopCODE):
             return render(request, 'shop/console/order.html',{'shop':shop,'orders':orders})
     else:
         return redirect('home')
+
+def shopping(request,shopCODE):
+    if request.method == "POST":
+        shop = Shop.objects.get(code=shopCODE)
+        match request.POST["type"]:
+            case "get_product":
+                products = Product.objects.all().filter(Q(shop=shop)&Q(category=request.POST["category"])&Q(web_cart=True))
+                param = {
+                    "products":products
+                }
+                data = render_to_string("shop/cart/product.html",param)
+                return HttpResponse(data)
+            case "set_cart":
+                if request.POST["ticket_create"] == False:
+                    ticket = None
+                else:
+                    formatted = get_dayformat()
+                    latestnumber = Ticket.objects.all().filter(Q(shop = shop) & Q(day=formatted)).aggregate(Max('number'))["number__max"]
+                    if latestnumber == None:
+                        latestnumber = 0
+                    ticket = Ticket.objects.create(
+                        number=latestnumber+1,
+                        shop=shop,
+                        people=1,
+                        cstype=None,
+                        localtion="WebCart",
+                        status="Waiting",
+                        waiting=0
+                    )
+                cart = Cart.objects.create(
+                    shop=shop,
+                    products=request.POST["products"],
+                    ticket=ticket,
+                )
+                data = HttpResponse(render_to_string('shop/cart/result.html',{'cart':cart,'shop':shop}))
+                return HttpResponse(data)
+    else:
+        shop = Shop.objects.get(code=shopCODE)
+        products = Product.objects.all().filter(Q(shop=shop)&Q(web_cart=True))
+        categories = set(products.values_list('category',flat=True))
+        return render(request,'shop/cart/index.html',{'shop':shop,'categories':categories})
+    
