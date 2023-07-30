@@ -6,7 +6,6 @@ User = get_user_model()
 
 class Shop(models.Model):
     # フィールドの定義
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     grade = models.CharField(max_length=100,default="Lite")
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=100)
@@ -32,6 +31,8 @@ class Shop(models.Model):
 
     regi_ticket = models.BooleanField()
     regi_post = models.URLField(blank=True)
+
+    token = models.CharField(max_length=50)
 
     is_active = models.BooleanField()
 
@@ -85,6 +86,10 @@ class Order(models.Model):
     cs_price = models.IntegerField()
     remaining_price = models.IntegerField()
 
+    reserved_date =  models.DateTimeField(null=True)
+    secret = models.CharField(max_length=1000,null=True)
+    reserved_id = models.IntegerField(null=True)
+
 class CellProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL,null=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE,null=True)
@@ -102,8 +107,8 @@ class News(models.Model):
     tag = models.CharField(max_length=100)
     channel = models.CharField(max_length=100)
     message = models.TextField()
-    created_at = models.DateTimeField(auto_now=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.title
 
@@ -111,19 +116,15 @@ class CStype(models.Model):
     shop = models.ForeignKey(Shop, on_delete=models.SET_NULL,null=True)
     name = models.CharField(max_length=50)
     description = models.TextField()
-
-class UserControl(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
-    shopconsole = models.CharField(max_length=50,null=True)
-    ticket = models.CharField(max_length=50,null=True)
-    market = models.CharField(max_length=50,null=True)
     
-class UserAdmin(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
-    permission = models.CharField(max_length=50,null=True)
-    department = models.CharField(max_length=50,null=True)
+class VirtualUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE,null=True)
+    permission = models.CharField(max_length=10,null=True)
+    status = models.CharField(max_length=10,null=True)
+    name = models.CharField(max_length=50,null=True)
     team = models.CharField(max_length=50,null=True)
-    is_active = models.CharField(max_length=50,null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class FAQ(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
@@ -146,9 +147,3 @@ class Contact(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.usrname
-
-class Cart(models.Model):
-    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
-    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE,null=True)
-    product = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now=True)

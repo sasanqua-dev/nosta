@@ -1,4 +1,12 @@
 {% extends 'shop/console_base.html' %} {% block content %}
+<style>
+    .tab-pane {
+        display: none;
+    }
+    .tab-pane:target {
+        display: block;
+    }
+</style>
 <nav class="navbar has-background-white-ter" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <div class="navbar-item">
@@ -15,6 +23,7 @@
 
 <div class="container is-main">
     <main class="content mt-4 mr-2 ml-2" style="overflow-y: auto; overflow-x: hidden">
+        <!--
         <section class="hero is-light" style="width: 100%;">
             <div class="hero-body">
                 <p class="title">
@@ -25,6 +34,63 @@
                 </p>
             </div>
         </section>
+        -->
+        <div class="p-3 m-1 mt-3">
+            <div class="tabs">
+                <ul>
+                    <li class="tab is-active"><a href="#approved">承認済み</a></li>
+                    <li class="tab">
+                        <a href="#request">承認待ち<span class="tag is-danger is-light mx-1">{{ vusers_request.count }}</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content is-flex">
+                <div id="approved" class="tab-pane animated m-2 is-active" style="min-height: 500px; width: 100%">
+                    <div class="">
+                        {% for vuser in vusers_approved %}
+                        <div class="columns card card-content">
+                            <div class="column is-3"><b class="is-size-4">{{ vuser.name }}</b></div>
+                            <div class="column is-2"><c style="font-size: 12px">グループ</c><br />{{ vuser.team }}</div>
+                            <div class="column is-2"><c style="font-size: 12px">メールアドレス</c><br />{{ vuser.user.email }}</div>
+                            <div class="column is-1"><c style="font-size: 12px">権限</c><br />{{ vuser.permission }}</div>
+                            <div class="column is-2"><c style="font-size: 12px">作成日時</c><br />{{ vuser.created_at }}</div>
+                            <div class="column is-2">
+                                <div class="columns is-multiline">
+                                    <div class="column is-12"><a class="button is-outlined is-info" data-id="{{ vuser.id }}">詳細</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="request" class="tab-pane animated m-2 p-6" style="min-height: 500px; width: 100%">
+                    {% if vusers_request.count == 0 %}
+                    <div class="card card-content">承認待ちのユーザーはいません</div>
+                    {% endif %} {% for vuser in vusers_request %}
+                    <div class="columns card card-content">
+                        <div class="column is-3"><b class="is-size-4">{{ vuser.name }}</b></div>
+                        <div class="column is-3"><c style="font-size: 12px">メールアドレス</c><br />{{ vuser.user.email }}</div>
+                        <div class="column is-3"><c style="font-size: 12px">作成日時</c><br />{{ vuser.created_at }}</div>
+                        <div class="column is-3">
+                            <div class="columns is-multiline">
+                                <div class="column is-6"><a class="button is-outlined is-success" data-id="{{ vuser.id }}">承認</a></div>
+                                <div class="column is-6"><a class="button is-outlined is-danger" data-id="{{ vuser.id }}">拒否</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <script>
+            $(function () {
+                $('li.tab').click(function () {
+                    $('li.tab').removeClass('is-active');
+                    $(this).addClass('is-active');
+                    return true;
+                });
+            });
+        </script>
     </main>
 </div>
 {% endblock %}

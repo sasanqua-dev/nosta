@@ -9,6 +9,8 @@ import datetime as dt
 import pytz
 import json
 from django.template.loader import render_to_string
+from module.user_auth import *
+import random, string
 
 # Create your views here.
 @login_required
@@ -23,12 +25,12 @@ def register(request):
             error_message = "この店舗コードはすでに使用されています(E005)"
             return render(request, 'shop/register.html', {'error': error_message})
         shop = Shop.objects.create(
-            owner=request.user,
             name=name,
             code=code,
             description = "",
             website="",
             message="",
+            email_massege="",
             cstype="default",
             people_min=1,
             people_max=10,
@@ -36,29 +38,23 @@ def register(request):
             sic=sic,
             category=category,
             regi_ticket=False,
-            is_active=True
+            is_active=True,
+            token=randomstr(15)
+        )
+        VirtualUser.objects.create(
+            user = request.user,
+            shop = shop,
+            permission = "owner",
+            status = "approved",
         )
         return redirect('service',shop.code)
 
     else:
         return render(request, 'shop/register.html')
 
-def get_dayformat():
-    jst = pytz.timezone('Asia/Tokyo')
-    now = dt.datetime.now(jst)
-    formatted = str(now.strftime("%Y-%m-%d"))
-    return formatted
-
-def user_permission_auth(request,shopCODE):
-    userdomain = request.user.email.split("@")[1]
-    shop = Shop.objects.get(code=shopCODE)
-    if(shop.owner == request.user) or ((shop.code in userdomain) and UserControl.objects.get(user=request.user).shopconsole == "valid"):
-        return "allow"
-    else:
-        return "reject"
 @login_required
 def dashboard(request,shopCODE):
-    if user_permission_auth(request,shopCODE) == "allow":
+    if user_permission_auth(request,shopCODE,"editor") == "allow":
         shop = Shop.objects.get(code=shopCODE)
         formatted = get_dayformat()
         tickets_yet = Ticket.objects.all().filter(Q(status="Waiting")& Q(day=formatted)& Q(shop=shop))
@@ -93,7 +89,7 @@ def dashboard(request,shopCODE):
 
 @login_required
 def analytics(request,shopCODE):
-    if user_permission_auth(request,shopCODE) == "allow":
+    if user_permission_auth(request,shopCODE,"editor") == "allow":
         shop = Shop.objects.get(code=shopCODE)
         return render(request, 'shop/console/analytics.html',{'shop':shop})
     else:
@@ -101,15 +97,17 @@ def analytics(request,shopCODE):
 
 @login_required
 def members(request,shopCODE):
-    if user_permission_auth(request,shopCODE) == "allow":
+    if user_permission_auth(request,shopCODE,"editor") == "allow":
         shop = Shop.objects.get(code=shopCODE)
-        return render(request, 'shop/console/member.html',{'shop':shop})
+        vusers_approved = VirtualUser.objects.all().filter(shop=shop,status="approved")
+        vusers_request = VirtualUser.objects.all().filter(shop=shop,status="request")
+        return render(request, 'shop/console/member.html',{'shop':shop,'vusers_approved':vusers_approved,'vusers_request':vusers_request})
     else:
         return redirect('home')
 
 @login_required
 def settings(request,shopCODE):
-    if user_permission_auth(request,shopCODE) == "allow":
+    if user_permission_auth(request,shopCODE,"editor") == "allow":
         shop = Shop.objects.get(code=shopCODE)
         return render(request, 'shop/console/settings.html',{'shop':shop})
     else:
@@ -117,7 +115,7 @@ def settings(request,shopCODE):
 
 @login_required
 def profile(request,shopCODE):
-    if user_permission_auth(request,shopCODE) == "allow":
+    if user_permission_auth(request,shopCODE,"editor") == "allow":
         shop = Shop.objects.get(code=shopCODE)
         return render(request, 'shop/console/profile.html',{'shop':shop})
     else:
@@ -125,7 +123,7 @@ def profile(request,shopCODE):
 
 @login_required
 def market(request,shopCODE):
-    if user_permission_auth(request,shopCODE) == "allow":
+    if user_permission_auth(request,shopCODE,"editor") == "allow":
         shop = Shop.objects.get(code=shopCODE)
         return render(request, 'shop/console/market.html',{'shop':shop})
     else:
@@ -134,7 +132,7 @@ def market(request,shopCODE):
 @login_required
 def product(request,shopCODE):
     if request.method == "POST":
-        if user_permission_auth(request,shopCODE) == "allow":
+        if user_permission_auth(request,shopCODE,"editor") == "allow":
             shop = Shop.objects.get(code=shopCODE)
             if request.POST["type"] == "get_category":
                 products = Product.objects.all().filter(Q(shop=shop)&Q(is_active=True)&Q(category=request.POST["category"]))
@@ -221,7 +219,7 @@ def product(request,shopCODE):
                 return HttpResponse("OK")
         else:
             return HttpResponse("Permission Error")
-    if user_permission_auth(request,shopCODE) == "allow":
+    if user_permission_auth(request,shopCODE,"editor") == "allow":
         shop = Shop.objects.get(code=shopCODE)
         categories = set(Product.objects.filter(shop=shop).values_list('category',flat=True))
         return render(request, 'shop/console/product.html',{'shop':shop,'categories':categories})
@@ -230,7 +228,7 @@ def product(request,shopCODE):
 
 @login_required
 def order(request,shopCODE):
-    if user_permission_auth(request,shopCODE) == "allow":
+    if user_permission_auth(request,shopCODE,"editor") == "allow":
         if request.method == "POST":
             order = Order.objects.get(id=request.POST["id"])
             if request.POST["type"] == "get_detail":
