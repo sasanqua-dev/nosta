@@ -97,13 +97,40 @@ def analytics(request,shopCODE):
 
 @login_required
 def members(request,shopCODE):
-    if user_permission_auth(request,shopCODE,"editor") == "allow":
-        shop = Shop.objects.get(code=shopCODE)
-        vusers_approved = VirtualUser.objects.all().filter(shop=shop,status="approved")
-        vusers_request = VirtualUser.objects.all().filter(shop=shop,status="request")
-        return render(request, 'shop/console/member.html',{'shop':shop,'vusers_approved':vusers_approved,'vusers_request':vusers_request})
+    if request.method == "POST":
+        if user_permission_auth(request,shopCODE,"editor") == "allow":
+            vuser = VirtualUser.objects.get(id=request.POST["id"])
+            match request.POST["command"]:
+                case "change_user_state":
+                    vuser.state = request.POST["state"]
+                    vuser.save()
+                    return HttpResponse("OK!")
+            
+                case "update_user_profile":
+                    vuser.permission = request.POST["permission"]
+                    vuser.name = request.POST["name"]
+                    vuser.team = request.POST["team"]
+                    vuser.save()
+                    return HttpResponse("OK!")
+                
+                case "get_user_profile":
+                    shop = Shop.objects.get(code=shopCODE)
+                    current_vuser = VirtualUser.objects.all().filter(shop=shop,user=request.user)
+                    param = {
+                        "cuser":current_vuser,
+                        "vuser":vuser
+                    }
+                    data = render_to_string("member_vuser_detail.html",param)
+                    return HttpResponse(data)
+
     else:
-        return redirect('home')
+        if user_permission_auth(request,shopCODE,"editor") == "allow":
+            shop = Shop.objects.get(code=shopCODE)
+            vusers_approved = VirtualUser.objects.all().filter(shop=shop,status="approved")
+            vusers_request = VirtualUser.objects.all().filter(shop=shop,status="request")
+            return render(request, 'shop/console/member.html',{'shop':shop,'vusers_approved':vusers_approved,'vusers_request':vusers_request})
+        else:
+            return redirect('home')
 
 @login_required
 def settings(request,shopCODE):

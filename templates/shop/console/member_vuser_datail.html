@@ -1,0 +1,61 @@
+<section>
+    <strong id="p_title"></strong>
+    <input type="hidden" id="p_id" />
+    <p class="is-size-6 mt-3">店舗ユーザー情報</p>
+    <div class="my-4">
+        <label for="name">名前</label>
+        <input id="name" name="name" class="input" value="{{ vuser.name }}" />
+    </div>
+    <div class="my-4">
+        <label for="team">所属</label>
+        <input id="team" name="team" class="input" value="{{ vuser.team }}" />
+    </div>
+    <div class="my-4">
+        <label for="permission">権限</label>
+        <input type="text" id="permission" name="permission" class="input" list="existcategory" value="{{ vuser.permission }}" />
+        <datalist id="existcategory">
+            <option value="admin">admin</option>
+            <option value="editor">editor</option>
+            <option value="operator">operator</option>
+        </datalist>
+    </div>
+    <div class="my-4">
+        <label for="state">アカウントステータス</label>
+        <input id="state" name="state" class="input" value="{{ vuser.state }}" />
+    </div>
+    <div class="my-2">
+        <div class="columns">
+            <div class="column">
+                {% if cuser.permission == "admin" %}
+                <a class="button is-denger m-2" onclick="vuser_delete('{{ vuser.id }}')">削除</a>
+                {% endif %}
+                <a class="button is-denger m-2" onclick="vuser_save('{{ vuser.id }}')">保存</a>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+function post_data(id){
+    $.ajax({
+                    url: "{% url 'shop:member' shop.code %}",
+                    type: 'POST',
+                    dataType: 'text',
+                    data: {
+                        command: 'update_user_profile',
+                        id: id,
+                        permission: document.getElementById("permission").value,
+                        name: document.getElementById("name").value,
+                        team: document.getElementById("team")
+                    },
+                })
+                    .done(function (response) {
+                        window.alert("正常に処理しました")
+                    })
+                    .fail(function (xhr) {
+                        window.alert("失敗しました")
+                    })
+                    .always(function (xhr, msg) {
+                        location.reload()
+                    });
+}
+</script>

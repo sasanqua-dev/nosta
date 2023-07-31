@@ -56,7 +56,7 @@
                             <div class="column is-2"><c style="font-size: 12px">作成日時</c><br />{{ vuser.created_at }}</div>
                             <div class="column is-2">
                                 <div class="columns is-multiline">
-                                    <div class="column is-12"><a class="button is-outlined is-info" data-id="{{ vuser.id }}">詳細</a></div>
+                                    <div class="column is-12"><a class="button is-outlined is-info js-modal-trigger" data-id="{{ vuser.id }}">詳細</a></div>
                                 </div>
                             </div>
                         </div>
@@ -64,6 +64,7 @@
                     </div>
                 </div>
                 <div id="request" class="tab-pane animated m-2 p-6" style="min-height: 500px; width: 100%">
+                    {% if vuser.permission == "admin" %}
                     {% if vusers_request.count == 0 %}
                     <div class="card card-content">承認待ちのユーザーはいません</div>
                     {% endif %} {% for vuser in vusers_request %}
@@ -73,13 +74,49 @@
                         <div class="column is-3"><c style="font-size: 12px">作成日時</c><br />{{ vuser.created_at }}</div>
                         <div class="column is-3">
                             <div class="columns is-multiline">
-                                <div class="column is-6"><a class="button is-outlined is-success" data-id="{{ vuser.id }}">承認</a></div>
-                                <div class="column is-6"><a class="button is-outlined is-danger" data-id="{{ vuser.id }}">拒否</a></div>
+                                <div class="column is-6"><a class="button is-outlined is-success" onclick="change_user_state('approved','{{ vuser.id }}')">承認</a></div>
+                                <div class="column is-6"><a class="button is-outlined is-danger" onclick="change_user_state('reject','{{ vuser.id }}')">拒否</a></div>
                             </div>
                         </div>
                     </div>
                     {% endfor %}
+                    <script>
+                        function change_user_state(state,target){
+                $.ajax({
+                    url: "{% url 'shop:member' shop.code %}",
+                    type: 'POST',
+                    dataType: 'text',
+                    data: {
+                        command: 'change_user_state',
+                        id: target,
+                        state: state
+                    },
+                })
+                    .done(function (response) {
+                        window.alert("正常に処理しました")
+                    })
+                    .fail(function (xhr) {
+                        window.alert("失敗しました")
+                    })
+                    .always(function (xhr, msg) {
+                        location.reload()
+                    });
+            }
+                    </script>
+                    {% else %}
+                    <div class="card card-content">権限が不足しています</div>
+                    {% endif %}
                 </div>
+            </div>
+        </div>
+        <div class="modal" id="detail">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <section class="modal-card-body">
+                    <div class="content" id="vuser_profile">
+                        
+                    </div>
+                </section>
             </div>
         </div>
         <script>
@@ -90,6 +127,47 @@
                     return true;
                 });
             });
+            function get_vuser_detail(id){
+                $.ajax({
+                    url: "{% url 'shop:member' shop.code %}",
+                    type: 'POST',
+                    dataType: 'html',
+                    data: {
+                        command: 'get_user_profile',
+                        vid: id
+                    },
+                })
+                    .done(function (response) {
+                        document.getElementById("vuser_profile").innerHTML = response
+                    })
+                    .fail(function (xhr) {
+                        window.alert("失敗しました")
+                    })
+            }
+            function openModal($el,id) {
+                get_vuser_detail(id)
+            $el.classList.add('is-active');
+        }
+        function closeModal($el) {
+            $el.classList.remove('is-active');
+        }
+        function createTrigger() {
+            (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+                const target = $trigger.dataset.target;
+                const id = $trigger.dataset.id;
+                const $target = document.getElementById(target);
+                $trigger.addEventListener('click', () => {
+                    openModal($target,id);
+                });
+            });
+            (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+                const $target = $close.closest('.modal');
+                $close.addEventListener('click', () => {
+                    closeModal($target);
+                });
+            });
+        }
+        createTrigger();
         </script>
     </main>
 </div>
