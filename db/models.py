@@ -11,7 +11,7 @@ class Shop(models.Model):
     code = models.CharField(max_length=100)
     description = models.TextField()
 
-    message = models.CharField(max_length=1000)
+    
     website = models.URLField()
 
     email_massege = models.CharField(max_length=1000)
@@ -29,7 +29,7 @@ class Shop(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    regi_ticket = models.BooleanField()
+    regi_ticket = models.BooleanField(default=True)
     regi_pass = models.BooleanField(default=False)
     webhock = models.URLField(blank=True)
 
@@ -37,12 +37,26 @@ class Shop(models.Model):
     token = models.CharField(max_length=50)
 
     order_limit = models.IntegerField(null=True)
+    
+    ucc_baner = models.TextField(null=True,max_length=2000)
+    ucc_treasure = models.TextField(null=True,max_length=2000)
+    ucc_ticket = models.TextField(null=True,max_length=2000)
+    ucc_resource = models.TextField(null=True,max_length=2000)
 
     is_active = models.BooleanField()
 
     def __str__(self):
         return self.name
-    
+
+class VirtualUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE,null=True)
+    permission = models.CharField(max_length=10,null=True)
+    status = models.CharField(max_length=10,null=True)
+    name = models.CharField(max_length=50,null=True)
+    team = models.CharField(max_length=50,null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
 class Ticket(models.Model):
     # フィールドの定義
     number = models.IntegerField()
@@ -80,7 +94,7 @@ class Product(models.Model):
         return self.name
 
 class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
+    user = models.ForeignKey(VirtualUser, on_delete=models.SET_NULL,null=True)
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     status = models.CharField(max_length=20)
     day = models.CharField(max_length=10)
@@ -124,14 +138,7 @@ class CStype(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
     
-class VirtualUser(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    shop = models.ForeignKey(Shop, on_delete=models.CASCADE,null=True)
-    permission = models.CharField(max_length=10,null=True)
-    status = models.CharField(max_length=10,null=True)
-    name = models.CharField(max_length=50,null=True)
-    team = models.CharField(max_length=50,null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+
 
 class FAQ(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)

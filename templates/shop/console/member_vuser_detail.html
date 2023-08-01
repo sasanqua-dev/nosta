@@ -12,6 +12,10 @@
     </div>
     <div class="my-4">
         <label for="permission">権限</label>
+        <p class="help is-danger">
+            {% if cuser.permission == "editor" or cuser.permission == "operator" %} 現在「{{ cuser.permittion }}」権限でアクセス中のため変更は反映されません<br />
+            {% else %} Editorアカウントで行った権限変更は反映されません {% endif %}
+        </p>
         <br />
         <div class="select is-info my-2">
             <select id="permission" name="permission">

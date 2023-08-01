@@ -11,6 +11,7 @@ from django.db.models.functions import Coalesce
 import datetime as dt 
 import pytz
 import json
+import hashlib
 
 from module.api_sold import *
 from module.user_auth import *
@@ -66,8 +67,9 @@ def index(request,shopCODE):
                 else:
                     ticket_data = Ticket.objects.get(id=request.POST["ticket"])
 
+                user = VirtualUser.objects.all().filter(shop=shop,user=request.user)[0]
                 order = Order.objects.create(
-                    user = request.user,
+                    user = user,
                     shop = Shop.objects.get(code=shopCODE),
                     status = status,
                     day = get_dayformat(),
@@ -96,7 +98,7 @@ def index(request,shopCODE):
                 return HttpResponse("OK!")
             
             elif request.POST["type"] == "get_list":
-                orders = Order.objects.all().filter(shop=shop)
+                orders = Order.objects.all().filter(Q(shop=shop)&Q(status="complete"))
                 param = {
                     "orders": orders,
                 }
@@ -112,6 +114,20 @@ def index(request,shopCODE):
     else:
         return redirect('home')
 
+def order_auth(code):
+    body = code.split(':')[1]
+    id = body.split('/')[0]
+    hsecret = body.split('/')[1]
+    order = Order.objects.get(treasure_id=id)
+    if order == None:
+        return "order:incorrect"
+    else:
+        if hashlib.sha224(order.secret.encode()).hexdigest() != hsecret:
+            return "secret:incorrect"
+
+        else:
+            return "allow"
+
 @login_required
 def app(request,shopCODE):
         if user_permission_auth(request,shopCODE,"operator") == "allow":
@@ -123,7 +139,25 @@ def app(request,shopCODE):
                         if "ticket" in code:
                             return HttpResponse(render_to_string('regi/app/unsupport.html',{}))
                         elif "order" in code:
-                            return HttpResponse(render_to_string('regi/app/unsupport.html',{}))
+                            body = code.split(':')[1]
+                            id = body.split('/')[0]
+                            if order_auth(code) == "allow":
+                                order = Order.objects.get(treasure_id=id)
+                                products = CellProduct.objects.all().filter(order=order)
+                                param = {
+                                    'order':order,
+                                    'products':products
+                                }
+                                data = render_to_string('regi/app/orderdetail.html',param)
+                                return HttpResponse(data)
+                            
+                            else:
+                                param = {
+                                    'message':order_auth(code)
+                                }
+                                data = render_to_string('regi/app/orderdetail.html',param)
+                                return HttpResponse(data)
+
                         else:
                             day = get_dayformat()
                             products = Product.objects.all().filter(Q(shop=shop)&Q(code=code))
@@ -154,6 +188,44 @@ def app(request,shopCODE):
                             }
                             data = render_to_string('regi/app/products.html', param)
                             return HttpResponse(data)
+                    case "action":
+                        sub_command = request.POST["sub_command"]
+                        code = request.POST["code"]
+                        body = code.split(':')[1]
+                        id = body.split('/')[0]
+                        if "order" in code:
+                            if order_auth(code) == "allow":
+                                if sub_command == "create_ticket":
+                                    order = Order.objects.get(treasure_id=id)
+                                    latestnumber = Ticket.objects.all().filter(Q(shop = shop) & Q(day=formatted)).aggregate(Max('number'))["number__max"]
+                                    if latestnumber == None:
+                                        latestnumber = 0
+                                    ticket = Ticket.objects.create(
+                                        number=latestnumber+1,
+                                        shop=order.shop,
+                                        people=request.POST["people"],
+                                        cstype=request.POST["cstype"],
+                                        localtion="reserved",
+                                        status="waiting",
+                                        day=get_dayformat(),
+                                        waiting=0
+                                    )
+                                    order.ticket = ticket
+                                    order.save()
+                                    param = {
+                                        'ticket':ticket,
+                                        'order':order
+                                    }
+                                    data = render_to_string('regi/app/orderdetail.html',param)
+                                    return HttpResponse(data)
+                            
+                            else:
+                                param = {
+                                    'message':order_auth(code)
+                                }
+                                data = render_to_string('regi/app/orderdetail.html',param)
+                                return HttpResponse(data)
+
                     case _:
                         return HttpResponse(render_to_string('regi/app/unsupport.html',{}))
             else:
