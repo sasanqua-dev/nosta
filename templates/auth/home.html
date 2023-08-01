@@ -2,15 +2,102 @@
 <div style="min-width: 40vm">
     <strong>ようこそ {{ user.username }} さん</strong>
     <div class="is-size-3">店舗を選択してください</div>
+    <p class="has-text-danger">{{ message }}</p>
+    <a class="button is-info is-light is-fullwidth my-3 js-modal-trigger" data-target="request">店舗に参加</a>
+    <a href="{% url 'shop:register' %}" class="button is-info is-light is-fullwidth my-3">新規作成</a>
     <div class="mt-6">
         <ul>
-            {% for shop in shops %}
+            {% for vuser in vusers %}
             <hr />
-            <li><a href="{% url 'service' shop.code %}" class="is-fullwidth my-2 arrow" style="width: 90%">{{ shop.name }}</a></li>
+            {% if vuser.status == "approved" %}
+            <li><a href="{% url 'service' vuser.shop.code %}" class="is-fullwidth my-2 arrow" style="width: 90%; color: black">{{ vuser.shop.name }}</a></li>
+            {% elif vuser.status == "request" %}
+            <li>
+                <p class="is-fullwidth my-2 arrow" style="width: 90%; color: black">{{ vuser.shop.name }}
+                <br>
+                <p class="help">この店舗は店舗管理者の承認待ちです</p>
+                </p>
+            </li>
+            {% endif %}
             {% endfor %}
         </ul>
     </div>
     <hr />
-    <a href="{% url 'shop:register' %}" class="button is-info is-light is-fullwidth">新規作成</a>
+
 </div>
+<div class="modal" id="request">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <section class="modal-card-body">
+            <div class="content" style="overflow-y: hidden">
+                <section>
+                    <form class="form" action="{% url 'home' %}" method="post">
+                        {% csrf_token %}
+                    <div class="my-4">
+                        <label for="code">店舗コード</label>
+                        <input id="code" name="code" class="input" />
+                    </div>
+                    <div class="my-4">
+                        <label for="token">認証トークン</label>
+                        <input id="token" name="token" class="input" />
+                    </div>
+                    <div class="my-4">
+                        <label for="name">アカウント名</label>
+                        <input id="name" name="name" class="input" />
+                        <p class="help">店舗側にはここで入力したアカウント名が表示されます</p>
+                    </div>
+                    <div class="my-4">
+                        <label class="help">リクエスト送信後、店舗へのアクセスにはアカウントが店舗管理者によって承認される必要があります</label>
+                    </div>
+                    <button class="button is-info my-2 is-outlined p-2">リクエストの送信</button>
+                    </form>
+                </section>
+            </div>
+        </section>
+    </div>
+</div>
+<script>
+    // csrf_tokenの取得に使う
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === name + '=') {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+    }
+    function openModal($el) {
+        $el.classList.add('is-active');
+    }
+    function closeModal($el) {
+        $el.classList.remove('is-active');
+    }
+    function createTrigger() {
+        (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+            const target = $trigger.dataset.target;
+            const $target = document.getElementById(target);
+            $trigger.addEventListener('click', () => {
+                openModal($target);
+            });
+        });
+        (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+            const $target = $close.closest('.modal');
+            $close.addEventListener('click', () => {
+                closeModal($target);
+            });
+        });
+    }
+    createTrigger();
+</script>
 {% endblock %}

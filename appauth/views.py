@@ -61,6 +61,35 @@ def service(request,shopCODE):
 
 @login_required
 def home(request):
+    message = ''
+    if request.method == "POST":
+        shop_code = request.POST["code"]
+        shop_token = request.POST["token"]
+        shop = Shop.objects.get(code=shop_code)
+        if VirtualUser.objects.all().filter(shop=shop,user=request.user).count() > 1:
+            message = "この店舗へはすでに登録されています"
+            vusers = VirtualUser.objects.all().filter(user=request.user)
+            return render(request, 'auth/home.html',{'vusers':vusers,"message":message})
+
+        if shop == None:
+            message = "店舗コードが間違っています"
+            vusers = VirtualUser.objects.all().filter(user=request.user)
+            return render(request, 'auth/home.html',{'vusers':vusers,"message":message})
+        if shop.token == shop_token :
+            VirtualUser.objects.create(
+                user = request.user,
+                shop = shop,
+                name= request.POST["name"],
+                status = "request"
+            )
+            message = "リクエストを送信しました"
+            vusers = VirtualUser.objects.all().filter(user=request.user)
+            return render(request, 'auth/home.html',{'vusers':vusers,"message":message})
+        else:
+            message = "認証トークンが間違っています"
+            vusers = VirtualUser.objects.all().filter(user=request.user)
+            return render(request, 'auth/home.html',{'vusers':vusers,"message":message})
+
     userid = request.user.id
-    shops = Shop.objects.all().filter(owner=userid)
-    return render(request, 'auth/home.html',{'shops':shops})
+    vusers = VirtualUser.objects.all().filter(user=request.user)
+    return render(request, 'auth/home.html',{'vusers':vusers,"message":message})

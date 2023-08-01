@@ -15,9 +15,7 @@
     <p><a href="{% url 'login' %}" class="button is-rounded my-4 is-gray is-light is-fullwidth">ログイン</a></p>
     <p class="help">他のアカウントで始める</p>
     <a href="{% url 'social:begin' 'google-oauth2' %}">
-        <span class="icon has-text-info">
-            <i class="fab fa-google fa-lg"></i>
-        </span>
+        <a href="{% url 'social:begin' 'google-oauth2' %}"> <img src="{% static 'image/icon/google.svg' %}" alt="Googleで始める" /></a>
     </a>
 </div>
 <div class="modal" id="term">

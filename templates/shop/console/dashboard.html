@@ -136,7 +136,11 @@
                     <div class="column m-2 has-text-centered">
                         <strong>WEBカート</strong>
                         <hr />
+                        {% if webproducts > 0 %}
+                        <b class="has-text-center is-size-3 has-text-primary">有効</b>
+                        {% else %}
                         <b class="has-text-center is-size-3">無効</b>
+                        {% endif %}
                         <hr />
                         <p>NOSTA MARKET</p>
                     </div>

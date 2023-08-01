@@ -14,6 +14,8 @@
         </div>
         <div class="column is-3"><c style="font-size: 12px">カテゴリー</c><br /><c id="{{ product.id }}_category" style="font-size: 15px">{{ product.category }}</c></div>
         <div hidden id="{{ product.id }}_description">{{ product.description | linebreaksbr}}</div>
+        <div hidden id="{{ product.id }}_webcart">{{ product.web_cart}}</div>
+        <div hidden id="{{ product.id }}_image">{{ product.image }}</div>
         <div hidden id="{{ product.id }}_code">{{ product.code }}</div>
         <div class="column is-2">
             <div class="columns is-multiline">

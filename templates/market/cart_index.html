@@ -1,0 +1,169 @@
+{% extends 'market/base.html' %} {% block content %}
+<div style="min-height: 90vh" id="main"></div>
+<section>
+    <div class="modal" id="cart">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <div class="modal-card-body">
+                <div class="content">
+                    <div id="cart_body" class="m-2"></div>
+                    <div id="cart_empty">
+                        <div class="hero">
+                            <div class="hero-body">
+                                <div class="subtitle has-text-centered">カートは空です</div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <strong>注文詳細</strong>
+                    <div class="columns is-mobile">
+                        <div class="column">
+                            <p class="is-size-6"><c id="cart_number">0</c><c>点</c></p>
+                        </div>
+                        <div class="column">
+                            <p class="is-size-3"><c style="font-size: 12px">￥</c><c id="cart_sum">0</c></p>
+                        </div>
+                    </div>
+                    <button class="button is-fullwidth is-info is-outlined" disabled>注文へ進む</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function sum_cart_product() {
+        document.getElementById('cart_number_short').textContent = document.getElementById('cart_body').childElementCount;
+        document.getElementById('cart_number_large').textContent = document.getElementById('cart_body').childElementCount;
+        document.getElementById('cart_number').textContent = document.getElementById('cart_body').childElementCount;
+        if (document.getElementById('cart_body').childElementCount == 0 && document.getElementById('cart_empty').hidden != false) {
+            document.getElementById('cart_empty').append('hidden', '');
+        } else if (document.getElementById('cart_body').childElementCount != 0 && document.getElementById('cart_empty').hidden == false) {
+            document.getElementById('cart_empty').remove('hidden');
+        }
+        let sum = 0;
+        let cart_numbers = document.getElementsByClassName('cart_product_number');
+        let cart_prices = document.getElementsByClassName('cart_price');
+        for (let i = 0; i < cart_numbers.length; i++) {
+            sum += cart_numbers[i].value * cart_prices[i].textContent;
+        }
+        document.getElementById('cart_sum').textContent = sum;
+    }
+    function setTrigger() {
+        let numbers = document.getElementsByClassName('product_numbers');
+        if (0 < numbers.length) {
+            for (let item of numbers) {
+                item.addEventListener('change', function () {
+                    pid = item.id.split('_')[0];
+                    document.getElementById(pid + '_mobile_number').value = item.value;
+                    document.getElementById(pid + '_desktop_number').value = item.value;
+                });
+            }
+        }
+    }
+    function deletecart(p_id) {}
+    function addcart(p_id) {
+        let target_elements = document.getElementById(p_id + '_mobile');
+        if (document.getElementById(p_id + '_mobile_number').value == '') {
+            window.alert('数量を選択してください');
+            return;
+        } else if (document.getElementById(p_id + '_mobile_number').value > 6) {
+            window.alert('数量は１～５までの数を選択してください');
+            return;
+        }
+        if (document.getElementById(p_id + '_cart') != null) {
+            window.alert('この商品はすでにカートに追加されています');
+            return;
+        }
+
+        let cart = document.getElementById('cart_body');
+        let base_elements = document.createElement('div');
+        base_elements.id = p_id + '_cart';
+        base_elements.classList.add('columns');
+        let product_info = document.createElement('div');
+        product_info.classList.add('column', 'is-4');
+        product_info.innerHTML = document.getElementById(p_id + '_info').innerHTML;
+        let product_price = document.createElement('div');
+        product_price.classList.add('column', 'is-3');
+        let product_price_mark = document.createElement('c');
+        product_price_mark.style = 'font-size: 12px;';
+        product_price_mark.textContent = '￥';
+        let product_price_text = document.createElement('c');
+        product_price_text.classList.add('cart_price');
+        product_price_text.textContent = document.getElementById(p_id + '_price').textContent;
+        product_price.appendChild(product_price_mark);
+        product_price.appendChild(product_price_text);
+        let product_number = document.createElement('div');
+        product_number.classList.add('column', 'is-3');
+        let number_input = document.createElement('input');
+        number_input.classList.add('input', 'cart_product_number', 'mx-2');
+        number_input.style = 'margin-top:37%;width: 100px;';
+        number_input.value = document.getElementById(p_id + '_mobile_number').value;
+        number_input.list = p_id + '_mobile_number';
+        product_number.appendChild(number_input);
+        let product_delete = document.createElement('div');
+        product_delete.classList.add('column', 'is-2', 'has-text-centered');
+        let delete_button = document.createElement('a');
+        delete_button.classList.add('button', 'is-danger', 'is-outlined');
+        delete_button.style = 'margin-top:60%;';
+        delete_button.textContent = '削除';
+        delete_button.onclick = deletecart(p_id);
+        product_delete.appendChild(delete_button);
+        base_elements.appendChild(product_info);
+        base_elements.appendChild(product_price);
+        base_elements.appendChild(product_number);
+        base_elements.appendChild(product_delete);
+        cart.appendChild(base_elements);
+        window.alert('カートに追加しました');
+        sum_cart_product();
+    }
+    // csrf_tokenの取得に使う
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === name + '=') {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+    }
+    function pagemove(target) {
+        if (target == 'products') {
+            var csrf_token = getCookie('csrftoken');
+            path = "{% url 'market:index' shop.code %}";
+            $.ajax({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                    }
+                },
+                type: 'POST',
+                url: path,
+                data: {
+                    type: 'get_products',
+                },
+                dataType: 'html',
+            })
+                .done(function (data) {
+                    document.getElementById('main').innerHTML = data;
+                    setTrigger();
+                })
+                .fail(function (data) {
+                    // error
+                    console.log(data);
+                    window.alert('通信エラーが発生しました(E-100)');
+                });
+        }
+    }
+</script>
+{% endblock %}
