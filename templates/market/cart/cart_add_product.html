@@ -1,0 +1,37 @@
+<div class="product_cell_id" id="{{ product.id }}_cart">
+    <div class="columns is-multiline is-mobile">
+        <div class="column is-3 is-hidden-mobile">
+            <div class="is-size-6 m-2">{{ product.name }}</div>
+            <div class="m-2 my-4">
+                {% if product.status == "在庫なし" %}
+                <span class="tag is-danger is-light">在庫なし</span><br />
+                {% elif product.status == "在庫あり" %}
+                <span class="tag is-primary is-light">在庫あり</span><br />
+                {% elif product.status == "残りわずか" %}
+                <span class="tag is-warning is-light">残りわずか</span><br />
+                {% endif %}
+            </div>
+        </div>
+        <div class="column is-12 is-hidden-desktop">
+            <div class="is-size-6 m-2">{{ product.name }}</div>
+        </div>
+        <div class="column is-4 is-hidden-desktop">
+            <div class="m-2 my-4">
+                {% if product.status == "在庫なし" %}
+                <span class="tag is-danger is-light">在庫なし</span><br />
+                {% elif product.status == "在庫あり" %}
+                <span class="tag is-primary is-light">在庫あり</span><br />
+                {% elif product.status == "残りわずか" %}
+                <span class="tag is-warning is-light">残りわずか</span><br />
+                {% endif %}
+            </div>
+        </div>
+        <div class="column is-3"><c style="font-size: 12px">￥</c><c class="cart_price is-size-3">{{ product.price_sell }}</c></div>
+        <div class="column is-2">
+            <input class="input cart_product_number mx-2" type="number" value="{{ number }}" list="{{ product.id }}_mobile_number" />
+        </div>
+        <div class="column is-3 has-text-centered">
+            <a class="button is-danger is-outlined mx-1" onclick="deletecart('{{ product.id }}')">削除</a>
+        </div>
+    </div>
+</div>

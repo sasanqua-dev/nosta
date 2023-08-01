@@ -65,7 +65,10 @@ def home(request):
     if request.method == "POST":
         shop_code = request.POST["code"]
         shop_token = request.POST["token"]
-        shop = Shop.objects.get(code=shop_code)
+        if Shop.objects.get(code=shop_code) == None:
+            message = "不正な店舗コードです"
+            vusers = VirtualUser.objects.all().filter(user=request.user)
+            return render(request, 'auth/home.html',{'vusers':vusers,"message":message})
         if VirtualUser.objects.all().filter(shop=shop,user=request.user).count() > 1:
             message = "この店舗へはすでに登録されています"
             vusers = VirtualUser.objects.all().filter(user=request.user)
@@ -82,9 +85,7 @@ def home(request):
                 name= request.POST["name"],
                 status = "request"
             )
-            message = "リクエストを送信しました"
-            vusers = VirtualUser.objects.all().filter(user=request.user)
-            return render(request, 'auth/home.html',{'vusers':vusers,"message":message})
+            return redirect('home')
         else:
             message = "認証トークンが間違っています"
             vusers = VirtualUser.objects.all().filter(user=request.user)

@@ -1,4 +1,21 @@
 {% extends 'shop/console_base.html' %} {% block content %}
+<style>
+    .tab-pane {
+        display: none;
+    }
+    .tab-pane:target {
+        display: block;
+    }
+</style>
+<script>
+    $(function () {
+        $('li.tab').click(function () {
+            $('li.tab').removeClass('is-active');
+            $(this).addClass('is-active');
+            return true;
+        });
+    });
+</script>
 <nav class="navbar has-background-white-ter" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <div class="navbar-item">
@@ -14,28 +31,95 @@
 </nav>
 
 <div class="container is-main">
-    <section>
-        {% if orders.count == 0 %}
-        <section class="hero is-light" style="width: 100%">
-            <div class="hero-body">
-                <p class="title">一致する商品がありません</p>
+    <div class="p-3 m-1 mt-3">
+        <div class="tabs">
+            <ul>
+                <li class="tab is-active">
+                    <a href="#complete">終了伝票</a>
+                </li>
+                <li class="tab">
+                    <a href="#return">返品伝票</a>
+                </li>
+                <li class="tab">
+                    <a href="#reserved">予約伝票<span class="tag is-primary is-light mx-1">{{ reserved_orders.count }}</span></a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content is-flex">
+            <div id="complete" class="tab-pane animated m-2 is-active" style="min-height: 500px; width: 100%">
+                <section>
+                    {% if complete_orders.count == 0 %}
+                    <section class="hero is-light" style="width: 100%">
+                        <div class="hero-body">
+                            <p class="title">一致する伝票がありません</p>
+                        </div>
+                    </section>
+                    {% else %} {% for order in complete_orders reversed %}
+                    <div class="columns card card-content m-1 mr-2">
+                        <div class="column is-3"><b style="font-size: max(1vw, 15px)">{{ order.created_at }}</b></div>
+                        <div class="column is-1"><c style="font-size: 12px">個数</c><br />{{ order.number }}</div>
+                        <div class="column is-2"><c style="font-size: 12px">合計金額</c><br />{{ order.total_price }}</div>
+                        <div class="column is-2"><c style="font-size: 12px">担当者</c><br />{{ order.user.name }}</div>
+                        <div class="column is-2"><c style="font-size: 12px">状態</c><br />{{ order.status }}</div>
+                        <div class="column is-2">
+                            <div class="columns is-multiline">
+                                <div class="column is-12"><a class="button is-outlined is-info js-modal-trigger" data-target="detail" data-id="{{ order.id }}">詳細情報</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %} {% endif %}
+                </section>
             </div>
-        </section>
-        {% else %} {% for order in orders reversed %}
-        <div class="columns card card-content m-1 mr-2">
-            <div class="column is-3"><b style="font-size: max(1vw, 15px)">{{ order.created_at }}</b></div>
-            <div class="column is-1"><c style="font-size: 12px">個数</c><br />{{ order.number }}</div>
-            <div class="column is-2"><c style="font-size: 12px">合計金額</c><br />{{ order.total_price }}</div>
-            <div class="column is-2"><c style="font-size: 12px">担当者</c><br />{{ order.user.username }}</div>
-            <div class="column is-2"><c style="font-size: 12px">状態</c><br />{{ order.status }}</div>
-            <div class="column is-2">
-                <div class="columns is-multiline">
-                    <div class="column is-12"><a class="button is-outlined is-info js-modal-trigger" data-target="detail" data-id="{{ order.id }}">詳細情報</a></div>
-                </div>
+            <div id="return" class="tab-pane animated m-2" style="min-height: 500px; width: 100%">
+                <section>
+                    {% if return_orders.count == 0 %}
+                    <section class="hero is-light" style="width: 100%">
+                        <div class="hero-body">
+                            <p class="title">一致する伝票がありません</p>
+                        </div>
+                    </section>
+                    {% else %} {% for order in return_orders reversed %}
+                    <div class="columns card card-content m-1 mr-2">
+                        <div class="column is-3"><b style="font-size: max(1vw, 15px)">{{ order.created_at }}</b></div>
+                        <div class="column is-1"><c style="font-size: 12px">個数</c><br />{{ order.number }}</div>
+                        <div class="column is-2"><c style="font-size: 12px">合計金額</c><br />{{ order.total_price }}</div>
+                        <div class="column is-2"><c style="font-size: 12px">担当者</c><br />{{ order.user.name }}</div>
+                        <div class="column is-2"><c style="font-size: 12px">状態</c><br />{{ order.status }}</div>
+                        <div class="column is-2">
+                            <div class="columns is-multiline">
+                                <div class="column is-12"><a class="button is-outlined is-info js-modal-trigger" data-target="detail" data-id="{{ order.id }}">詳細情報</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %} {% endif %}
+                </section>
+            </div>
+            <div id="reserved" class="tab-pane animated m-2" style="min-height: 500px; width: 100%">
+                <section>
+                    {% if reserved_orders.count == 0 %}
+                    <section class="hero is-light" style="width: 100%">
+                        <div class="hero-body">
+                            <p class="title">一致する伝票がありません</p>
+                        </div>
+                    </section>
+                    {% else %} {% for order in reserved_orders reversed %}
+                    <div class="columns card card-content m-1 mr-2">
+                        <div class="column is-3"><b style="font-size: max(1vw, 15px)">{{ order.created_at }}</b></div>
+                        <div class="column is-1"><c style="font-size: 12px">個数</c><br />{{ order.number }}</div>
+                        <div class="column is-2"><c style="font-size: 12px">合計金額</c><br />{{ order.total_price }}</div>
+                        <div class="column is-2"><c style="font-size: 12px">担当者</c><br />{{ order.user.name }}</div>
+                        <div class="column is-2"><c style="font-size: 12px">状態</c><br />{{ order.status }}</div>
+                        <div class="column is-2">
+                            <div class="columns is-multiline">
+                                <div class="column is-12"><a class="button is-outlined is-info js-modal-trigger" data-target="detail" data-id="{{ order.id }}">詳細情報</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %} {% endif %}
+                </section>
             </div>
         </div>
-        {% endfor %} {% endif %}
-    </section>
+    </div>
     <div class="modal" id="detail">
         <div class="modal-background"></div>
         <div class="modal-card">

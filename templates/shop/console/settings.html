@@ -36,7 +36,7 @@
 </nav>
 
 <div class="container is-main">
-    <div class="mt-4 mr-2 ml-2" style="min-height: 120vh; overflow-x: hidden">
+    <div class="mt-4 mr-2 ml-2" style="min-height: 120vh; overflow-x: hidden; overflow-y: hidden">
         <div class="columns">
             <div class="column is-10 m-4 mb-6">
                 <form>
@@ -56,6 +56,58 @@
                         <div class="column is-5">
                             <input class="input" placeholder="店舗コード" type="text" disabled value="{{ shop.code }}" />
                             <p class="help has-text-danger">店舗コードは変更できません</p>
+                        </div>
+                        <div class="column is-5"></div>
+                    </div>
+                    <h1 id="feature" class="m-2"><strong>Feature</strong></h1>
+                    <div class="columns is-multiline my-4">
+                        <div class="column is-2 has-text-centered">
+                            <label>REGI PASS</label>
+                        </div>
+                        <div class="column is-5">
+                            <div class="select settingform">
+                                <select id="regi_pass">
+                                    <option value="{{ shop.regi_pass }}" selected hidden>{{ shop.regi_pass }}</option>
+                                    <option value="True">True</option>
+                                    <option value="False">False</option>
+                                </select>
+                            </div>
+                            <div class="help">レジの受取金入力をスキップし自動でおつり0円として処理します<br /></div>
+                        </div>
+                        <div class="column is-5"></div>
+                    </div>
+                    <h1 id="custom" class="m-2"><strong>Cutomize</strong></h1>
+                    <div class="columns is-multiline my-4">
+                        <div class="column is-2 has-text-centered">
+                            <label>Market バナー</label>
+                        </div>
+                        <div class="column is-5">
+                            <textarea id="ucc_baner" class="input settingform" style="width: 100%; height: 100px">{{ shop.ucc_baner }}</textarea>
+                            <div class="help">NOSTA MARKETの画面上部にHTMLコードを挿入できます<br /></div>
+                        </div>
+                        <div class="column is-5"></div>
+                        <div class="column is-2 has-text-centered">
+                            <label>Market 注文画面</label>
+                        </div>
+                        <div class="column is-5">
+                            <textarea id="ucc_treasure" class="input settingform" style="width: 100%; height: 100px">{{ shop.ucc_treasure }}</textarea>
+                            <div class="help">NOSTA MARKETの注文画面にHTMLコードを挿入できます<br /></div>
+                        </div>
+                        <div class="column is-5"></div>
+                        <div class="column is-2 has-text-centered">
+                            <label>Ticket 表示画面</label>
+                        </div>
+                        <div class="column is-5">
+                            <textarea id="ucc_ticket" class="input settingform" style="width: 100%; height: 100px">{{ shop.ucc_ticket }}</textarea>
+                            <div class="help">NOSTA TICKETの顧客向け呼び出し画面にHTMLコードを挿入できます<br /></div>
+                        </div>
+                        <div class="column is-5"></div>
+                        <div class="column is-2 has-text-centered">
+                            <label>Resource 表示画面</label>
+                        </div>
+                        <div class="column is-5">
+                            <textarea id="ucc_resource" class="input settingform" style="width: 100%; height: 100px">{{ shop.ucc_resource }}</textarea>
+                            <div class="help">NOSTA RESOURCEの顧客向け情報提供画面にHTMLコードを挿入できます<br /></div>
                         </div>
                         <div class="column is-5"></div>
                     </div>
@@ -168,6 +220,11 @@
                         data: {
                             command: 'settings',
                             name: document.getElementById('shop_name').value,
+                            regi_pass: document.getElementById('regi_pass').value,
+                            ucc_baner: document.getElementById('ucc_baner').value,
+                            ucc_treasure: document.getElementById('ucc_treasure').value,
+                            ucc_ticket: document.getElementById('ucc_ticket').value,
+                            ucc_resource: document.getElementById('ucc_resource').value,
                             webhock: document.getElementById('webhock').value,
                         },
                     }).done(function (response) {
@@ -180,6 +237,11 @@
                     <p class="menu-label">Shop</p>
                     <ul class="menu-list">
                         <li><a href="#info">Info</a></li>
+                    </ul>
+                    <p class="menu-label">Service</p>
+                    <ul class="menu-list">
+                        <li><a href="#feature">Feature</a></li>
+                        <li><a href="#custom">Customize</a></li>
                     </ul>
                     <p class="menu-label">Advaned</p>
                     <ul class="menu-list">

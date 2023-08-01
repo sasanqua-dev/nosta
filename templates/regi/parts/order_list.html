@@ -10,7 +10,7 @@
         <div class="column is-2"><b style="font-size: max(1vw, 15px)">{{ order.created_at }}</b></div>
         <div class="column is-2"><c style="font-size: 12px">個数</c><br />{{ order.number }}個</div>
         <div class="column is-2"><c style="font-size: 12px">合計金額</c><br />{{ order.total_price }}円</div>
-        <div class="column is-2"><c style="font-size: 12px">担当者</c><br />{{ order.user.username }}</div>
+        <div class="column is-2"><c style="font-size: 12px">担当者</c><br />{{ order.user.name }}<br />{{ order.user.team }}</div>
         <div class="column is-2"><c style="font-size: 12px">状態</c><br />{{ order.status }}</div>
         <div class="column is-2">
             <div class="columns is-multiline">

@@ -34,7 +34,7 @@ def consolo_access(request,shopCODE,authtype=None):
 def dashboard(request,shopCODE):
     shop,tickets,tickets_already,tickets_calling,tickets_yet,formatted = consolo_access(request,shopCODE)
     if shop == "bad":
-        return redirect('ticket:home')
+        return redirect('home')
 
     news = News.objects.all().filter(Q(channel="ticket-console") | Q(channel="all")).order_by('created_at').reverse()[:3]
     # 来店者合計を計算
@@ -152,7 +152,7 @@ def system_ajax(request):
             tf,shop = consolo_access(request,request.POST["shopcode"],"AUTH")
             if tf == True:
                 shop.name = request.POST["shop_name"]
-                shop.message = request.POST["shop_message"]
+                shop.ucc_ticket = request.POST["shop_message"]
                 shop.people_min = request.POST["min_number"]
                 shop.people_max = request.POST["max_number"]
                 #shop.online_ticket = request.POST["reception_online"]

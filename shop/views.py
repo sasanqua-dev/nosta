@@ -104,6 +104,7 @@ def members(request,shopCODE):
     if request.method == "POST":
         if user_permission_auth(request,shopCODE,"editor") == "allow":
             vuser = VirtualUser.objects.get(id=request.POST["id"])
+            current_vuser = VirtualUser.objects.all().filter(shop=shop,user=request.user)
             match request.POST["command"]:
                 case "change_user_status":
                     vuser.status = request.POST["status"]
@@ -111,7 +112,8 @@ def members(request,shopCODE):
                     return HttpResponse("OK!")
             
                 case "update_user_profile":
-                    vuser.permission = request.POST["permission"]
+                    if current_vuser.permission == "admin":
+                        vuser.permission = request.POST["permission"]
                     vuser.name = request.POST["name"]
                     vuser.team = request.POST["team"]
                     vuser.status = request.POST["status"]
@@ -120,7 +122,6 @@ def members(request,shopCODE):
                 
                 case "get_user_profile":
                     shop = Shop.objects.get(code=shopCODE)
-                    current_vuser = VirtualUser.objects.all().filter(shop=shop,user=request.user)
                     param = {
                         "cuser":current_vuser[0],
                         "vuser":vuser,
@@ -151,7 +152,16 @@ def settings(request,shopCODE):
         if request.method == "POST":
             match request.POST["command"]:
                 case "settings":
+                    def tagblocker(st):
+                        st = st.replace('<script>','')
+                        st = st.replace('<link','')
+                        return st
                     shop.name = request.POST["name"]
+                    shop.regi_pass = request.POST["regi_pass"]
+                    shop.ucc_baner = tagblocker(request.POST["ucc_baner"])
+                    shop.ucc_treasure = tagblocker(request.POST["ucc_treasure"])
+                    shop.ucc_ticket = tagblocker(request.POST["ucc_ticket"])
+                    shop.ucc_resource = tagblocker(request.POST["ucc_resource"])
                     shop.webhock = request.POST["webhock"]
                     shop.save()
                     return HttpResponse("OK!")
@@ -211,20 +221,27 @@ def product(request,shopCODE):
             
             elif request.POST["type"] == "get_product_sum":
                 product = Product.objects.get(id=request.POST["id"])
+                reserved = CellProduct.objects.all().filter(Q(product=product)&Q(style="reserved")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"]
                 stock = CellProduct.objects.all().filter(Q(product=product)&Q(style="import")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] - (CellProduct.objects.all().filter(Q(product=product)&Q(style="sold")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] + CellProduct.objects.all().filter(Q(product=product)&Q(style="export")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"])
                 all_import = CellProduct.objects.filter(Q(product=product)&Q(style="import")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"]
+                sold = CellProduct.objects.all().filter(Q(product=product)&Q(style="sold")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"]
+                export = CellProduct.objects.all().filter(Q(product=product)&Q(style="export")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"]
                 if(all_import != 0): 
-                    sales_rate = (CellProduct.objects.all().filter(Q(product=product)&Q(style="sold")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] / all_import) * 100
+                    sales_rate = ((sold + export) / all_import) * 100
+                    sales_rate_pre = (( sold + reserved + export) / all_import) * 100
                     last_import = CellProduct.objects.all().filter(Q(product=product)&Q(style="import")).latest('id')
                 else:
                     sales_rate = 0
+                    sales_rate_pre = 0
                     last_import = None
 
 
                 param = {
                     "stock": stock,
-                    "sales_rate":sales_rate,
-                    "last_import": last_import
+                    "reserved": reserved,
+                    "sales_rate":round(sales_rate,2),
+                    "sales_rate_pre":round(sales_rate_pre,2),
+                    "last_import": last_import,
                 }
                 data = render_to_string('shop/console/product_sales.html', param)
                 return HttpResponse(data)
@@ -239,6 +256,7 @@ def product(request,shopCODE):
                 product.code = request.POST["code"]
                 product.web_cart = request.POST["web_cart"]
                 product.image = request.POST["image"]
+                product.limit = request.POST["limit"]
                 product.save()
                 return HttpResponse("OK")
             
@@ -253,6 +271,7 @@ def product(request,shopCODE):
                     code=request.POST["code"],
                     web_cart=request.POST["web_cart"],
                     image=request.POST["image"],
+                    limit=request.POST["limit"],
                     is_active=True
                 )
                 return HttpResponse("OK")
@@ -327,7 +346,14 @@ def order(request,shopCODE):
 
         else:
             shop = Shop.objects.get(code=shopCODE)
-            orders = Order.objects.all().filter(shop=shop)
-            return render(request, 'shop/console/order.html',{'shop':shop,'orders':orders})
+            complete_orders = Order.objects.all().filter(shop=shop,status="complete")
+            return_orders = Order.objects.all().filter(shop=shop,status="return")
+            reserved_orders = Order.objects.all().filter(shop=shop,status="reserved")
+            return render(request, 'shop/console/order.html',{
+                'shop':shop,
+                'complete_orders':complete_orders,
+                'return_orders':return_orders,
+                'reserved_orders':reserved_orders
+            })
     else:
         return redirect('home')

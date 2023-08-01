@@ -1,4 +1,4 @@
-{% extends 'market/base.html' %} {% block content %}
+{% extends 'market/base.html' %} {% block content %} {% load static %}
 <div style="min-height: 90vh" id="main"></div>
 <section>
     <div class="modal" id="cart">
@@ -19,12 +19,117 @@
                     <div class="columns is-mobile">
                         <div class="column">
                             <p class="is-size-6"><c id="cart_number">0</c><c>点</c></p>
+                            <button class="button is-info is-light" onclick="sum_cart_product()">再計算</button>
                         </div>
                         <div class="column">
                             <p class="is-size-3"><c style="font-size: 12px">￥</c><c id="cart_sum">0</c></p>
                         </div>
                     </div>
-                    <button class="button is-fullwidth is-info is-outlined" disabled>注文へ進む</button>
+                    <button class="button is-fullwidth is-info is-outlined" onclick="showTreasurer()">注文へ進む</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="treasurer">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <div class="modal-card-body">
+                <div class="content">
+                    <div class="has-text-centered is-size-5">
+                        <strong class="has-text-centered">注文</strong>
+                    </div>
+                    <p>注文詳細</p>
+                    <div class="columns is-mobile my-4">
+                        <div class="column">
+                            <p class="is-size-6"><c id="cart_number_tr">0</c><c>点</c></p>
+                        </div>
+                        <div class="column">
+                            <p class="is-size-3"><c style="font-size: 12px">￥</c><c id="cart_sum_tr">0</c></p>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="shopmessage">{{ shop.ucc_treasure | safe }}</div>
+                    <form class="form" onsubmit="return false;" method="POST">
+                        <div class="my-4">
+                            <label for="tr_date">受け取り希望日時</label>
+                            <p class="help">受け取り希望日時を過ぎた場合の対応は店舗にお問い合わせください</p>
+                            <input type="datetime-local" id="tr_date" name="tr_date" class="input" required />
+                        </div>
+                        <div class="my-4">
+                            <label for="tr_email">メールアドレス</label>
+                            <p class="help">注文内容がメールアドレスに送信されます</p>
+                            <input type="email" id="tr_email" name="tr_email" class="input" required />
+                        </div>
+
+                        <div class="notification is-danger is-light">
+                            <b>注意</b><br />
+                            ・注文は店舗での支払い、受け取りとなります<br />
+                            ・注文確定後に表示される画面が受け取り時に必要になります<br />
+                            ・商品の仕様、アレルギー品目(食品の場合)等は店舗公式サイト等でご確認ください<br />
+                            ・この画面はNOSTAの画面です、注文にはNOSTA利用規約への同意が必要となります<br />
+                            ・入力されたメールアドレスは店舗には通知されません<br />
+                        </div>
+                        <div class="my-4">
+                            <input type="checkbox" required />
+                            <a class="js-modal-trigger" data-target="term">オンライン注文サービス利用規約</a>と<a class="js-modal-trigger" data-target="privacy">プライバシーポリシー</a>に同意します
+                        </div>
+                        <button class="button is-fullwidth is-info is-outlined" onclick="tr_send()">注文する</button>
+                    </form>
+                    <div class="modal" id="term">
+                        <div class="modal-background"></div>
+                        <div class="modal-card" style="height: 100%">
+                            <section class="modal-card-body">
+                                <strong>オンライン注文サービス利用規約</strong>
+                                <br />
+                                <iframe src="{% static 'html/policy/market_term.html' %}" width="100%" height="95%"></iframe>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="modal" id="privacy">
+                        <div class="modal-background"></div>
+                        <div class="modal-card" style="height: 100%">
+                            <section class="modal-card-body">
+                                <strong>プライバシーポリシー</strong>
+                                <br />
+                                <iframe src="{% static 'html/policy/privacy.html' %}" width="100%" height="95%"></iframe>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="result">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <div class="modal-card-body">
+                <div class="content">
+                    <div class="hero">
+                        <div class="hero-body">
+                            <div class="subtitle has-text-centered">
+                                ご注文ありがとうございました<br /><c class="my-2 has-text-danger is-size-6">この画面を必ずスクリーンショット等で保存してください</c>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div id="img-qr" style="margin: 20px"></div>
+                    <script>
+                        function makeQR(id, hsecret) {
+                            var qrtext = 'order:' + id + '/' + hsecret;
+                            var utf8qrtext = unescape(encodeURIComponent(qrtext));
+                            $('#img-qr').html('');
+                            $('#img-qr').qrcode({ width: 100, height: 100, text: utf8qrtext });
+                        }
+                    </script>
+                    <div class="my-2">
+                        <p style="font-size: 12px">注文ID</p>
+                        <p id="orderid"></p>
+                    </div>
+                    <div class="my-2">
+                        <p style="font-size: 12px">パスワード</p>
+                        <p id="orderpass"></p>
+                    </div>
+                    <button class="button is-fullwidth is-info is-outlined my-6" onclick="location.reload()">画面を閉じる</button>
                 </div>
             </div>
         </div>
@@ -32,22 +137,85 @@
 </section>
 
 <script>
+    function showresult(id, secret) {
+        document.getElementById('orderid').textContent = id;
+        document.getElementById('orderpass').textContent = secret;
+    }
+    function showTreasurer() {
+        sum_cart_product();
+        let ele = document.getElementById('treasurer');
+        openModal(ele);
+    }
+    function tr_send() {
+        let products = document.getElementsByClassName('product_cell_id');
+        let cart_numbers = document.getElementsByClassName('cart_product_number');
+        let product_ids = new Array();
+        let product_numbers = new Array();
+        let product_number_sum = 0;
+        for (let i = 0; i < products.length; i++) {
+            let id = products[i].id.replace('_cart', '');
+            let number = cart_numbers[i].value;
+            product_ids.push(id);
+            product_numbers.push(number);
+            product_number_sum += number;
+        }
+        var csrf_token = getCookie('csrftoken');
+        path = "{% url 'market:index' shop.code %}";
+        $.ajax({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                }
+            },
+            type: 'POST',
+            url: path,
+            data: {
+                type: 'post_treasurer',
+                products_ids: JSON.stringify(product_ids),
+                products_numbers: JSON.stringify(product_numbers),
+                number: product_number_sum,
+                total_price: document.getElementById('cart_sum_tr').textContent,
+                reserved_date: document.getElementById('tr_date').value,
+            },
+            dataType: 'text',
+        })
+            .done(function (data) {
+                if (data == 'outofrange') {
+                    window.alert('注文した商品に在庫が不足している商品がふくまれていたためキャンセルされました\n再読み込みします');
+                    location.reload();
+                }
+                data = JSON.parse(data);
+                makeQR(data['id'], data['hsecret']);
+                showresult(data['id'], data['secret']);
+                document.getElementById('result').classList.add('is-active');
+                document.getElementById('cart_body').innerHTML = '';
+            })
+            .fail(function (data) {
+                // error
+                console.log(data);
+                window.alert('通信エラーが発生しました(E-M100)');
+            });
+    }
     function sum_cart_product() {
-        document.getElementById('cart_number_short').textContent = document.getElementById('cart_body').childElementCount;
-        document.getElementById('cart_number_large').textContent = document.getElementById('cart_body').childElementCount;
-        document.getElementById('cart_number').textContent = document.getElementById('cart_body').childElementCount;
         if (document.getElementById('cart_body').childElementCount == 0 && document.getElementById('cart_empty').hidden != false) {
-            document.getElementById('cart_empty').append('hidden', '');
+            document.getElementById('cart_empty').removeAttribute('hidden');
         } else if (document.getElementById('cart_body').childElementCount != 0 && document.getElementById('cart_empty').hidden == false) {
-            document.getElementById('cart_empty').remove('hidden');
+            document.getElementById('cart_empty').setAttribute('hidden', '');
         }
         let sum = 0;
         let cart_numbers = document.getElementsByClassName('cart_product_number');
         let cart_prices = document.getElementsByClassName('cart_price');
+        let product_number_sum = 0;
         for (let i = 0; i < cart_numbers.length; i++) {
             sum += cart_numbers[i].value * cart_prices[i].textContent;
+            product_number_sum += Number(cart_numbers[i].value);
         }
         document.getElementById('cart_sum').textContent = sum;
+        document.getElementById('cart_sum_tr').textContent = sum;
+        document.getElementById('cart_number_short').textContent = product_number_sum;
+        document.getElementById('cart_number_large').textContent = product_number_sum;
+        document.getElementById('cart_number').textContent = product_number_sum;
+        document.getElementById('cart_number_tr').textContent = product_number_sum;
     }
     function setTrigger() {
         let numbers = document.getElementsByClassName('product_numbers');
@@ -61,61 +229,60 @@
             }
         }
     }
-    function deletecart(p_id) {}
+    function deletecart(p_id) {
+        el = document.getElementById(p_id + '_cart');
+        if (el == null) {
+            return;
+        } else {
+            el.parentNode.remove();
+        }
+    }
     function addcart(p_id) {
         let target_elements = document.getElementById(p_id + '_mobile');
         if (document.getElementById(p_id + '_mobile_number').value == '') {
             window.alert('数量を選択してください');
             return;
         } else if (document.getElementById(p_id + '_mobile_number').value > 6) {
-            window.alert('数量は１～５までの数を選択してください');
+            window.alert('範囲外の数値が選択されました');
+            return;
+        } else if (document.getElementById(p_id + '_mobile_number').value <= 0) {
+            window.alert('範囲外の数値が選択されました');
             return;
         }
         if (document.getElementById(p_id + '_cart') != null) {
             window.alert('この商品はすでにカートに追加されています');
             return;
         }
-
-        let cart = document.getElementById('cart_body');
-        let base_elements = document.createElement('div');
-        base_elements.id = p_id + '_cart';
-        base_elements.classList.add('columns');
-        let product_info = document.createElement('div');
-        product_info.classList.add('column', 'is-4');
-        product_info.innerHTML = document.getElementById(p_id + '_info').innerHTML;
-        let product_price = document.createElement('div');
-        product_price.classList.add('column', 'is-3');
-        let product_price_mark = document.createElement('c');
-        product_price_mark.style = 'font-size: 12px;';
-        product_price_mark.textContent = '￥';
-        let product_price_text = document.createElement('c');
-        product_price_text.classList.add('cart_price');
-        product_price_text.textContent = document.getElementById(p_id + '_price').textContent;
-        product_price.appendChild(product_price_mark);
-        product_price.appendChild(product_price_text);
-        let product_number = document.createElement('div');
-        product_number.classList.add('column', 'is-3');
-        let number_input = document.createElement('input');
-        number_input.classList.add('input', 'cart_product_number', 'mx-2');
-        number_input.style = 'margin-top:37%;width: 100px;';
-        number_input.value = document.getElementById(p_id + '_mobile_number').value;
-        number_input.list = p_id + '_mobile_number';
-        product_number.appendChild(number_input);
-        let product_delete = document.createElement('div');
-        product_delete.classList.add('column', 'is-2', 'has-text-centered');
-        let delete_button = document.createElement('a');
-        delete_button.classList.add('button', 'is-danger', 'is-outlined');
-        delete_button.style = 'margin-top:60%;';
-        delete_button.textContent = '削除';
-        delete_button.onclick = deletecart(p_id);
-        product_delete.appendChild(delete_button);
-        base_elements.appendChild(product_info);
-        base_elements.appendChild(product_price);
-        base_elements.appendChild(product_number);
-        base_elements.appendChild(product_delete);
-        cart.appendChild(base_elements);
-        window.alert('カートに追加しました');
-        sum_cart_product();
+        var csrf_token = getCookie('csrftoken');
+        path = "{% url 'market:index' shop.code %}";
+        $.ajax({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                }
+            },
+            type: 'POST',
+            url: path,
+            data: {
+                type: 'add_cart',
+                id: p_id,
+                number: document.getElementById(p_id + '_mobile_number').value,
+            },
+            dataType: 'html',
+        })
+            .done(function (data) {
+                let cart = document.getElementById('cart_body');
+                let base = document.createElement('div');
+                base.innerHTML = data;
+                cart.appendChild(base);
+                window.alert('カートに追加しました');
+                sum_cart_product();
+            })
+            .fail(function (data) {
+                // error
+                console.log(data);
+                window.alert('通信エラーが発生しました(E-M100)');
+            });
     }
     // csrf_tokenの取得に使う
     function getCookie(name) {
@@ -161,7 +328,7 @@
                 .fail(function (data) {
                     // error
                     console.log(data);
-                    window.alert('通信エラーが発生しました(E-100)');
+                    window.alert('通信エラーが発生しました(E-M100)');
                 });
         }
     }

@@ -9,11 +9,18 @@
     <p><c style="font-size: 12px">処理日時</c><br /><b style="font-size: max(1vw, 15px)">{{ order.created_at }}</b></p>
     <p><c style="font-size: 12px">個数</c><br />{{ order.number }}</p>
     <p><c style="font-size: 12px">合計金額</c><br />{{ order.total_price }}円</p>
+    <p><c style="font-size: 12px">状態</c><br />{{ order.status }}</p>
+    {% if order.status == "reserved" %}
+    <hr />
+    <p><c style="font-size: 12px">予約日時</c><br />{{ order.reserved_date }}</p>
+    {% else %}
+    <hr />
     <p><c style="font-size: 12px">お預かり金額</c><br />{{ order.cs_price }}円</p>
     <p><c style="font-size: 12px">お釣り</c><br />{{ order.remaining_price }}円</p>
-    <p><c style="font-size: 12px">担当者</c><br />{{ order.user.username}}<br />{{ order.user.email}}</p>
-    <p><c style="font-size: 12px">状態</c><br />{{ order.status }}</p>
+    <p><c style="font-size: 12px">担当者</c><br />{{ order.user.name}}<br />{{ order.user.team}}</p>
+    {% endif %} {% if order.ticket != None %}
+    <hr />
     <p><c style="font-size: 12px">チケットID</c><br />{{ order.ticket.id }}</p>
     <p><c style="font-size: 12px">種別</c><br />{{ order.ticket.cs_type }}</p>
-    {% endif %}
+    {% endif %} {% endif %}
 </section>

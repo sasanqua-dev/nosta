@@ -8,8 +8,8 @@
     </section>
     {% else %}
     <div class="columns m-1">
-        <div class="column"><c style="font-size: 12px">在庫数</c><br />{{ stock }}</div>
-        <div class="column"><c style="font-size: 12px">販売率</c><br />{{ sales_rate }}%</div>
+        <div class="column"><c style="font-size: 12px">在庫数</c><br />{{ stock }} (内予約分：{{ reserved }})</div>
+        <div class="column"><c style="font-size: 12px">販売率</c><br />{{ sales_rate }}% ({{ sales_rate_pre }}%)</div>
     </div>
     <div class="container box m-1">
         <strong>直近の仕入れ履歴</strong>
