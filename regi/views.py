@@ -13,25 +13,13 @@ import pytz
 import json
 
 from module.api_sold import *
-
-def user_permission_auth(request,shopCODE):
-    userdomain = request.user.email.split("@")[1]
-    shop = Shop.objects.get(code=shopCODE)
-    if(shop.owner == request.user) or ((shop.code in userdomain) and UserControl.objects.get(user=request.user).shopconsole == "valid"):
-        return "allow"
-    else:
-        return "reject"
-
-def get_dayformat():
-    jst = pytz.timezone('Asia/Tokyo')
-    now = dt.datetime.now(jst)
-    formatted = str(now.strftime("%Y-%m-%d"))
-    return formatted
+from module.user_auth import *
+from module.product_status import *
 
 @login_required
 def index(request,shopCODE):
     if request.method == "POST":
-        if user_permission_auth(request,shopCODE) == "allow":
+        if user_permission_auth(request,shopCODE,"operator") == "allow":
             shop = Shop.objects.get(code=shopCODE)
             if request.POST["type"] == "get_ticket_waiting":
                 formatted = get_dayformat()
@@ -100,6 +88,7 @@ def index(request,shopCODE):
                         price=product.price_sell,
                         day = get_dayformat()
                     )
+                    product_status_auto_change(product)
                 
                 if shop.regi_post != "":
                     api_send(shop,order)
@@ -116,7 +105,7 @@ def index(request,shopCODE):
             
         else:
             return HttpResponse("Permission Error")
-    if user_permission_auth(request,shopCODE) == "allow":
+    if user_permission_auth(request,shopCODE,"operator") == "allow":
         shop = Shop.objects.get(code=shopCODE)
         categories = sorted(set(Product.objects.filter(shop=shop).values_list('category',flat=True)))
         return render(request, 'regi/base.html',{'shop':shop,"categories":categories})
@@ -125,7 +114,7 @@ def index(request,shopCODE):
 
 @login_required
 def app(request,shopCODE):
-        if user_permission_auth(request,shopCODE) == "allow":
+        if user_permission_auth(request,shopCODE,"operator") == "allow":
             if request.method == "POST":
                 shop = Shop.objects.get(code=shopCODE)
                 match request.POST["type"]:

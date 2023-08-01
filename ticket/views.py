@@ -10,21 +10,16 @@ import datetime as dt
 import pytz
 import json
 
-def get_dayformat():
-    jst = pytz.timezone('Asia/Tokyo')
-    now = dt.datetime.now(jst)
-    formatted = str(now.strftime("%Y-%m-%d"))
-    return formatted
+from module.user_auth import *
 
 def consolo_access(request,shopCODE,authtype=None):
-    userdomain = request.user.email.split("@")[1]
     shop = Shop.objects.get(code=shopCODE)
     if authtype:
-        if(shop.owner == request.user) or (shop.code in userdomain):
+        if user_permission_auth(request,shopCODE,"editor") == "allow":
             return True,shop
         else:
             return False,"dummy"
-    if(shop.owner == request.user) or (shop.code in userdomain): 
+    if user_permission_auth(request,shopCODE,"editor") == "allow": 
         formatted = get_dayformat()
         tickets = Ticket.objects.all().filter(Q(shop=shop) & Q(day=formatted)& Q(shop=shop)).count()
         tickets_already = Ticket.objects.all().filter((Q(status="Canceled") | Q(status="Skipped")| Q(status="Called"))& Q(day=formatted)& Q(shop=shop))
@@ -72,9 +67,8 @@ def customers(request,shopCODE):
 
 @login_required
 def shop(request,shopCODE):
-    userdomain = request.user.email.split("@")[1]
     shop = Shop.objects.get(code=shopCODE)
-    if(shop.owner == request.user) or (shop.code in userdomain):
+    if user_permission_auth(request,shopCODE,"editor") == "allow":
         cstype_list = CStype.objects.all().filter(shop=shop)
         return render(request, 'ticket/console/shop.html',{'shop':shop,'cstype_list':cstype_list})
     else:
@@ -83,10 +77,9 @@ def shop(request,shopCODE):
 
 @login_required
 def reception_internal(request,shopCODE):
-    userdomain = request.user.email.split("@")[1]
     shop = Shop.objects.get(code=shopCODE)
     cstype_list = CStype.objects.all().filter(shop=shop)
-    if(shop.owner == request.user) or (shop.code in userdomain):
+    if user_permission_auth(request,shopCODE,"operator") == "allow":
         return render(request, 'ticket/reception.html',{'shop':shop,'cstype_list':cstype_list})
     else:
         return redirect('home')

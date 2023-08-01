@@ -1,0 +1,116 @@
+{% load static %}
+<section>
+    <div class="columns is-multiline is-mobile mx-2">
+        {% for product in products %}
+        <div class="column is-2 is-hidden-touch" style="min-width: 300px">
+            <div class="card m-1" style="min-height: 500px">
+                <div class="card-image">
+                    <figure class="image is-4by3">
+                        <img src="{{ product.image }}" alt="画像なし" />
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="has-text-centered" style="height: 70px">
+                        <p class="title is-size-5 m-3">{{ product.name }}</p>
+                    </div>
+                    <div>
+                        {% if product.status == "在庫なし" %}
+                        <span class="tag is-danger is-light">在庫なし</span><br />
+                        {% elif product.status == "在庫あり" %}
+                        <span class="tag is-primary is-light">在庫あり</span><br />
+                        {% elif product.status == "残りわずか" %}
+                        <span class="tag is-warning is-light">残りわずか</span><br />
+                        {% endif %}
+                    </div>
+                    <p class="is-size-3 m-1 mx-4"><c style="font-size: 12px">￥</c>{{ product.price_sell }}</p>
+
+                    <div class="content p-1">
+                        {% if product.status == "在庫なし" %}
+                        <div class="my-3">
+                            <input type="number" class="input" placeholder="数量" disabled />
+                        </div>
+                        <button class="button is-outlined is-info is-fullwidth" disabled><img src="{% static 'image/icon/cart-plus-solid.svg' %}" class="mx-2" />カートに追加</button>
+                        {% else %}
+                        <div class="my-3">
+                            <input
+                                type="number"
+                                class="input product_numbers"
+                                id="{{ product.id }}_desktop_number"
+                                name="{{ product.id }}_mobile_number"
+                                list="{{ product.id }}_mobile_datalist"
+                                placeholder="数量"
+                            />
+                            <datalist id="{{ product.id }}_desktop_datalist">
+                                <option value="1">数量: 1</option>
+                                <option value="2">数量: 2</option>
+                                <option value="3">数量: 3</option>
+                                <option value="4">数量: 4</option>
+                                <option value="5">数量: 5</option>
+                            </datalist>
+                        </div>
+                        <button onclick="addcart('{{ product.id }}')" class="button is-outlined is-info is-fullwidth">
+                            <img src="{% static 'image/icon/cart-plus-solid.svg' %}" class="mx-2" />カートに追加
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column is-12 is-hidden-desktop">
+            <div class="columns is-mobile m-2" id="{{ product.id }}_mobile">
+                <div class="column is-5">
+                    <figure class="image is-4by3">
+                        <img src="{{ product.image }}" alt="画像なし" />
+                    </figure>
+                </div>
+                <div class="column is-7">
+                    <div id="{{ product.id }}_info">
+                        <div class="is-size-6 m-2">{{ product.name }}</div>
+                        <div class="m-2 my-4">
+                            {% if product.status == "在庫なし" %}
+                            <span class="tag is-danger is-light">在庫なし</span><br />
+                            {% elif product.status == "在庫あり" %}
+                            <span class="tag is-primary is-light">在庫あり</span><br />
+                            {% elif product.status == "残りわずか" %}
+                            <span class="tag is-warning is-light">残りわずか</span><br />
+                            {% endif %}
+                        </div>
+                    </div>
+                    <b class="is-size-5" style="letter-spacing: 1px"><c style="font-size: 12px">￥</c><c id="{{ product.id }}_price">{{ product.price_sell }}</c></b>
+
+                    <div class="m-2 my-4">
+                        {% if product.status == "在庫なし" %}
+                        <div class="my-3">
+                            <input type="number" class="input" placeholder="数量" disabled />
+                        </div>
+                        <button class="button is-outlined is-info mx-1 is-fullwidth" disabled><img src="{% static 'image/icon/cart-plus-solid.svg' %}" class="mx-2" />カートに追加</button>
+                        {% else %}
+                        <div class="my-3">
+                            <input
+                                type="number"
+                                class="input product_numbers"
+                                id="{{ product.id }}_mobile_number"
+                                name="{{ product.id }}_mobile_number"
+                                list="{{ product.id }}_mobile_datalist"
+                                placeholder="数量"
+                            />
+                            <datalist id="{{ product.id }}_mobile_datalist">
+                                <option value="1">数量: 1</option>
+                                <option value="2">数量: 2</option>
+                                <option value="3">数量: 3</option>
+                                <option value="4">数量: 4</option>
+                                <option value="5">数量: 5</option>
+                            </datalist>
+                        </div>
+
+                        <button onclick="addcart('{{ product.id }}')" class="button is-outlined is-info mx-1 is-fullwidth">
+                            <img src="{% static 'image/icon/cart-plus-solid.svg' %}" class="mx-2" />カートに追加
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>

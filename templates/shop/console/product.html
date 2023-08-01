@@ -55,7 +55,7 @@
                             <p class="is-size-6 mt-3">販売情報</p>
                             <div id="product_sum"></div>
                             <div class="my-4">
-                                <label for="p_name">カテゴリー</label>
+                                <label for="p_name">商品名</label>
                                 <input type="text" id="p_name" name="p_name" class="input" />
                             </div>
                             <div class="my-4">
@@ -75,6 +75,10 @@
                                 <label for="p_code">コード</label>
                                 <input id="p_code" name="p_code" class="input" />
                             </div>
+                            <div class="my-4">
+                                <label for="p_url">商品画像URL</label>
+                                <input type="url" id="p_url" name="p_url" class="input" />
+                            </div>
                             <div class="my-4 columns">
                                 <div class="column">
                                     <label for="p_import">仕入れ価格(円)</label>
@@ -83,6 +87,16 @@
                                 <div class="column">
                                     <label for="p_export">販売価格(円)</label>
                                     <input type="number" id="p_export" name="p_export" class="input" min="0" />
+                                </div>
+                            </div>
+                            <div class="my-4">
+                                <label for="p_online">オンライン注文</label>
+                                <div class="select is-info mx-3">
+                                    <select id="p_online">
+                                        <option value="" id="p_online_default" selected hidden></option>
+                                        <option value="True">有効</option>
+                                        <option value="False">無効</option>
+                                    </select>
                                 </div>
                             </div>
                         </section>
@@ -122,6 +136,10 @@
                                 <label for="c_code">コード</label>
                                 <input id="c_code" name="c_code" class="input" />
                             </div>
+                            <div class="my-4">
+                                <label for="c_url">商品画像URL</label>
+                                <input type="url" id="c_url" name="c_url" class="input" />
+                            </div>
                             <div class="my-4 columns">
                                 <div class="column">
                                     <label for="c_import"><span class="tag is-danger is-light">必須</span>仕入れ価格(円)</label>
@@ -130,6 +148,15 @@
                                 <div class="column">
                                     <label for="c_export"><span class="tag is-danger is-light">必須</span>販売価格(円)</label>
                                     <input type="number" id="c_export" name="c_export" class="input" min="0" />
+                                </div>
+                            </div>
+                            <div class="my-4">
+                                <label for="c_online">オンライン注文</label>
+                                <div class="select is-info mx-3">
+                                    <select id="c_online">
+                                        <option value="True">有効</option>
+                                        <option value="False" selected>無効</option>
+                                    </select>
                                 </div>
                             </div>
                         </section>
@@ -293,6 +320,9 @@
                 document.getElementById('p_code').value = document.getElementById(id + '_code').textContent;
                 document.getElementById('p_import').value = document.getElementById(id + '_import').textContent;
                 document.getElementById('p_export').value = document.getElementById(id + '_export').textContent;
+                document.getElementById('p_online_default').value = document.getElementById(id + '_webcart').textContent;
+                document.getElementById('p_online_default').textContent = document.getElementById(id + '_webcart').textContent;
+                document.getElementById('p_url').value = document.getElementById(id + '_image').textContent;
                 document.getElementById('p_id').textContent = id;
 
                 var csrf_token = getCookie('csrftoken');
@@ -342,6 +372,8 @@
                             code: document.getElementById('p_code').value,
                             price_sell: document.getElementById('p_export').value,
                             price_buy: document.getElementById('p_import').value,
+                            web_cart: document.getElementById('p_online').value,
+                            image: document.getElementById('p_url').value,
                         },
                         dataType: 'text',
                     })
@@ -403,6 +435,8 @@
                         code: document.getElementById('c_code').value,
                         price_sell: document.getElementById('c_export').value,
                         price_buy: document.getElementById('c_import').value,
+                        web_cart: document.getElementById('c_online').value,
+                        image: document.getElementById('c_url').value,
                     },
                     dataType: 'text',
                 })

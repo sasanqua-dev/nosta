@@ -30,8 +30,8 @@ class NewsAdmin(admin.ModelAdmin):
 class CstypeAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(UserControl)
-class UserControlAdmin(admin.ModelAdmin):
+@admin.register(VirtualUser)
+class VirtualUser(admin.ModelAdmin):
     pass
 
 @admin.register(FAQ)
