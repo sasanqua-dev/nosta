@@ -63,48 +63,6 @@
         <div style="margin-top: 100px">{% block content %}{% endblock %}</div>
     </body>
     <footer class="footer">
-        <div class="columns">
-            <div class="column is-1"></div>
-            <div class="column is-2">
-                <a href=""><img src="{% static 'image/long_logo.png' %}" style="max-height: 4.75rem" /></a>
-                <hr />
-                <p style="font-size: 12px">入店から退店までのフルサポート</p>
-            </div>
-            <div class="column is-1"></div>
-            <div class="column is-2">
-                <ul>
-                    <li class="my-2"><strong>利用者の方へ</strong></li>
-                    <li class="my-2"><a href="{% url 'top:home' %}">サービスホーム</a></li>
-                    <li class="my-2"><a href="{% url 'top:guide' %}">ユーザーガイド</a></li>
-                    <li class="my-4"></li>
-                </ul>
-            </div>
-            <div class="column is-2">
-                <ul>
-                    <li class="my-2"><strong>サービス</strong></li>
-                    <li class="my-2"><a href="{% url 'top:terms' %}">利用規約</a></li>
-                    <li class="my-2"><a href="{% url 'top:privacy' %}">プライバシーポリシー</a></li>
-                    <li class="my-2"><a href="{% url 'top:about' %}">ABOUT</a></li>
-                </ul>
-            </div>
-            <div class="column is-2">
-                <ul>
-                    <li class="my-2"><strong>サポート</strong></li>
-                    <li class="my-2"><a href="{% url 'top:faq' %}">FAQ</a></li>
-                    <li class="my-2"><a href="{% url 'top:contact' %}">お問い合わせ</a></li>
-                </ul>
-            </div>
-            <div class="column is-2">
-                <ul>
-                    <li class="my-2">
-                        <a><img src="{% static 'image/prasic_full.png'%}" style="max-height: 5.75rem" /></a>
-                    </li>
-                    <li class="my-2"><p style="font-size: 12px">このサービスはアプリケーションサービス基盤「Prasic-plus」上で動作しています</p></li>
-                    <hr />
-                    <li class="my-2"><a>共通ガイドライン</a></li>
-                </ul>
-            </div>
-        </div>
         <div class="content has-text-centered">
             <p>© prasic-plus.com 2023</p>
         </div>
