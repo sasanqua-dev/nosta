@@ -14,6 +14,7 @@ import json
 
 from module.api_sold import *
 from module.user_auth import *
+from module.product_status import *
 
 @login_required
 def index(request,shopCODE):
@@ -87,6 +88,7 @@ def index(request,shopCODE):
                         price=product.price_sell,
                         day = get_dayformat()
                     )
+                    product_status_auto_change(product)
                 
                 if shop.regi_post != "":
                     api_send(shop,order)

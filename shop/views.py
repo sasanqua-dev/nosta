@@ -10,6 +10,7 @@ import pytz
 import json
 from django.template.loader import render_to_string
 from module.user_auth import *
+from module.product_status import *
 import random, string
 
 # Create your views here.
@@ -237,6 +238,7 @@ def product(request,shopCODE):
                 product.price_buy = request.POST["price_buy"]
                 product.code = request.POST["code"]
                 product.web_cart = request.POST["web_cart"]
+                product.image = request.POST["image"]
                 product.save()
                 return HttpResponse("OK")
             
@@ -250,6 +252,7 @@ def product(request,shopCODE):
                     description=request.POST["description"],
                     code=request.POST["code"],
                     web_cart=request.POST["web_cart"],
+                    image=request.POST["image"],
                     is_active=True
                 )
                 return HttpResponse("OK")
@@ -268,6 +271,7 @@ def product(request,shopCODE):
                 else:
                     price = request.POST["price"]
                 
+
                 CellProduct.objects.create(
                     product=product,
                     shop=shop,
@@ -276,7 +280,8 @@ def product(request,shopCODE):
                     price=price,
                     day=get_dayformat()
                 )
-                return HttpResponse("OK")
+                product_status_auto_change(product)
+                return HttpResponse("OK!")
         else:
             return HttpResponse("Permission Error")
     if user_permission_auth(request,shopCODE,"editor") == "allow":

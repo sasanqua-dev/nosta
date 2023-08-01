@@ -55,7 +55,7 @@
                             <p class="is-size-6 mt-3">販売情報</p>
                             <div id="product_sum"></div>
                             <div class="my-4">
-                                <label for="p_name">カテゴリー</label>
+                                <label for="p_name">商品名</label>
                                 <input type="text" id="p_name" name="p_name" class="input" />
                             </div>
                             <div class="my-4">
@@ -74,6 +74,10 @@
                             <div class="my-4">
                                 <label for="p_code">コード</label>
                                 <input id="p_code" name="p_code" class="input" />
+                            </div>
+                            <div class="my-4">
+                                <label for="p_url">商品画像URL</label>
+                                <input type="url" id="p_url" name="p_url" class="input" />
                             </div>
                             <div class="my-4 columns">
                                 <div class="column">
@@ -131,6 +135,10 @@
                             <div class="my-4">
                                 <label for="c_code">コード</label>
                                 <input id="c_code" name="c_code" class="input" />
+                            </div>
+                            <div class="my-4">
+                                <label for="c_url">商品画像URL</label>
+                                <input type="url" id="c_url" name="c_url" class="input" />
                             </div>
                             <div class="my-4 columns">
                                 <div class="column">
@@ -314,6 +322,7 @@
                 document.getElementById('p_export').value = document.getElementById(id + '_export').textContent;
                 document.getElementById('p_online_default').value = document.getElementById(id + '_webcart').textContent;
                 document.getElementById('p_online_default').textContent = document.getElementById(id + '_webcart').textContent;
+                document.getElementById('p_url').value = document.getElementById(id + '_image').textContent;
                 document.getElementById('p_id').textContent = id;
 
                 var csrf_token = getCookie('csrftoken');
@@ -364,6 +373,7 @@
                             price_sell: document.getElementById('p_export').value,
                             price_buy: document.getElementById('p_import').value,
                             web_cart: document.getElementById('p_online').value,
+                            image: document.getElementById('p_url').value,
                         },
                         dataType: 'text',
                     })
@@ -426,6 +436,7 @@
                         price_sell: document.getElementById('c_export').value,
                         price_buy: document.getElementById('c_import').value,
                         web_cart: document.getElementById('c_online').value,
+                        image: document.getElementById('c_url').value,
                     },
                     dataType: 'text',
                 })

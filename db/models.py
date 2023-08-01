@@ -69,7 +69,7 @@ class Product(models.Model):
     description = models.TextField(null=True)
     code = models.CharField(max_length=20,null=True)
     web_cart = models.BooleanField(default=False)
-    images = models.URLField(null=True)
+    image = models.URLField(null=True)
     status = models.CharField(max_length=20)
     is_active = models.BooleanField()
     def __str__(self):

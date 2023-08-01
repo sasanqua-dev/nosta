@@ -40,7 +40,7 @@
                 <a class="navbar-item is-hidden-desktop mx-1" onclick="pagemove('products')" style="color: dimgray"><img src="{% static 'image/icon/list-solid.svg' %}" alt="商品リスト" /></a>
                 <a class="navbar-item is-hidden-desktop js-modal-trigger" data-target="cart" style="color: dimgray"
                     ><img src="{% static 'image/icon/cart-shopping-solid.svg' %}" alt="カート" />
-                    <div class="tag is-info is-light mx-1">0</div></a
+                    <div class="tag is-info is-light mx-1" id="cart_number_short">0</div></a
                 >
                 <a class="navbar-item is-hidden-desktop mx-1" onclick="pagemove('products')" style="color: dimgray"><img src="{% static 'image/icon/user-solid.svg' %}" alt="マイページ" /></a>
             </div>
@@ -55,7 +55,7 @@
                     </a>
                     <a class="navbar-item mx-1 js-modal-trigger" data-target="cart" style="color: dimgray">
                         <img src="{% static 'image/icon/cart-shopping-solid.svg' %}" class="mx-3" alt="カート" />カート
-                        <div class="tag is-info is-light mx-2">0</div>
+                        <div class="tag is-info is-light mx-2" id="cart_number_large">0</div>
                     </a>
                 </div>
             </div>
