@@ -1,5 +1,6 @@
 {% load static %}
 <section>
+    <div class="my-3">{{ shop.ucc_baner | safe}}</div>
     <div class="columns is-multiline is-mobile mx-2">
         {% for product in products %}
         <div class="column is-2 is-hidden-touch" style="min-width: 300px">
@@ -39,6 +40,7 @@
                                 name="{{ product.id }}_mobile_number"
                                 list="{{ product.id }}_mobile_datalist"
                                 placeholder="数量"
+                                max="{{ product.limit }}"
                             />
                             <datalist id="{{ product.id }}_desktop_datalist">
                                 <option value="1">数量: 1</option>
@@ -93,6 +95,7 @@
                                 name="{{ product.id }}_mobile_number"
                                 list="{{ product.id }}_mobile_datalist"
                                 placeholder="数量"
+                                max="{{ product.limit }}"
                             />
                             <datalist id="{{ product.id }}_mobile_datalist">
                                 <option value="1">数量: 1</option>
