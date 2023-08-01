@@ -78,7 +78,7 @@ def home(request):
             message = "店舗コードが間違っています"
             vusers = VirtualUser.objects.all().filter(user=request.user)
             return render(request, 'auth/home.html',{'vusers':vusers,"message":message})
-        if shop.token == shop_token :
+        if shop.secret == shop_token :
             VirtualUser.objects.create(
                 user = request.user,
                 shop = shop,
