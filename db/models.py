@@ -30,10 +30,13 @@ class Shop(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     regi_ticket = models.BooleanField()
+    regi_pass = models.BooleanField(default=False)
     webhock = models.URLField(blank=True)
 
     secret = models.CharField(max_length=50)
     token = models.CharField(max_length=50)
+
+    order_limit = models.IntegerField(null=True)
 
     is_active = models.BooleanField()
 
@@ -71,6 +74,7 @@ class Product(models.Model):
     web_cart = models.BooleanField(default=False)
     image = models.URLField(null=True)
     status = models.CharField(max_length=20)
+    limit = models.IntegerField(null=True)
     is_active = models.BooleanField()
     def __str__(self):
         return self.name
@@ -91,6 +95,7 @@ class Order(models.Model):
     reserved_date =  models.DateTimeField(null=True)
     secret = models.CharField(max_length=1000,null=True)
     reserved_id = models.IntegerField(null=True)
+    email = models.EmailField(null=True)
 
 class CellProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL,null=True)
