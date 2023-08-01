@@ -1,4 +1,26 @@
 {% extends 'shop/console_base.html' %} {% block content %}
+<script>
+    // csrf_tokenの取得に使う
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === name + '=') {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+    }
+</script>
 <nav class="navbar has-background-white-ter" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <div class="navbar-item">
@@ -14,17 +36,164 @@
 </nav>
 
 <div class="container is-main">
-    <main class="content mt-4 mr-2 ml-2" style="overflow-y: auto; overflow-x: hidden">
-        <section class="hero is-light" style="width: 100%;">
-            <div class="hero-body">
-                <p class="title">
-                    この機能は現在提供されていません
-                </p>
-                <p class="subtitle">
-                    近日提供予定です
-                </p>
+    <div class="mt-4 mr-2 ml-2" style="min-height: 120vh; overflow-x: hidden">
+        <div class="columns">
+            <div class="column is-10 m-4 mb-6">
+                <form>
+                    <h1 id="info" class="m-2"><strong>Info</strong></h1>
+                    <p>店舗情報の登録・修正を行います</p>
+                    <div class="columns is-multiline my-4">
+                        <div class="column is-2 has-text-centered">
+                            <label>店舗名</label>
+                        </div>
+                        <div class="column is-5">
+                            <input class="input settingform" placeholder="店舗名" value="{{ shop.name }}" id="shop_name" />
+                        </div>
+                        <div class="column is-5"></div>
+                        <div class="column is-2 has-text-centered">
+                            <label>店舗コード</label>
+                        </div>
+                        <div class="column is-5">
+                            <input class="input" placeholder="店舗コード" type="text" disabled value="{{ shop.code }}" />
+                            <p class="help has-text-danger">店舗コードは変更できません</p>
+                        </div>
+                        <div class="column is-5"></div>
+                    </div>
+                    <h1 id="secret" class="m-2"><strong>Secret</strong></h1>
+                    <div class="columns is-multiline my-4">
+                        <div class="column is-2 has-text-centered">
+                            <label>認証コード</label>
+                        </div>
+                        <div class="column is-5">
+                            <p id="secret_text">{{ shop.secret }}</p>
+                            <div class="help">
+                                店舗にユーザーを追加する際に使用します<br />
+                                変更した場合でも現在申請済みのユーザーは影響を受けません
+                            </div>
+                        </div>
+                        <div class="column is-5">
+                            <div class="is-size-3"><a class="is-light is-link button" onclick="re_generate('secret')">再生成</a></div>
+                        </div>
+                        <div class="column is-10">
+                            <div class="notification is-danger is-light">
+                                APIリクエスト・webhockは「Pro」「Premium」アカウント限定機能です<br />
+                                Liteアカウントではご利用頂けません
+                            </div>
+                        </div>
+                        <div class="column is-2"></div>
+                        <div class="column is-2 has-text-centered">
+                            <label>APIトークン</label>
+                        </div>
+                        <div class="column is-5">
+                            <textarea id="token_text" class="input" style="width: 100%; height: 100px">{{ shop.token }}</textarea>
+                            <div class="help">APIリクエストに使用します、万が一流出した場合は直ちに再生成してください<br /></div>
+                        </div>
+                        <div class="column is-5">
+                            <div class="is-size-3"><a class="is-light is-link button" onclick="re_generate('token')">再生成</a></div>
+                        </div>
+                        <div class="column is-2 has-text-centered">
+                            <label>webhock</label>
+                        </div>
+                        <div class="column is-5">
+                            <input id="webhock" type="url" class="input settingform" value="{{ shop.webhock }}" />
+                            <div class="help">webhockの詳細は開発者向けドキュメントをご覧ください</div>
+                        </div>
+                        <div class="column is-5"></div>
+                    </div>
+                    <h1 id="payments" class="m-2"><strong>Payments</strong></h1>
+                    <div class="columns is-multiline my-4">
+                        <div class="column is-2 has-text-centered">
+                            <label>アカウントステータス</label>
+                        </div>
+                        <div class="column is-5">
+                            <label>{{ shop.grade }}</label>
+                            <div class="help">アカウントのアップグレードはユーザーアカウント設定から行うことができます</div>
+                            <div class="help is-danger">現在「Lite」アカウントのみを提供しています</div>
+                        </div>
+                        <div class="column is-5">
+                            <!--
+                            <div class="is-size-3"><a class="is-light is-link button" href="{% url 'shop:settings' shop.code %}">アカウント設定</a></div>
+                            -->
+                        </div>
+                    </div>
+                </form>
             </div>
-        </section>
-    </main>
+            <script>
+                function re_generate(type) {
+                    var csrf_token = getCookie('csrftoken');
+                    $.ajax({
+                        beforeSend: function (xhr, settings) {
+                            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                            }
+                        },
+                        url: "{% url 'shop:settings' shop.code %}",
+                        type: 'POST',
+                        dataType: 'text',
+                        data: {
+                            command: 're_gererate',
+                            type: type,
+                        },
+                    }).done(function (response) {
+                        if (type == 'secret') {
+                            document.getElementById('secret_text').textContent = response;
+                        } else {
+                            document.getElementById('token_text').textContent = response;
+                        }
+                    });
+                }
+            </script>
+            <script>
+                window.addEventListener('DOMContentLoaded', function () {
+                    let settingforms = document.getElementsByClassName('settingform');
+                    if (0 < settingforms.length) {
+                        for (let item of settingforms) {
+                            item.addEventListener('change', function () {
+                                document.getElementById('savehelper').textContent = '変更が保存されていません';
+                            });
+                        }
+                    }
+                });
+                function ajax_handler() {
+                    var csrf_token = getCookie('csrftoken');
+                    $.ajax({
+                        beforeSend: function (xhr, settings) {
+                            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                            }
+                        },
+                        url: "{% url 'shop:settings' shop.code %}",
+                        type: 'POST',
+                        dataType: 'text',
+                        data: {
+                            command: 'settings',
+                            name: document.getElementById('shop_name').value,
+                            webhock: document.getElementById('webhock').value,
+                        },
+                    }).done(function (response) {
+                        document.getElementById('savehelper').textContent = '';
+                    });
+                }
+            </script>
+            <div class="column is-2 m-4 mr-4">
+                <aside class="menu container box shopsidebar" style="position: fixed; top: 50px; right: 20px">
+                    <p class="menu-label">Shop</p>
+                    <ul class="menu-list">
+                        <li><a href="#info">Info</a></li>
+                    </ul>
+                    <p class="menu-label">Advaned</p>
+                    <ul class="menu-list">
+                        <li><a href="#secret">Security</a></li>
+                        <li><a href="#payments">Payments</a></li>
+                    </ul>
+                    <div class="my-4">
+                        <p class="help is-danger has-text-centered my-2" id="savehelper"></p>
+                        <button class="button is-light is-info is-rounded my-2" onclick="ajax_handler()">変更を保存する</button>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
 </div>
-{% endblock %}

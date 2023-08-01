@@ -30,8 +30,9 @@ class Shop(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     regi_ticket = models.BooleanField()
-    regi_post = models.URLField(blank=True)
+    webhock = models.URLField(blank=True)
 
+    secret = models.CharField(max_length=50)
     token = models.CharField(max_length=50)
 
     is_active = models.BooleanField()
@@ -68,7 +69,8 @@ class Product(models.Model):
     description = models.TextField(null=True)
     code = models.CharField(max_length=20,null=True)
     web_cart = models.BooleanField(default=False)
-    #Images = models.ImageField(upload_to='',null=True)
+    images = models.URLField(null=True)
+    status = models.CharField(max_length=20)
     is_active = models.BooleanField()
     def __str__(self):
         return self.name

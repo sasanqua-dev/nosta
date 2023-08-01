@@ -12,5 +12,4 @@ urlpatterns = [
     path('console/market/<str:shopCODE>', views.market, name='market'),
     path('console/product/<str:shopCODE>', views.product, name='product'),
     path('console/order/<str:shopCODE>', views.order, name='order'),
-    path('<str:shopCODE>/menu', views.shopping, name='shopping'),
 ]

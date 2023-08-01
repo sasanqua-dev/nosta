@@ -14,16 +14,34 @@
 </nav>
 
 <div class="container is-main">
-    <main class="content mt-4 mr-2 ml-2" style="overflow-y: auto; overflow-x: hidden">
-        <section class="hero is-light" style="width: 100%;">
-            <div class="hero-body">
-                <p class="title">
-                    この機能は現在提供されていません
-                </p>
-                <p class="subtitle">
-                    近日提供予定です
-                </p>
+    <main class="content mt-4 mr-2 ml-2" style="min-height: 120vh; overflow-x: hidden">
+        <section>
+            <div class="hero">
+                <div class="hero-body">
+                    <p class="title">オンライン販売中の商品</p>
+                    <p class="help">商品の販売開始・停止は「Product」タブから行うことができます</p>
+                </div>
             </div>
+            <div class="notification is-danger is-light m-1 help">
+                「NOSTAオンライン注文」には決済機能はありません、店舗で会計・商品の引き渡しを行ってください<br />
+                予約注文情報はNOSTA SHOP取引画面(Order)から確認できます<br />
+                またNOSTA利用規約によりweb掲載価格が受け取り時の実際の商品価格を下回ることは禁止されています
+            </div>
+            <hr class="my-6" />
+            {% if products.count == 0 %}
+            <section class="hero is-light" style="width: 100%">
+                <div class="hero-body">
+                    <p class="title">一致する商品がありません</p>
+                </div>
+            </section>
+            {% else %} {% for product in products %}
+            <div class="columns card card-content m-1 mr-2">
+                <div class="column is-6"><b style="font-size: max(1vw, 15px)" id="{{ product.id }}_name">{{ product.name }}</b></div>
+                <div class="column is-3"><c style="font-size: 12px">販売価格</c><br />￥<c id="{{ product.id }}_export">{{ product.price_sell }}</c></div>
+                <div class="column is-3"><c style="font-size: 12px">カテゴリー</c><br /><c id="{{ product.id }}_category" style="font-size: 15px">{{ product.category }}</c></div>
+                <div hidden id="{{ product.id }}_code">{{ product.code }}</div>
+            </div>
+            {% endfor %} {% endif %}
         </section>
     </main>
 </div>

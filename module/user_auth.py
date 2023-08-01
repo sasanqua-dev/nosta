@@ -4,6 +4,8 @@ from django.db.models.functions import Coalesce
 import datetime as dt 
 import pytz
 import json
+import random
+import string
 
 def user_permission_auth(request,shopCODE,permit):
     userdomain = request.user.email.split("@")[1]

@@ -1,0 +1,49 @@
+<section>
+    <strong id="p_title"></strong>
+    <input type="hidden" id="p_id" />
+    <p class="is-size-6 mt-3">店舗ユーザー情報</p>
+    <div class="my-4">
+        <label for="name">名前</label>
+        <input id="name" name="name" class="input" value="{{ vuser.name }}" />
+    </div>
+    <div class="my-4">
+        <label for="team">所属</label>
+        <input id="team" name="team" class="input" value="{{ vuser.team }}" />
+    </div>
+    <div class="my-4">
+        <label for="permission">権限</label>
+        <br />
+        <div class="select is-info my-2">
+            <select id="permission" name="permission">
+                <option value="{{ vuser.permission }}" selected hidden>{{ vuser.permission }}</option>
+                <option value="admin">Admin</option>
+                <option value="editor">Editor</option>
+                <option value="operator">Operator</option>
+            </select>
+        </div>
+    </div>
+    <div class="my-4">
+        <label for="state">アカウントステータス</label>
+        <br />
+        <div class="select is-info my-2">
+            <select name="status" id="status">
+                <option value="{{ vuser.status }}" selected hidden>{{ vuser.status }}</option>
+                <option value="approved">承認済み</option>
+                <option value="request">承認待ち</option>
+                <option value="reject">アクセス拒否</option>
+            </select>
+        </div>
+    </div>
+    <div class="my-2">
+        <div class="columns">
+            {% if cuser.permission == "admin" or cuser.permission == "owner" %}
+            <div class="column">
+                <a class="button is-danger is-fullwidth is-outlined" onclick="vuser_delete('{{ vuser.id }}')">削除</a>
+            </div>
+            {% endif %}
+            <div class="column">
+                <a class="button is-info is-fullwidth is-outlined" onclick="vuser_save('{{ vuser.id }}')">保存</a>
+            </div>
+        </div>
+    </div>
+</section>

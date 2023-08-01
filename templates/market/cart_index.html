@@ -1,0 +1,83 @@
+{% extends 'market/base.html' %} {% block content %}
+<div style="min-height: 90vh" id="main"></div>
+<section>
+    <div class="modal" id="cart">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <div class="modal-card-body">
+                <div class="content">
+                    <div id="cart" class="m-2"></div>
+                    <div id="cart_empty">
+                        <div class="hero">
+                            <div class="hero-body">
+                                <div class="subtitle has-text-centered">カートは空です</div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <strong>注文詳細</strong>
+                    <div class="columns is-mobile">
+                        <div class="column">
+                            <p class="is-size-6"><c id="number">0</c><c>点</c></p>
+                        </div>
+                        <div class="column">
+                            <p class="is-size-3"><c style="font-size: 12px">￥</c><c id="sum_price">0</c></p>
+                        </div>
+                    </div>
+                    <button class="button is-fullwidth is-info is-outlined" disabled>注文へ進む</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // csrf_tokenの取得に使う
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === name + '=') {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+    }
+    function pagemove(target) {
+        if (target == 'products') {
+            var csrf_token = getCookie('csrftoken');
+            path = "{% url 'market:index' shop.code %}";
+            $.ajax({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                    }
+                },
+                type: 'POST',
+                url: path,
+                data: {
+                    type: 'get_products',
+                },
+                dataType: 'html',
+            })
+                .done(function (data) {
+                    document.getElementById('main').innerHTML = data;
+                })
+                .fail(function (data) {
+                    // error
+                    console.log(data);
+                    window.alert('通信エラーが発生しました(E-100)');
+                });
+        }
+    }
+</script>
+{% endblock %}
