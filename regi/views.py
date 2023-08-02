@@ -118,15 +118,14 @@ def order_auth(code):
     body = code.split(':')[1]
     id = body.split('/')[0]
     hsecret = body.split('/')[1]
-    order = Order.objects.get(reserved_id=id)
-    if order == None:
+    if not Order.objects.get(reserved_id=id).exists():
         return "order:incorrect"
-    else:
-        if hashlib.sha224(order.secret.encode()).hexdigest() != hsecret:
-            return "secret:incorrect"
+    order = Order.objects.get(reserved_id=id)
+    if hashlib.sha224(order.secret.encode()).hexdigest() != hsecret:
+        return "secret:incorrect"
 
-        else:
-            return "allow"
+    else:
+        return "allow"
 
 @login_required
 def app(request,shopCODE):
