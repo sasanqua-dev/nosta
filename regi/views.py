@@ -118,7 +118,7 @@ def order_auth(code):
     body = code.split(':')[1]
     id = body.split('/')[0]
     hsecret = body.split('/')[1]
-    order = Order.objects.get(treasure_id=id)
+    order = Order.objects.get(reserved_id=id)
     if order == None:
         return "order:incorrect"
     else:
@@ -142,7 +142,7 @@ def app(request,shopCODE):
                             body = code.split(':')[1]
                             id = body.split('/')[0]
                             if order_auth(code) == "allow":
-                                order = Order.objects.get(treasure_id=id)
+                                order = Order.objects.get(reserved_id=id)
                                 products = CellProduct.objects.all().filter(order=order)
                                 param = {
                                     'order':order,
@@ -196,7 +196,7 @@ def app(request,shopCODE):
                         if "order" in code:
                             if order_auth(code) == "allow":
                                 if sub_command == "create_ticket":
-                                    order = Order.objects.get(treasure_id=id)
+                                    order = Order.objects.get(reserved_id=id)
                                     latestnumber = Ticket.objects.all().filter(Q(shop = shop) & Q(day=formatted)).aggregate(Max('number'))["number__max"]
                                     if latestnumber == None:
                                         latestnumber = 0
