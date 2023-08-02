@@ -14,7 +14,7 @@
     <p><c style="font-size: 12px">状態</c><br />{{ order.status }}</p>
     {% if order.status == "reserved" %}
     <hr />
-    <p><c style="font-size: 12px">予約日時</c><br />{{ order.reserved_date }}</p>
+    <p><c style="font-size: 12px">予約来店日時</c><br />{{ order.reserved_date }}</p>
     {% else %}
     <hr />
     <p><c style="font-size: 12px">お預かり金額</c><br />{{ order.cs_price }}円</p>
