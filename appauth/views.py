@@ -69,6 +69,7 @@ def home(request):
             message = "不正な店舗コードです"
             vusers = VirtualUser.objects.all().filter(user=request.user)
             return render(request, 'auth/home.html',{'vusers':vusers,"message":message})
+        shop = Shop.objects.get(code=shop_code)
         if VirtualUser.objects.all().filter(shop=shop,user=request.user).count() > 1:
             message = "この店舗へはすでに登録されています"
             vusers = VirtualUser.objects.all().filter(user=request.user)
