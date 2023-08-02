@@ -95,6 +95,7 @@ def analytics(request,shopCODE):
 def members(request,shopCODE):
     if request.method == "POST":
         if user_permission_auth(request,shopCODE,"editor") == "allow":
+            shop = Shop.objects.get(code=shopCODE)
             vuser = VirtualUser.objects.get(id=request.POST["id"])
             current_vuser = VirtualUser.objects.all().filter(shop=shop,user=request.user)
             match request.POST["command"]:
