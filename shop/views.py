@@ -97,7 +97,7 @@ def members(request,shopCODE):
         if user_permission_auth(request,shopCODE,"editor") == "allow":
             shop = Shop.objects.get(code=shopCODE)
             vuser = VirtualUser.objects.get(id=request.POST["id"])
-            current_vuser = VirtualUser.objects.all().filter(shop=shop,user=request.user)
+            current_vuser = VirtualUser.objects.all().filter(shop=shop,user=request.user)[0]
             match request.POST["command"]:
                 case "change_user_status":
                     vuser.status = request.POST["status"]
