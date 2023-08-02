@@ -116,7 +116,7 @@ def members(request,shopCODE):
                 case "get_user_profile":
                     shop = Shop.objects.get(code=shopCODE)
                     param = {
-                        "cuser":current_vuser[0],
+                        "cuser":current_vuser,
                         "vuser":vuser,
                         'shop':shop
                     }
