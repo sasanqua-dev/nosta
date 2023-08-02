@@ -152,12 +152,15 @@
         let product_ids = new Array();
         let product_numbers = new Array();
         let product_number_sum = 0;
+        if (cart_numbers==0){
+            windows.alert("カートが空です")
+        }
         for (let i = 0; i < products.length; i++) {
             let id = products[i].id.replace('_cart', '');
             let number = cart_numbers[i].value;
             product_ids.push(id);
             product_numbers.push(number);
-            product_number_sum += number;
+            product_number_sum += Number(number);
         }
         var csrf_token = getCookie('csrftoken');
         path = "{% url 'market:index' shop.code %}";
