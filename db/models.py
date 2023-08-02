@@ -9,15 +9,15 @@ class Shop(models.Model):
     grade = models.CharField(max_length=100,default="Lite")
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(null=True)
 
     
-    website = models.URLField()
+    website = models.URLField(null=True)
 
-    email_massege = models.CharField(max_length=1000)
+    email_massege = models.CharField(max_length=1000,null=True)
 
-    people_min = models.IntegerField()
-    people_max = models.IntegerField()
+    people_min = models.IntegerField(null=True)
+    people_max = models.IntegerField(null=True)
 
     online_ticket = models.CharField(max_length=10,default="false")
     online_auth = models.CharField(max_length=10,default="false")
@@ -25,7 +25,7 @@ class Shop(models.Model):
     sic = models.CharField(max_length=50)
     category = models.CharField(max_length=50)
 
-    organization = models.CharField(max_length=1000)
+    organization = models.CharField(max_length=1000,null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -57,10 +57,16 @@ class VirtualUser(models.Model):
     team = models.CharField(max_length=50,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+class CStype(models.Model):
+    shop = models.ForeignKey(Shop, on_delete=models.SET_NULL,null=True)
+    name = models.CharField(max_length=50)
+    description = models.TextField()
+
 class Ticket(models.Model):
     # フィールドの定義
     number = models.IntegerField()
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
+    cstype = models.ForeignKey(CStype, on_delete=models.SET_NULL,null=True)
 
     people = models.IntegerField()
     cstype = models.CharField(max_length=100)
@@ -133,11 +139,6 @@ class News(models.Model):
     def __str__(self):
         return self.title
 
-class CStype(models.Model):
-    shop = models.ForeignKey(Shop, on_delete=models.SET_NULL,null=True)
-    name = models.CharField(max_length=50)
-    description = models.TextField()
-    
 
 
 class FAQ(models.Model):
