@@ -10,6 +10,6 @@
 <div class="px-6 mb-4">
     <p><a href="{% url 'register' %}" class="button is-rounded my-4 is-gray is-light is-fullwidth">新規作成</a></p>
     <p class="help">他のアカウントで始める</p>
-    <a href="{% url 'social:begin' 'google-oauth2' %}"> <img src="{% static 'image/icon/google.svg' %}" alt="Googleでログイン" /></a>
+    <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}"> <img src="{% static 'image/icon/google.svg' %}" alt="Googleでログイン" /></a>
 </div>
 {% endblock %}

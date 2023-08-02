@@ -38,10 +38,10 @@ class Shop(models.Model):
 
     order_limit = models.IntegerField(null=True)
     
-    ucc_baner = models.TextField(null=True,max_length=2000)
-    ucc_treasure = models.TextField(null=True,max_length=2000)
-    ucc_ticket = models.TextField(null=True,max_length=2000)
-    ucc_resource = models.TextField(null=True,max_length=2000)
+    ucc_baner = models.TextField(null=True,max_length=2000,default="")
+    ucc_treasure = models.TextField(null=True,max_length=2000,default="")
+    ucc_ticket = models.TextField(null=True,max_length=2000,default="")
+    ucc_resource = models.TextField(null=True,max_length=2000,default="")
 
     is_active = models.BooleanField()
 
