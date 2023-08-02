@@ -78,9 +78,11 @@
                     <div class="modal" id="term">
                         <div class="modal-background"></div>
                         <div class="modal-card" style="height: 100%">
+                            <header class="modal-card-head">
+                                <p class="modal-card-title">オンライン注文サービス利用規約</p>
+                                <button class="delete" aria-label="close"></button>
+                            </header>
                             <section class="modal-card-body">
-                                <strong>オンライン注文サービス利用規約</strong>
-                                <br />
                                 <iframe src="{% static 'html/policy/market_term.html' %}" width="100%" height="95%"></iframe>
                             </section>
                         </div>
@@ -88,9 +90,11 @@
                     <div class="modal" id="privacy">
                         <div class="modal-background"></div>
                         <div class="modal-card" style="height: 100%">
+                            <header class="modal-card-head">
+                                <p class="modal-card-title">プライバシーポリシー</p>
+                                <button class="delete" aria-label="close"></button>
+                            </header>
                             <section class="modal-card-body">
-                                <strong>プライバシーポリシー</strong>
-                                <br />
                                 <iframe src="{% static 'html/policy/privacy.html' %}" width="100%" height="95%"></iframe>
                             </section>
                         </div>
@@ -144,9 +148,11 @@
     function showTreasurer() {
         sum_cart_product();
         let ele = document.getElementById('treasurer');
+        closeModal(document.getElementById('cart'))
         openModal(ele);
     }
     function tr_send() {
+        closeModal(document.getElementById('treasurer'))
         let products = document.getElementsByClassName('product_cell_id');
         let cart_numbers = document.getElementsByClassName('cart_product_number');
         let product_ids = new Array();
