@@ -105,7 +105,7 @@ def members(request,shopCODE):
                     return HttpResponse("OK!")
             
                 case "update_user_profile":
-                    if current_vuser.permission == "admin":
+                    if current_vuser.permission == "admin" or current_vuser.permission == "owner" :
                         vuser.permission = request.POST["permission"]
                     vuser.name = request.POST["name"]
                     vuser.team = request.POST["team"]
