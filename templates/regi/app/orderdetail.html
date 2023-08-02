@@ -25,6 +25,13 @@
     <p><c style="font-size: 12px">チケットID</c><br />{{ order.ticket.id }}</p>
     <p><c style="font-size: 12px">種別</c><br />{{ order.ticket.cs_type }}</p>
     {% endif %}
+    <section class="m-6">
+        {% if order.status == "reserved" %}
+        <button class="button is-info is-outlined is-fullwidth">会計</button>
+        {% elif order.status == "complete" %}
+        <button class="button is-info is-outlined is-fullwidth">返品</button>
+        {% endif %}
+    </section>
     <div class="my-3"><strong class="is-size-6 mt-3 my-6">購入商品情報</strong></div>
     <section>
         {% if products.count == 0 %}
@@ -44,13 +51,6 @@
             </div>
         </div>
         {% endfor %} {% endif %}
-    </section>
-    <section>
-        {% if order.status == "reserved" %}
-        <button class="button is-info is-outlined">会計</button>
-        {% elif order.status == "complete" %}
-        <button class="button is-info is-outlined">返品</button>
-        {% endif %}
     </section>
     {% endif %}
 </section>

@@ -65,7 +65,7 @@ def home(request):
     if request.method == "POST":
         shop_code = request.POST["code"]
         shop_token = request.POST["token"]
-        if Shop.objects.get(code=shop_code) == None:
+        if not Shop.objects.get(code=shop_code).exists():
             message = "不正な店舗コードです"
             vusers = VirtualUser.objects.all().filter(user=request.user)
             return render(request, 'auth/home.html',{'vusers':vusers,"message":message})
