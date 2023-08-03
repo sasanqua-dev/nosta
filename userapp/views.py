@@ -18,6 +18,8 @@ from module.api_sold import *
 from module.user_auth import *
 from module.product_status import *
 
+import hashlib
+
 @login_required
 def index(request):
     if request.method == "POST":
@@ -44,9 +46,10 @@ def index(request):
                 products = CellProduct.objects.all().filter(order=order)
                 param = {
                     'order': order,
-                    'products':products
+                    'products':products,
+                    'order_secret': hashlib.sha224(order.secret.encode()).hexdigest()
                 }
-                data = render_to_string('userapp/parts/detail.html',param)
+                data = render_to_string('userapp/parts/orderdetail.html',param)
                 return HttpResponse(data)
             
             case "cancel":
