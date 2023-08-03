@@ -80,28 +80,12 @@
                     <div class="hero">
                         <div class="hero-body">
                             <div class="subtitle has-text-centered">
-                                ご注文ありがとうございました<br /><c class="my-2 has-text-danger is-size-6">この画面を必ずスクリーンショット等で保存してください</c>
+                                ご注文ありがとうございました<br /><c class="my-2 is-size-6">注文内容はマイページでご確認ください</c>
                             </div>
                         </div>
                     </div>
                     <hr />
-                    <div id="img-qr" style="margin: 20px"></div>
-                    <script>
-                        function makeQR(id, hsecret) {
-                            var qrtext = 'order:' + id + '/' + hsecret;
-                            var utf8qrtext = unescape(encodeURIComponent(qrtext));
-                            $('#img-qr').html('');
-                            $('#img-qr').qrcode({ width: 100, height: 100, text: utf8qrtext });
-                        }
-                    </script>
-                    <div class="my-2">
-                        <p style="font-size: 12px">注文ID</p>
-                        <p id="orderid"></p>
-                    </div>
-                    <div class="my-2">
-                        <p style="font-size: 12px">パスワード</p>
-                        <p id="orderpass"></p>
-                    </div>
+                    <a class="button is-fullwidth is-info is-outlined my-6" href="{% url 'userapp:index' %}">マイページ</a>
                     <button class="button is-fullwidth is-info is-outlined my-6" onclick="location.reload()">画面を閉じる</button>
                 </div>
             </div>
@@ -149,10 +133,6 @@
         if (number.id.indexOf('_cart') !== -1 && Number(number.textContent) == 1 && type == 'down') {
             deletecart(id);
         }
-    }
-    function showresult(id, secret) {
-        document.getElementById('orderid').textContent = id;
-        document.getElementById('orderpass').textContent = secret;
     }
     function showTreasurer() {
         sum_cart_product();
@@ -206,8 +186,6 @@
                     location.reload();
                 }
                 data = JSON.parse(data);
-                makeQR(data['id'], data['hsecret']);
-                showresult(data['id'], data['secret']);
                 document.getElementById('result').classList.add('is-active');
                 document.getElementById('cart_body').innerHTML = '';
             })

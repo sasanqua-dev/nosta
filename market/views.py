@@ -73,14 +73,7 @@ def market(request,shopCODE):
                         day = ''
                     )
                     product_status_auto_change(product)
-
-                params = {
-                    "id":order.reserved_id,
-                    'secret':order.secret,
-                    "hsecret":hashlib.sha224(order.secret.encode()).hexdigest()
-                }
-                json_str = json.dumps(params, ensure_ascii=False, indent=2) 
-                return HttpResponse(json_str)
+                return HttpResponse("OK!")
     else:
         shop = Shop.objects.get(code=shopCODE)
         products = Product.objects.all().filter(Q(shop=shop)&Q(web_cart=True))
