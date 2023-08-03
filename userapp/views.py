@@ -28,13 +28,6 @@ def index(request):
                 request.user.last_name = request.POST["last_name"]
                 request.user.save()
                 return HttpResponse("OK!")
-            case "post_password_user_data":
-                if (check_password(request.POST["old_password"], request.user.password)):
-                    request.user.password = make_password(request.POST['password'])
-                    request.user.save()
-                    return HttpResponse("OK!")
-                else:
-                    return HttpResponse("error")
                 
             case "post_delete_user_data":
                 now_tickets = Ticket.objects.all().filter(Q(customer=request.user)&Q(Q(status="Waiting")|Q(status="Calling")))
@@ -53,6 +46,7 @@ def index(request):
                 }
                 data = render_to_string('userapp/parts/detail.html',param)
                 return HttpResponse(data)
+            
             case "cancel":
                 order = Order.objects.get(id=request.POST["id"])
                 products = CellProduct.objects.all().filter(order=order)

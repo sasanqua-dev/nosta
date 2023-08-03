@@ -33,4 +33,10 @@ urlpatterns = [
     path('news/',include('news.urls')),
     path('', include('top.urls')),
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
+    path('accounts/password_change_form/', auth_views.PasswordChangeView.as_view(template_name='registration/password_change.html'), name='password_change_form'),
+    path('accounts/password_change_done/', auth_views.PasswordChangeDoneView.as_view(template_name='registration/password_change_finish.html'), name='password_change_done'),
+    path('accounts/password_reset_form/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset.html', from_email='no-reply@nosta.prasic-plus.com'), name='password_reset'),    # 追加
+    path('accounts/password_reset_done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_mail_done.html'), name='password_reset_done'),    # 追加
+    path('accounts/password_reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirmation.html'), name='password_reset_confirm'),    # 追加
+    path('accounts/password_reset_finish/', auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_finish.html'), name='password_reset_complete'),    # 追加
 ]

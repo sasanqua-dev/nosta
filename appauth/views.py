@@ -6,6 +6,7 @@ from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.urls import reverse_lazy
+import re
 
 # Create your views here.
 def user_login(request):
@@ -38,6 +39,9 @@ def user_register(request):
                 return render(request, 'auth/register.html', {'error': error_message})
             if '.nosta' in userid:
                 error_message = "このメールアドレスは使用できません(E003)"
+                return render(request, 'auth/register.html', {'error': error_message})
+            if not re.match("^[0-9A-Za-z]+$",username):
+                error_message = "ユーザー名には半角数字アルファベット以外は使用できません(E004)"
                 return render(request, 'auth/register.html', {'error': error_message})
             if User.objects.filter(username = username).count() > 0:
                 error_message = "このユーザー名はすでに登録されています(E004)"

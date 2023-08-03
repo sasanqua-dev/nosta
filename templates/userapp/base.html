@@ -78,7 +78,7 @@
                         <p>{{ user.last_name }} {{ user.first_name }} 様</p>
                     </div>
                     <div class="navbar-item">
-                        <p>{{ user.email }}</p>
+                        <p>@{{ user.username }}</p>
                     </div>
                     <hr />
                     <div class="navbar-item">
@@ -104,7 +104,7 @@
                     <form class="form" onsubmit="return false;" method="POST">
                         <div class="my-4">
                             <label for="email">メールアドレス</label>
-                            <input name="email" id="email" type="email" class="input" value="{{ user.email }}" />
+                            <input name="email" id="email" type="email" class="input" value="{{ user.email }}" required />
                         </div>
                         <div class="my-4">
                             <label>ユーザー名(変更できません)</label>
@@ -112,30 +112,21 @@
                         </div>
                         <div class="my-4">
                             <label for="email">お名前</label>
-                            <input name="last_name" type="text" id="last_name" class="input my-2" value="{{ user.last_name }}" placeholder="姓" />
-                            <input name="first_name" type="text" id="first_name" class="input my-2" value="{{ user.first_name }}" placeholder="名" />
+                            <input name="last_name" type="text" id="last_name" class="input my-2" value="{{ user.last_name }}" placeholder="姓" required />
+                            <input name="first_name" type="text" id="first_name" class="input my-2" value="{{ user.first_name }}" placeholder="名" required />
                         </div>
                         <div class="my-4 has-text-centered"><button class="button is-info is-outlined" onclick="setting_ajax_handler('save')">保存</button></div>
                     </form>
                     <hr />
                     {% if provider == "google-oauth2" %}
                     <strong class="my-4">Googleアカウントでログイン中</strong><br />
-                    {% else %}
-                    <strong>パスワードの変更</strong>
-                    <form class="form" onsubmit="return false;" method="POST">
-                        <div class="my-4">
-                            <label for="old_password">現在のパスワード</label>
-                            <input name="old_password" type="password" class="input" />
-                        </div>
-                        <div class="my-4">
-                            <label for="new_password">新しいパスワード</label>
-                            <input name="new_password" type="password" class="input my-2" />
-                            <input name="new_password2" type="password" class="input my-2" />
-                        </div>
-                        <div class="my-4 has-text-centered"><button class="button is-info is-outlined" onclick="setting_ajax_handler('password')">保存</button></div>
-                    </form>
                     {% endif %}
+                    <a href="{% url 'password_change_form' %}" class="button is-rounded is-gray">パスワードを変更</a>
+                    <a href="{% url 'password_reset' %}" class="button is-rounded is-gray">パスワードを設定<br><p style="font-size: 12px;">ほかのアカウントでログイン中でパスワードの設定をしていない方はこちら</p></a>
                     <hr />
+                    <a href="{% url 'home' %}" class="button is-rounded is-gray">店舗向けアプリ</a>
+                    <p class="help my-1 has-text-danger">NOSTAアプリとNOSTA店舗向けアプリを同時にインストールすることはできません</p>
+                    <hr>
                     <button class="button is-danger is-fullwidth" onclick="setting_ajax_handler('delete')">アカウントを削除</button>
                 </div>
             </div>
