@@ -1,7 +1,7 @@
 {% load static %}
 <div class="product_cell_id" id="{{ product.id }}_cart">
     <div class="columns is-multiline is-mobile">
-        <div class="column is-3 is-hidden-mobile">
+        <div class="column is-3 is-hidden-touch">
             <div class="is-size-6 m-2">{{ product.name }}</div>
             <div class="m-2 my-4">
                 {% if product.status == "在庫なし" %}

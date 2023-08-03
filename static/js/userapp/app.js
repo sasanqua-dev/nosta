@@ -145,7 +145,7 @@ function getdetail(id){
             }
         },
         type: 'POST',
-        url: path,
+        url: "/",
         data: {
             type: 'get_detail',
             id: id

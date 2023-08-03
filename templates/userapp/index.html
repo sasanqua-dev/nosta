@@ -66,17 +66,18 @@
             </div>
             <div class="m-3 container">
                 <div class="box">
-                    <strong>予約注文履歴<c style="font-size: 15px">(直近3件を表示中)</c></strong>
+                    <strong class="my-4">予約注文履歴<c style="font-size: 15px">(直近3件を表示中)</c></strong>
                     {% for obj in orders %} {% if forloop.counter <= 3 %}
                     <div class="columns is-multiline">
                         <b class="column is-12">{{ obj.shop.name }}</b>
                         <p class="column is-12">予約日時: {{ obj.reserved_date }}</p>
-                        <p class="column is-6">購入点数: {{ obj.number }}</p>
-                        <p class="column is-6">合計金額: {{ obj.total_price }}</p>
+                        <p class="column is-6">購入点数: {{ obj.number }}点</p>
+                        <p class="column is-6">合計金額: {{ obj.total_price }}円</p>
                         <div class="column is-12">
                             <div class="button is-info is-outlined" onclick="getdetail('{{ obj.id }}')">詳細</div>
                         </div>
                     </div>
+                    <hr>
                     {% endif %} {% endfor %} {% if orders.count > 0 %} {% else %}
                     <div class="hero">
                         <div class="hero-body has-text-centered">
