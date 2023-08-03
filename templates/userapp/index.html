@@ -66,7 +66,9 @@
             </div>
             <div class="m-3 container">
                 <div class="box">
-                    <strong class="my-4">予約注文履歴<c style="font-size: 15px">(直近3件を表示中)</c></strong>
+                    <div class="my-4">
+                        <strong>予約注文履歴<c style="font-size: 15px">(直近3件を表示中)</c></strong>
+                    </div>
                     {% for obj in orders %} {% if forloop.counter <= 3 %}
                     <div class="columns is-multiline">
                         <b class="column is-12">{{ obj.shop.name }}</b>
