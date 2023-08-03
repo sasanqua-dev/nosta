@@ -69,7 +69,7 @@
                             <label>店舗紹介文</label>
                         </div>
                         <div class="column is-5">
-                            <textarea class="input settingform" id="shop_description" style="width: 100%; height: 100px">{{ shop.website }}</textarea>
+                            <textarea class="input settingform" id="shop_description" style="width: 100%; height: 100px">{{ shop.description }}</textarea>
                         </div>
                         <div class="column is-5"></div>
                     </div>
@@ -235,7 +235,7 @@
                             command: 'settings',
                             name: document.getElementById('shop_name').value,
                             url: document.getElementById('shop_url').value,
-                            url: document.getElementById('shop_description').value,
+                            description: document.getElementById('shop_description').value,
                             regi_pass: document.getElementById('regi_pass').value,
                             ucc_baner: document.getElementById('ucc_baner').value,
                             ucc_treasure: document.getElementById('ucc_treasure').value,

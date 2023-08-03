@@ -20,7 +20,7 @@ function csrfSafeMethod(method) {
 }
 function settings_ajax_handler(type) {
     var csrf_token = getCookie('csrftoken');
-    path = "/";
+    path = '/app/';
     if (type == 'save') {
         $.ajax({
             beforeSend: function (xhr, settings) {
@@ -33,13 +33,24 @@ function settings_ajax_handler(type) {
             data: {
                 type: 'post_change_user_data',
                 email: document.getElementById('email').value,
-                first_name: document.getElementById('first_name').value,
-                last_name: document.getElementById('last_name').value,
+                username: document.getElementById('username').value,
+                nickname: document.getElementById('nickname').value,
             },
             dataType: 'text',
         })
             .done(function (data) {
+                if (data == 'e_error') {
+                    window.alert('このメールアドレスはすでに使用されています');
+                    return;
+                } else if (data == 'u_error') {
+                    window.alert('このユーザー名はすでに使用されています');
+                    return;
+                } else if (data == 'ure_error') {
+                    window.alert('ユーザー名は半角英数字のみが使用できます');
+                    return;
+                }
                 window.alert('更新しました\n表示されている情報が更新されるまで時間がかかる場合があります');
+                location.reload();
             })
             .fail(function (data) {
                 // error
@@ -66,6 +77,7 @@ function settings_ajax_handler(type) {
                     if (data == 'error') {
                         window.alert('予約中の注文または予約中、発券中のチケットがあるためアカウントを削除できません');
                     }
+                    location.reload();
                 })
                 .fail(function (data) {
                     // error
@@ -74,7 +86,7 @@ function settings_ajax_handler(type) {
                 });
         } else {
         }
-    } else if (type='cancel'){
+    } else if ((type = 'cancel')) {
         let checkSaveFlg = window.confirm('この注文をキャンセルします\n本当によろしいですか？');
         if (checkSaveFlg) {
             $.ajax({
@@ -87,7 +99,7 @@ function settings_ajax_handler(type) {
                 url: path,
                 data: {
                     type: 'cancel',
-                    id: document.getElementById("pid").value
+                    id: document.getElementById('pid').value,
                 },
                 dataType: 'text',
             })
@@ -105,7 +117,7 @@ function settings_ajax_handler(type) {
         }
     }
 }
-function getdetail(id){
+function getdetail(id) {
     var csrf_token = getCookie('csrftoken');
     $.ajax({
         beforeSend: function (xhr, settings) {
@@ -114,17 +126,17 @@ function getdetail(id){
             }
         },
         type: 'POST',
-        url: "/app/",
+        url: '/app/',
         data: {
             type: 'get_detail',
-            id: id
+            id: id,
         },
         dataType: 'html',
     })
         .done(function (data) {
-            document.getElementById("odetail").innerHTML = data
-            makeorderQR()
-            openModal(document.getElementById("order_detail"))
+            document.getElementById('odetail').innerHTML = data;
+            makeorderQR();
+            openModal(document.getElementById('order_detail'));
         })
         .fail(function (data) {
             // error
@@ -133,8 +145,8 @@ function getdetail(id){
         });
 }
 function makeorderQR() {
-    var id = document.getElementById('pid').value
-    var secret = document.getElementById('secret').value
+    var id = document.getElementById('pid').value;
+    var secret = document.getElementById('secret').value;
     var qrtext = 'user:' + id + '/' + secret;
     var utf8qrtext = unescape(encodeURIComponent(qrtext));
     $('#img-qr-ordercode').html('');

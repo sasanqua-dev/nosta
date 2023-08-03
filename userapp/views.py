@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
+from django.contrib.auth.models import User
 
 from db.models import *
 from django.db.models import *
@@ -18,6 +19,8 @@ from module.api_sold import *
 from module.user_auth import *
 from module.product_status import *
 
+import re
+
 import hashlib
 
 @login_required
@@ -26,20 +29,43 @@ def index(request):
         match request.POST["type"]:
             case "post_change_user_data":
                 user_data = User.objects.get(email=request.user.email)
+                if User.objects.all().filter(email=request.POST["email"]).count() > 1:
+                    return HttpResponse("e_error")
+                elif User.objects.all().filter(email=request.POST["email"]).count() == 1:
+                    if User.objects.get(email=request.POST["email"]) == request.user:
+                        pass
+                    else:
+                        return HttpResponse("e_error")
+                else:
+                    pass
+                
+                if not re.match("@[0-9A-Za-z]+$",request.POST["username"]):
+                    return HttpResponse("ure_error")
+                username = request.POST["username"].replace("@","")
+                if User.objects.all().filter(username=username).count() > 1:
+                    return HttpResponse("u_error")
+                elif User.objects.all().filter(username=username).count() == 1:
+                    if User.objects.get(username=username) == request.user:
+                        pass
+                    else:
+                        return HttpResponse("u_error")
+                else:
+                    pass
                 user_data.email = request.POST["email"]
-                user_data.first_name = request.POST["first_name"]
-                user_data.last_name = request.POST["last_name"]
+                user_data.username = username
+                user_data.first_name = request.POST["nickname"]
                 user_data.save()
                 return HttpResponse("OK!")
                 
             case "post_delete_user_data":
                 now_tickets = Ticket.objects.all().filter(Q(customer=request.user)&Q(Q(status="Waiting")|Q(status="Calling")))
                 orders = Order.objects.all().filter(Q(customer=request.user)&Q(status="reserved"))
-                if (now_tickets.count() == 0 & orders.count() == 0):
+                if now_tickets.count() == 0 and orders.count() == 0:
                     request.user.delete()
-                    redirect('logout')
-                else:
+                    logout(request)
                     return HttpResponse("OK!")
+                else:
+                    return HttpResponse("error")
                 
             case "get_detail":
                 order = Order.objects.get(id=request.POST["id"])
@@ -70,6 +96,7 @@ def index(request):
         now_tickets = Ticket.objects.all().filter(Q(customer=request.user)&Q(Q(status="Waiting")|Q(status="Calling")))
         tickets = Ticket.objects.all().filter(Q(customer=request.user)&Q(status="reserved"))
         orders = Order.objects.all().filter(Q(customer=request.user)&Q(status="reserved"))
+        pastorders = Order.objects.all().filter(Q(customer=request.user)&~Q(status="reserved"))
         today = datetime.now()
         hour = today.hour
         # 時間帯によりメッセージを変えて表示
@@ -95,6 +122,7 @@ def index(request):
             'now_tickets':tickets,
             'tickets':tickets,
             'orders':orders,
+            'pastorders':pastorders,
             'user_secret':hashlib.sha224(str(request.user.email).encode()).hexdigest()
         }
         return render(request,'userapp/index.html',param)

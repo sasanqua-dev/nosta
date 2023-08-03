@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <title>総合認証</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        <link rel="icon" href="{% static 'image/favicon.ico' %}" />
+        <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/bulma_form.css' %}" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="content box" style="height: 90vh; overflow-y: auto; min-width: 50vw">
+                <img src="{% static 'image/long_logo.png' %}" alt="logo" width="300px" />
+                <hr />
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

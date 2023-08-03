@@ -1,7 +1,7 @@
 {% extends 'auth_base.html' %} {% block content %}{% load static %}
 <form class="px-6" method="post" action="{% url 'register' %}">
     {% csrf_token %}
-    <input type="text" name="username" id="usernamepre" class="input my-2" placeholder="ユーザーID(半角アルファベット)" required pattern="^[0-9A-Za-z]+$"  value="{{ request.GET.username}}" />
+    <input type="text" name="username" id="usernamepre" class="input my-2" placeholder="ユーザーID(半角アルファベット)" required pattern="^[0-9A-Za-z]+$" value="{{ request.GET.username}}" />
     <input type="text" name="type" value="pre" value="pre" hidden />
     <p class="has-text-danger help" id="namemessage">{{ request.GET.message }}</p>
     <input type="submit" class="button is-rounded is-fullwidth my-4 is-info is-light" value="ユーザー名を確認" />
@@ -9,20 +9,23 @@
 <form class="px-6" method="post" action="{% url 'register' %}">
     {% csrf_token %}
     <input type="email" name="userid" id="userid" class="input my-2" placeholder="メールアドレス" required />
-    <input type="text" name="username" class="input my-2" required pattern="^[0-9A-Za-z]+$" hidden value="{{ request.GET.username}}"/>
+    <input type="hidden" name="username" class="input my-2" required pattern="^[0-9A-Za-z]+$" value="{{ request.GET.username}}" />
     <input type="password" name="password" id="password" class="input my-2" placeholder="パスワード" required />
     <input type="password" name="password2" id="password2" class="input my-2" placeholder="パスワード(確認)" required />
-    <input type="text" name="last_name" id="last_name" class="input my-2" placeholder="姓" required />
-    <input type="text" name="first_name" id="first_name" class="input my-2" placeholder="名" required />
+    <input type="text" name="first_name" id="first_name" class="input my-2" placeholder="ニックネーム" required />
     <p class="has-text-danger help" id="passmessage"></p>
     <script>
-        document.getElementById("password2").addEventListener("change",function() {
-            if (document.getElementById("password").value == document.getElementById("password2").value){
-                document.getElementById("passmessage").textContent = ""
-            }else{
-                document.getElementById("passmessage").textContent = "パスワードが一致しません"
-            }
-        }, false);
+        document.getElementById('password2').addEventListener(
+            'change',
+            function () {
+                if (document.getElementById('password').value == document.getElementById('password2').value) {
+                    document.getElementById('passmessage').textContent = '';
+                } else {
+                    document.getElementById('passmessage').textContent = 'パスワードが一致しません';
+                }
+            },
+            false
+        );
     </script>
     <input type="checkbox" required />
     <a class="js-modal-trigger" data-target="term">利用規約</a>と<a class="js-modal-trigger" data-target="privacy">プライバシーポリシー</a>に同意します

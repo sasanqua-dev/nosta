@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.urls import reverse_lazy
 import re
+from module.user_auth import *
 
 # Create your views here.
 def user_login(request):
@@ -69,7 +70,6 @@ def user_register(request):
                 username=username,
                 email=userid,
                 password=password,
-                last_name=request.POST["last_name"],
                 first_name=request.POST["first_name"],
                 is_active="True"
             )
@@ -84,6 +84,24 @@ def user_register(request):
 
         else:
             return render(request, 'auth/register.html')
+    else:
+        return redirect('userapp:index')
+
+def user_register_guest(request):
+    if not request.user.is_authenticated:
+        while True:
+            username = randomstr(10)
+            email = username + "@nosta.guest_user"
+            if User.objects.filter(username = username).count() > 0 & User.objects.filter(email = email).count() > 0:
+                pass
+            else:
+                break
+        last_name = "ゲスト"
+        if "next" in request.GET:
+            pasu = request.GET["next"]
+        else:
+            pasu = reverse('userapp:index')
+        return render(request, 'auth/register_guest.html',{'url':pasu,'username':username,'password':"guest"})
     else:
         return redirect('userapp:index')
 

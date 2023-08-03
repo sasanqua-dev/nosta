@@ -151,6 +151,7 @@ def settings(request,shopCODE):
                         return st
                     shop.name = request.POST["name"]
                     shop.website = request.POST["url"]
+                    shop.description = request.POST["description"]
                     shop.regi_pass = request.POST["regi_pass"]
                     shop.ucc_baner = tagblocker(request.POST["ucc_baner"])
                     shop.ucc_treasure = tagblocker(request.POST["ucc_treasure"])
@@ -335,6 +336,11 @@ def order(request,shopCODE):
                     for product in products:
                         product.price = 0
                         product.save()
+                elif request.POST["method"] == "complete":
+                    order = Order.objects.get(id=request.POST["id"])
+                    order.day = get_dayformat()
+                    order.status = "complete"
+                    order.save()
                 return HttpResponse("OK!")
 
 
