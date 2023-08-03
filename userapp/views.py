@@ -23,10 +23,11 @@ def index(request):
     if request.method == "POST":
         match request.POST["type"]:
             case "post_change_user_data":
-                request.user.email = request.POST["email"]
-                request.user.first_name = request.POST["first_name"]
-                request.user.last_name = request.POST["last_name"]
-                request.user.save()
+                user_data = User.objects.get(email=request.user)
+                user_data.email = request.POST["email"]
+                user_data.first_name = request.POST["first_name"]
+                user_data.last_name = request.POST["last_name"]
+                user_data.save()
                 return HttpResponse("OK!")
                 
             case "post_delete_user_data":
