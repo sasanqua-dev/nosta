@@ -23,7 +23,7 @@ def index(request):
     if request.method == "POST":
         match request.POST["type"]:
             case "post_change_user_data":
-                user_data = User.objects.get(email=request.user)
+                user_data = User.objects.get(email=request.user.email)
                 user_data.email = request.POST["email"]
                 user_data.first_name = request.POST["first_name"]
                 user_data.last_name = request.POST["last_name"]
