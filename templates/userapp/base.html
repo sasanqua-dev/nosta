@@ -115,7 +115,7 @@
                             <input name="last_name" type="text" id="last_name" class="input my-2" value="{{ user.last_name }}" placeholder="姓" required />
                             <input name="first_name" type="text" id="first_name" class="input my-2" value="{{ user.first_name }}" placeholder="名" required />
                         </div>
-                        <div class="my-4 has-text-centered"><button class="button is-info is-outlined" onclick="setting_ajax_handler('save')">保存</button></div>
+                        <div class="my-4 has-text-centered"><button class="button is-info is-outlined" onclick="settings_ajax_handler('save')">保存</button></div>
                     </form>
                     <hr />
                     {% if provider == "google-oauth2" %}
@@ -127,7 +127,7 @@
                     <a href="{% url 'home' %}" class="button is-rounded is-gray">店舗向けアプリ</a>
                     <p class="help my-1 has-text-danger">NOSTAアプリとNOSTA店舗向けアプリを同時にインストールすることはできません</p>
                     <hr>
-                    <button class="button is-danger is-fullwidth" onclick="setting_ajax_handler('delete')">アカウントを削除</button>
+                    <button class="button is-danger is-fullwidth" onclick="settings_ajax_handler('delete')">アカウントを削除</button>
                 </div>
             </div>
         </div>
