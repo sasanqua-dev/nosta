@@ -138,6 +138,7 @@ function settings_ajax_handler(type) {
     }
 }
 function getdetail(id){
+    var csrf_token = getCookie('csrftoken');
     $.ajax({
         beforeSend: function (xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
