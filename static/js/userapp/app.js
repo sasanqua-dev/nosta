@@ -169,6 +169,6 @@ function makeorderQR() {
     var secret = document.getElementById('secret').value
     var qrtext = 'user:' + id + '/' + secret;
     var utf8qrtext = unescape(encodeURIComponent(qrtext));
-    $('#img-qr-mycode').html('');
-    $('#img-qr-mycode').qrcode({ width: 200, height: 200, text: utf8qrtext });
+    $('#img-qr-ordercode').html('');
+    $('#img-qr-ordercode').qrcode({ width: 200, height: 200, text: utf8qrtext });
 }
