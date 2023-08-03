@@ -146,7 +146,7 @@ function getdetail(id){
             }
         },
         type: 'POST',
-        url: "/",
+        url: "/app/",
         data: {
             type: 'get_detail',
             id: id
