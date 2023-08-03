@@ -44,6 +44,7 @@ def index(request):
                 products = CellProduct.objects.all().filter(order=order)
                 param = {
                     'order': order,
+                    'products':products
                 }
                 data = render_to_string('userapp/parts/detail.html',param)
                 return HttpResponse(data)

@@ -106,5 +106,59 @@ function settings_ajax_handler(type) {
                 });
         } else {
         }
+    } else if (type='cancel'){
+        let checkSaveFlg = window.confirm('この注文をキャンセルします\n本当によろしいですか？');
+        if (checkSaveFlg) {
+            $.ajax({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                    }
+                },
+                type: 'POST',
+                url: path,
+                data: {
+                    type: 'cancel',
+                    id: document.getElementById("pid").value
+                },
+                dataType: 'text',
+            })
+                .done(function (data) {
+                    if (data == 'error') {
+                        window.alert('キャンセル不可の商品が含まれています');
+                    }
+                })
+                .fail(function (data) {
+                    // error
+                    console.log(data);
+                    window.alert('通信エラーが発生しました(E-UA100)');
+                });
+        } else {
+        }
     }
+}
+function getdetail(id){
+    $.ajax({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader('X-CSRFToken', csrf_token);
+            }
+        },
+        type: 'POST',
+        url: path,
+        data: {
+            type: 'get_detail',
+            id: id
+        },
+        dataType: 'html',
+    })
+        .done(function (data) {
+            document.getElementById("odetail").innerHTML = data
+            openModal(document.getElementById("detail_modal"))
+        })
+        .fail(function (data) {
+            // error
+            console.log(data);
+            window.alert('通信エラーが発生しました(E-UA100)');
+        });
 }

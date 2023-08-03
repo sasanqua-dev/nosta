@@ -1,0 +1,40 @@
+<section>
+    <div class="my-3"><strong class="is-size-6 mt-3">購入詳細情報</strong></div>
+    {% if order == None %}
+    <section class="hero is-light" style="width: 100%">
+        <div class="hero-body">
+            <p class="title">一致する伝票がありません</p>
+            <p class="subtitle">{{ message }}</p>
+        </div>
+    </section>
+    {% else %}
+    <input hidden id="pid" value="{{ order.id }}">
+    <p><c style="font-size: 12px">処理日時</c><br /><b style="font-size: max(1vw, 15px)">{{ order.created_at }}</b></p>
+    <p><c style="font-size: 12px">個数</c><br />{{ order.number }}</p>
+    <p><c style="font-size: 12px">合計金額</c><br />{{ order.total_price }}円</p>
+    <p><c style="font-size: 12px">予約来店日時</c><br />{{ order.reserved_date }}</p>
+    <section class="m-6">
+        <button class="button is-info is-outlined is-fullwidth" onclick="settings_ajax_handler('cancel')">キャンセル</button>
+    </section>
+    <div class="my-3"><strong class="is-size-6 mt-3 my-6">購入商品情報</strong></div>
+    <section>
+        {% if products.count == 0 %}
+        <section class="hero is-light">
+            <div class="hero-body">
+                <p class="title">No Data</p>
+                <p class="subtitle">情報が取得できません</p>
+            </div>
+        </section>
+        {% else %} {% for opr in products %}
+        <div class="container card card-content m-1">
+            <div class="columns" style="width: 100%">
+                <div class="column is-4"><c style="font-size: 12px">商品名</c><br />{{ opr.product.name }}</div>
+                <div class="column is-4"><c style="font-size: 12px">カテゴリー</c><br />{{ opr.product.category }}</div>
+                <div class="column is-2"><c style="font-size: 12px">数量</c><br />{{ opr.number }}個</div>
+                <div class="column is-2"><c style="font-size: 12px">単価</c><br />{{ opr.price }}円</div>
+            </div>
+        </div>
+        {% endfor %} {% endif %}
+    </section>
+    {% endif %}
+</section>
