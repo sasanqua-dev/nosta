@@ -43,14 +43,17 @@
                     ><img src="{% static 'image/icon/cart-shopping-solid.svg' %}" alt="カート" />
                     <div class="tag is-info is-light mx-1" id="cart_number_short">0</div></a
                 >
-                <a class="navbar-item is-hidden-desktop mx-1" onclick="pagemove('products')" style="color: dimgray"><img src="{% static 'image/icon/user-solid.svg' %}" alt="マイページ" /></a>
+                <a class="navbar-item is-hidden-desktop mx-1" onclick="pagemove('products')" style="color: dimgray" href="{% url 'userapp:index' %}"><img src="{% static 'image/icon/user-solid.svg' %}" alt="マイページ" /></a>
             </div>
             <div class="navbar-menu" id="nav-menu">
                 <div class="navbar-start">
                     <a class="navbar-item mx-1" onclick="pagemove('products')" style="color: dimgray"><img src="{% static 'image/icon/list-solid.svg' %}" class="mx-3" alt="商品リスト" />商品</a>
+                    {% if shop.website %}
+                    <a class="navbar-item mx-1" href="{{ shop.website }}" style="color: dimgray"><img src="{% static 'image/icon/arrow-up-right-from-square-solid.svg' %}" class="mx-3" alt="店舗サイト" />店舗サイト</a>
+                    {% endif %}
                 </div>
                 <div class="navbar-end">
-                    <a class="navbar-item mx-2" onclick="pagemove('products')" style="color: dimgray">
+                    <a class="navbar-item mx-2" onclick="pagemove('products')" style="color: dimgray"  href="{% url 'userapp:index' %}">
                         <img src="{% static 'image/icon/user-solid.svg' %}" class="mx-3" alt="マイページ" />
                         マイページ
                     </a>
@@ -61,7 +64,14 @@
                 </div>
             </div>
         </nav>
-        <div style="margin-top: 100px">{% block content %}{% endblock %}</div>
+        <div style="margin-top: 100px">
+            {% if shop.website %}
+            <div class="m-3 is-hidden-desktop">
+                <a class="button is-info is-outlined is-fullwidth" href="{{ shop.website }}"><img src="{% static 'image/icon/arrow-up-right-from-square-solid.svg' %}" class="mx-3" alt="店舗サイト" />店舗サイト</a>
+            </div>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </div>
     </body>
     <footer class="footer">
         <div class="content has-text-centered">

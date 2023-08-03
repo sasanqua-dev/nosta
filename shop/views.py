@@ -150,6 +150,7 @@ def settings(request,shopCODE):
                         st = st.replace('<link','')
                         return st
                     shop.name = request.POST["name"]
+                    shop.website = request.POST["url"]
                     shop.regi_pass = request.POST["regi_pass"]
                     shop.ucc_baner = tagblocker(request.POST["ucc_baner"])
                     shop.ucc_treasure = tagblocker(request.POST["ucc_treasure"])
