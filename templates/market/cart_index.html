@@ -137,6 +137,10 @@
     function showTreasurer() {
         sum_cart_product();
         let ele = document.getElementById('treasurer');
+        if (document.getElementById("cart_number").textContent == 0){
+            window.alert("カートが空です")
+            return
+        }
         closeModal(document.getElementById('cart'));
         openModal(ele);
     }
@@ -147,7 +151,7 @@
         let product_ids = new Array();
         let product_numbers = new Array();
         let product_number_sum = 0;
-        if (cart_numbers == 0) {
+        if (cart_numbers.length == 0) {
             windows.alert('カートが空です');
         }
         for (let i = 0; i < products.length; i++) {
