@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect , reverse
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from db.models import *
@@ -18,7 +19,11 @@ def user_login(request):
             if user is not None:
                 user.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, user)
-                return redirect(request.GET["next"]) # ログイン後にリダイレクトするURLを指定します
+                if "next" in request.GET:
+                    pasu = request.GET["next"]
+                else:
+                    pasu = reverse('userapp:index')
+                return redirect(pasu)
             else:
                 # ログイン失敗時の処理
                 return render(request, 'auth/login.html', {'error': 'ユーザーIDまたはパスワードが間違っています(E001)'})
@@ -30,6 +35,17 @@ def user_login(request):
 def user_register(request):
     if not request.user.is_authenticated:
         if request.method == 'POST':
+            if "type" in request.POST:
+                username = request.POST["username"]
+                redirect_url = reverse('register')
+                url = redirect_url + "?username=" + username + "&message="
+                if User.objects.filter(username = username).count() > 0:
+                    url = url + "このユーザー名はすでに使用されています"
+                    return redirect(url)
+                else:
+                    url = url + "このユーザー名は使用できます"
+                    return redirect(url)
+                
             userid = request.POST['userid']
             username = request.POST['username']
             password = request.POST['password']
@@ -53,12 +69,18 @@ def user_register(request):
                 username=username,
                 email=userid,
                 password=password,
+                last_name=request.POST["last_name"],
+                first_name=request.POST["first_name"],
                 is_active="True"
             )
 
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
-            return redirect('home')
+            if "next" in request.GET:
+                pasu = request.GET["next"]
+            else:
+                pasu = reverse('userapp:index')
+            return redirect(pasu)
 
         else:
             return render(request, 'auth/register.html')
