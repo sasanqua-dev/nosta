@@ -155,6 +155,7 @@ function getdetail(id){
     })
         .done(function (data) {
             document.getElementById("odetail").innerHTML = data
+            makeorderQR()
             openModal(document.getElementById("order_detail"))
         })
         .fail(function (data) {
@@ -162,4 +163,12 @@ function getdetail(id){
             console.log(data);
             window.alert('通信エラーが発生しました(E-UA100)');
         });
+}
+function makeorderQR() {
+    var id = document.getElementById('pid').value
+    var secret = document.getElementById('secret').value
+    var qrtext = 'user:' + id + '/' + secret;
+    var utf8qrtext = unescape(encodeURIComponent(qrtext));
+    $('#img-qr-mycode').html('');
+    $('#img-qr-mycode').qrcode({ width: 200, height: 200, text: utf8qrtext });
 }
