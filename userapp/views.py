@@ -81,7 +81,10 @@ def index(request):
         else:
             va_user = None
         
-        provider = request.user.social_auth.first().provider
+        try:
+            provider = request.user.social_auth.first().provider
+        except:
+            provider = None
         param = {
             'va_user':va_user,
             'message':message,
