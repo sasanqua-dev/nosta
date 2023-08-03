@@ -58,6 +58,20 @@
                             <p class="help has-text-danger">店舗コードは変更できません</p>
                         </div>
                         <div class="column is-5"></div>
+                        <div class="column is-2 has-text-centered">
+                            <label>店舗公式サイト</label>
+                        </div>
+                        <div class="column is-5">
+                            <input class="input settingform" type="url" placeholder="店舗公式サイト" value="{{ shop.website }}" id="shop_url" />
+                        </div>
+                        <div class="column is-5"></div>
+                        <div class="column is-2 has-text-centered">
+                            <label>店舗紹介文</label>
+                        </div>
+                        <div class="column is-5">
+                            <textarea class="input settingform" id="shop_description" style="width: 100%; height: 100px">{{ shop.website }}</textarea>
+                        </div>
+                        <div class="column is-5"></div>
                     </div>
                     <h1 id="feature" class="m-2"><strong>Feature</strong></h1>
                     <div class="columns is-multiline my-4">
@@ -220,6 +234,8 @@
                         data: {
                             command: 'settings',
                             name: document.getElementById('shop_name').value,
+                            url: document.getElementById('shop_url').value,
+                            url: document.getElementById('shop_description').value,
                             regi_pass: document.getElementById('regi_pass').value,
                             ucc_baner: document.getElementById('ucc_baner').value,
                             ucc_treasure: document.getElementById('ucc_treasure').value,

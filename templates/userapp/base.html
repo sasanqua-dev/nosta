@@ -97,9 +97,9 @@
             <div class="modal-card">
                 <div class="modal-card-head">
                     <strong>ユーザー登録情報</strong>
-                    <div class="modal-close"></div>
                 </div>
                 <div class="modal-card-body">
+                    <div class="modal-close"></div>
                     <strong>登録情報の変更</strong>
                     <form class="form" onsubmit="return false;" method="POST">
                         <div class="my-4">
@@ -122,7 +122,8 @@
                     <strong class="my-4">Googleアカウントでログイン中</strong><br />
                     {% endif %}
                     <a href="{% url 'password_change_form' %}" class="button is-rounded is-gray my-2">パスワードを変更</a>
-                    <a href="{% url 'password_reset' %}" class="button is-rounded is-gray my-2">パスワードを設定<br><p style="font-size: 12px;">ほかのアカウントでログイン中でパスワードの設定をしていない方はこちら</p></a>
+                    <p style="font-size: 12px;">ほかのアカウントでログイン中でパスワードの設定をしていない方はこちら</p>
+                    <a href="{% url 'password_reset' %}" class="button is-rounded is-gray my-2">パスワードを設定</a>
                     <hr />
                     <a href="{% url 'home' %}" class="button is-rounded is-gray my-2">店舗向けアプリ</a>
                     <p class="help my-1 has-text-danger">NOSTAアプリとNOSTA店舗向けアプリを同時にインストールすることはできません</p>
