@@ -17,9 +17,10 @@
                                 {% if va_user %}
                                 <div class="hero">
                                     <div class="hero-body has-text-centered">
-                                        <div class="has-text-danger">このユーザーはNOSTA運営チームです</div>
-                                        <p>ユーザー名: {{ vuser.user.username }}</p>
-                                        <p>所属: {{ vuser.team }}</p>
+                                        <div class="has-text-danger my-2"><b>このユーザーはNOSTA運営チームの特権ユーザーです</b></div>
+                                        <p>ユーザー名: {{ va_user.user.username }}</p>
+                                        <p>所属: {{ va_user.team }}</p>
+                                        <div class="my-2">このユーザーの情報を参照・変更することはできません</div>
                                     </div>
                                 </div>
                                 {% else %}
