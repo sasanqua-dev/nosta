@@ -1,0 +1,64 @@
+{% extends 'auth_base.html' %} {% block content %}{% load static %}
+<form class="px-6" method="post" action="{% url 'register' %}">
+    {% csrf_token %}
+    <p class="">ユーザーID、パスワードはログイン後に変更可能です</p>
+    <div class="my-4">
+        <label>ユーザーID</label>
+        <input class="input" name="username" value="{{ username }}" readonly="readonly" />
+    </div>
+    <div class="my-4">
+        <label>パスワード</label>
+        <input class="input" name="password" value="{{ password }}" readonly="readonly" />
+    </div>
+    <input class="input" type="hidden" name="password2" value="{{ password }}" />
+    <input class="input" name="first_name" value="ゲスト" type="hidden" />
+    <input class="input" name="userid" value="{{ username }}@nosta.guest-user" type="hidden" />
+    <p class="has-text-danger">この画面をスクリーンショット等で保存してください</p>
+    <input type="checkbox" required />
+    <a class="js-modal-trigger" data-target="term">利用規約</a>と<a class="js-modal-trigger" data-target="privacy">プライバシーポリシー</a>に同意します
+    <input type="submit" class="button is-rounded is-fullwidth my-4 is-info is-light" value="登録" />
+</form>
+<div class="modal" id="term">
+    <div class="modal-background"></div>
+    <div class="modal-card" style="height: 100%">
+        <section class="modal-card-body">
+            <strong>利用規約</strong>
+            <br />
+            <iframe src="{% static 'html/policy/term.html' %}" width="100%" height="95%"></iframe>
+        </section>
+    </div>
+</div>
+<div class="modal" id="privacy">
+    <div class="modal-background"></div>
+    <div class="modal-card" style="height: 100%">
+        <section class="modal-card-body">
+            <strong>プライバシーポリシー</strong>
+            <br />
+            <iframe src="{% static 'html/policy/privacy.html' %}" width="100%" height="95%"></iframe>
+        </section>
+    </div>
+</div>
+<script>
+    function openModal($el) {
+        $el.classList.add('is-active');
+    }
+    function closeModal($el) {
+        $el.classList.remove('is-active');
+    }
+    function createTrigger() {
+        (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+            const $target = document.getElementById($trigger.dataset.target);
+            $trigger.addEventListener('click', () => {
+                openModal($target);
+            });
+        });
+        (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+            const $target = $close.closest('.modal');
+            $close.addEventListener('click', () => {
+                closeModal($target);
+            });
+        });
+    }
+    createTrigger();
+</script>
+{% endblock %}

@@ -14,6 +14,7 @@
     <p><c style="font-size: 12px">状態</c><br />{{ order.status }}</p>
     {% if order.status == "reserved" %}
     <hr />
+    <p><c style="font-size: 12px">お客様ニックネーム</c><br />{{ order.customer.first_name }} 様</p>
     <p><c style="font-size: 12px">予約来店日時</c><br />{{ order.reserved_date }}</p>
     {% else %}
     <hr />

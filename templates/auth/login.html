@@ -5,12 +5,18 @@
     <input type="password" name="password" name="password" class="input my-2" placeholder="パスワード" required />
     <p class="help has-text-danger">{{ error }}</p>
     <input type="submit" class="button is-rounded is-fullwidth my-4 is-info is-light" value="ログイン" />
-    <a class="button is-rounded my-4 is-gray is-light is-fullwidth" href="{% url 'password_reset' %}" style="font-size: 15px;">パスワードの再発行はこちら</a>
+    <a class="button is-rounded my-4 is-gray is-light is-fullwidth" href="{% url 'password_reset' %}" style="font-size: 15px">パスワードの再発行はこちら</a>
 </form>
+<p class="help">他のアカウントで始める</p>
+<a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}"> <img src="{% static 'image/icon/google.svg' %}" alt="Googleでログイン" class="image" style="height: 25px" /></a>
 <hr class="hr-text" data-content="OR" style="background-color: white" />
 <div class="px-6 mb-4">
     <p><a href="{% url 'register' %}" class="button is-rounded my-4 is-gray is-light is-fullwidth">新規作成</a></p>
-    <p class="help">他のアカウントで始める</p>
-    <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}"> <img src="{% static 'image/icon/google.svg' %}" alt="Googleでログイン" class="image" style="height: 25px" /></a>
+</div>
+<hr class="hr-text" data-content="OR" style="background-color: white" />
+<div class="px-6 mb-4">
+    <p><a href="{% url 'guest_register' %}" class="button is-rounded my-4 is-gray is-light is-fullwidth">ゲストアカウントの作成</a></p>
+    <p class="help">ゲストアカウントはメールアドレスなどを入力することなく作成できます</p>
+    <p class="help has-text-danger">メールアドレスが登録されていない場合、<br />NOSTA店舗アプリはご利用頂けません<br />また、パスワードを紛失した場合の再発行はご利用頂けません</p>
 </div>
 {% endblock %}

@@ -73,17 +73,24 @@
                 </a>
             </div>
             <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <div class="navbar-item mx-3">
+                        <p class="is-size-5">{{ user.first_name }}</p>
+                    </div>
+                    <div class="navbar-item mx-3">
+                        <p class="is-size-6">@{{ user.username }}</p>
+                    </div>
+                </div>
                 <div class="navbar-end">
-                    <div class="navbar-item">
-                        <p>{{ user.last_name }} {{ user.first_name }} 様</p>
-                    </div>
-                    <div class="navbar-item">
-                        <p>@{{ user.username }}</p>
-                    </div>
                     <hr />
                     <div class="navbar-item">
                         <a class="button is-light is-info js-modal-trigger" data-target="settings" style="color: #00517c">
                             <img src="{% static 'image/icon/user-solid.svg' %}" class="mx-2" />登録情報
+                        </a>
+                    </div>
+                    <div class="navbar-item">
+                        <a class="button is-light is-info js-modal-trigger" data-target="history" style="color: #00517c">
+                            <img src="{% static 'image/icon/file-lines-solid.svg' %}" class="mx-2" />購入履歴
                         </a>
                     </div>
                     <div class="navbar-item">
@@ -95,9 +102,6 @@
         <div class="modal" id="settings">
             <div class="modal-background"></div>
             <div class="modal-card">
-                <div class="modal-card-head">
-                    <strong>ユーザー登録情報</strong>
-                </div>
                 <div class="modal-card-body">
                     <div class="modal-close"></div>
                     <strong>登録情報の変更</strong>
@@ -107,13 +111,12 @@
                             <input name="email" id="email" type="email" class="input" value="{{ user.email }}" required />
                         </div>
                         <div class="my-4">
-                            <label>ユーザー名(変更できません)</label>
-                            <input class="input" value="@{{ user.username }}" disabled />
+                            <label>ユーザー名</label>
+                            <input class="input" pattern="@[0-9A-Za-z]+$" id="username" value="@{{ user.username }}" required />
                         </div>
                         <div class="my-4">
-                            <label for="email">お名前</label>
-                            <input name="last_name" type="text" id="last_name" class="input my-2" value="{{ user.last_name }}" placeholder="姓" required />
-                            <input name="first_name" type="text" id="first_name" class="input my-2" value="{{ user.first_name }}" placeholder="名" required />
+                            <label for="nickname">ニックネーム</label>
+                            <input name="nickname" type="text" id="nickname" class="input my-2" value="{{ user.first_name }}" placeholder="ニックネーム" required />
                         </div>
                         <div class="my-4 has-text-centered"><button class="button is-info is-outlined" onclick="settings_ajax_handler('save')">保存</button></div>
                     </form>
@@ -122,13 +125,13 @@
                     <strong class="my-4">Googleアカウントでログイン中</strong><br />
                     {% endif %}
                     <a href="{% url 'password_change_form' %}" class="button is-rounded is-gray my-2">パスワードを変更</a>
-                    <p style="font-size: 12px;">ほかのアカウントでログイン中でパスワードの設定をしていない方はこちら</p>
+                    <p style="font-size: 12px">ほかのアカウントでログイン中でパスワードの設定をしていない方はこちら</p>
                     <a href="{% url 'password_reset' %}" class="button is-rounded is-gray my-2">パスワードを設定</a>
                     <hr />
                     <a href="{% url 'home' %}" class="button is-rounded is-gray my-2">店舗向けアプリ</a>
                     <p class="help my-1 has-text-danger">NOSTAアプリとNOSTA店舗向けアプリを同時にインストールすることはできません</p>
-                    <hr>
-                    <button class="button is-danger is-fullwidth" onclick="settings_ajax_handler('delete')">アカウントを削除</button>
+                    <hr />
+                    <button class="button is-danger is-fullwidth is-outlined" onclick="settings_ajax_handler('delete')">アカウントを削除</button>
                 </div>
             </div>
         </div>
