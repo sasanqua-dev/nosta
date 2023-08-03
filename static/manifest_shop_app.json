@@ -10,5 +10,5 @@
     }],
     "name": "NOSTA Manager",
     "short_name": "運営アプリ",
-    "start_url": "http://localhost:5000/auth/"
+    "start_url": "https://nosta.prasic-plus.com/auth/"
 }

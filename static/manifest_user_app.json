@@ -10,5 +10,5 @@
     }],
     "name": "NOSTA",
     "short_name": "NOSTA",
-    "start_url": "http://localhost:5000/app/"
+    "start_url": "https://nosta.prasic-plus.com/app/"
 }
