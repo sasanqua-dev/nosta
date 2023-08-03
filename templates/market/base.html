@@ -43,14 +43,14 @@
                     ><img src="{% static 'image/icon/cart-shopping-solid.svg' %}" alt="カート" />
                     <div class="tag is-info is-light mx-1" id="cart_number_short">0</div></a
                 >
-                <a class="navbar-item is-hidden-desktop mx-1" onclick="pagemove('products')" style="color: dimgray"><img src="{% static 'image/icon/user-solid.svg' %}" alt="マイページ" /></a>
+                <a class="navbar-item is-hidden-desktop mx-1" onclick="pagemove('products')" style="color: dimgray" href="{% url 'userapp:index' %}"><img src="{% static 'image/icon/user-solid.svg' %}" alt="マイページ" /></a>
             </div>
             <div class="navbar-menu" id="nav-menu">
                 <div class="navbar-start">
                     <a class="navbar-item mx-1" onclick="pagemove('products')" style="color: dimgray"><img src="{% static 'image/icon/list-solid.svg' %}" class="mx-3" alt="商品リスト" />商品</a>
                 </div>
                 <div class="navbar-end">
-                    <a class="navbar-item mx-2" onclick="pagemove('products')" style="color: dimgray">
+                    <a class="navbar-item mx-2" onclick="pagemove('products')" style="color: dimgray"  href="{% url 'userapp:index' %}">
                         <img src="{% static 'image/icon/user-solid.svg' %}" class="mx-3" alt="マイページ" />
                         マイページ
                     </a>
