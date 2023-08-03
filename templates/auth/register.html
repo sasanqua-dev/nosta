@@ -12,7 +12,7 @@
 </form>
 <hr class="hr-text" data-content="OR" style="background-color: white" />
 <div class="px-6 mb-4">
-    <p><a href="{% url 'login' %}" class="button is-rounded my-4 is-gray is-light is-fullwidth">ログイン</a></p>
+    <p><a href="{% url 'login' %}?next={{ request.GET.next }}" class="button is-rounded my-4 is-gray is-light is-fullwidth">ログイン</a></p>
     <p class="help">他のアカウントで始める</p>
     <a href="{% url 'social:begin' 'google-oauth2' %}">
         <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}"> <img src="{% static 'image/icon/google.svg' %}" alt="Googleで始める" class="image" style="height: 25px" /></a>
