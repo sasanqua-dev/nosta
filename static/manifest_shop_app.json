@@ -1,0 +1,14 @@
+{
+    "background_color": "#00517c",
+    "description": "NOSTAの店舗向けアプリです",
+    "display": "standalone",
+    "theme_color": "#00517c",
+    "icons": [{
+        "src": "image/icon_512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+    }],
+    "name": "NOSTA Manager",
+    "short_name": "運営アプリ",
+    "start_url": "http://localhost:5000/auth/"
+}

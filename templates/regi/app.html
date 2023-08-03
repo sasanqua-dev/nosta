@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
         <link rel="stylesheet" href="{% static 'css/regi_app.css' %}" />
         <script src="https://code.jquery.com/jquery-3.5.1.min.js "></script>
-        <link rel="manifest" href="{% static 'manifest_smartreader.json' %}" />
+        <link rel="manifest" href="{% static 'manifest_shop_app.json' %}" />
         <script>
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function () {
@@ -36,17 +36,6 @@
         </nav>
     </head>
     <body style="margin-top: 150px">
-        <div class="tabs is-fullwidth is-togle">
-            <ul>
-                <li class="is-active tab-item">
-                    <a class="has-text-centered" onclick="showSlide(0)">照会</a>
-                </li>
-                <li class="tab-item">
-                    <a class="has-text-centered" onclick="showSlide(1)">取引</a>
-                </li>
-            </ul>
-        </div>
-
         <div style="display: none">
             <canvas id="js-canvas"></canvas>
         </div>
@@ -55,11 +44,11 @@
                 <div class="reader">
                     <video id="js-video" class="reader-video" autoplay playsinline></video>
                 </div>
-                <div class="columns m-3">
-                    <div class="column is-8">
+                <div class="columns m-3 is-hidden-touch">
+                    <div class="column is-8 mx-2">
                         <input class="input" type="text" id="code" placeholder="リーダーやキーボードも使用できます" />
                     </div>
-                    <div class="column is-4">
+                    <div class="column is-4 mx-2">
                         <a class="button is-outlined" onclick='SQR.modal.open(document.getElementById("code").value)'>実行</a>
                     </div>
                     <script>
@@ -67,13 +56,9 @@
                     </script>
                 </div>
             </div>
-            <div class="column">
-                <div class="content">
-                    <div class=""><strong class="has-text-centered">バーコード・QRコードを読み取ってください</strong></div>
-                </div>
-                <div class="content">
-                    <div class=""><strong class="has-text-centered">現在この機能は利用できません</strong></div>
-                </div>
+            <div class="column has-text-centered">
+                <strong class="has-text-centered">バーコード・QRコードを読み取ってください</strong>
+                <div class="notification is-danger is-light mx-4 my-2">一部の端末やOSではバーコードは読み取ることができません</div>
             </div>
         </div>
         <div id="js-modal" class="modal">

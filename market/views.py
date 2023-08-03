@@ -14,6 +14,7 @@ import hashlib
 import json
 
 # Create your views here.
+@login_required
 def market(request,shopCODE):
     if request.method == "POST":
         shop = Shop.objects.get(code=shopCODE)
@@ -34,34 +35,11 @@ def market(request,shopCODE):
                 }
                 data = render_to_string("market/cart/cart_add_product.html",param)
                 return HttpResponse(data)
-            case "set_cart":
-                if request.POST["ticket_create"] == False:
-                    ticket = None
-                else:
-                    formatted = get_dayformat()
-                    latestnumber = Ticket.objects.all().filter(Q(shop = shop) & Q(day=formatted)).aggregate(Max('number'))["number__max"]
-                    if latestnumber == None:
-                        latestnumber = 0
-                    ticket = Ticket.objects.create(
-                        number=latestnumber+1,
-                        shop=shop,
-                        people=1,
-                        cstype=None,
-                        localtion="WebCart",
-                        status="Waiting",
-                        waiting=0
-                    )
-                cart = Cart.objects.create(
-                    shop=shop,
-                    products=request.POST["products"],
-                    ticket=ticket,
-                )
-                data = HttpResponse(render_to_string('market/cart/result.html',{'cart':cart,'shop':shop}))
-                return HttpResponse(data)
             case "post_treasurer":
                 shop = Shop.objects.get(code=shopCODE)
                 order = Order.objects.create(
                     shop = Shop.objects.get(code=shopCODE),
+                    customer = request.user,
                     status = "reserved",
                     day = '',
                     total_price = request.POST["total_price"],
@@ -82,6 +60,9 @@ def market(request,shopCODE):
                     if int(product_stock(product)) < int(product_number):
                         outofrange(order)
                         return HttpResponse("outofrange")
+                    if product.limit < int(product_number):
+                        outofrange(order)
+                        return HttpResponse("limit")
                     CellProduct.objects.create(
                         product=product,
                         order=order,

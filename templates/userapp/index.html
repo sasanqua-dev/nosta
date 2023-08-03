@@ -1,0 +1,78 @@
+{% extends 'userapp/base.html' %} {% block content %} {% load static %}
+<div style="min-height: 75vh">
+    <div class="columns">
+        <div class="column is-hidden-touch is-2"></div>
+        <div class="column">
+            <div class="columns">
+                <div class="column is-8 has-text-centered is-size-5" style="margin-top: auto"><b>{{ message }}</b></div>
+                <div class="column is-4 has-text-centered">
+                    <button class="button is-info is-light js-modal-trigger" data-target="mycode" onclick="modal_mycode()">
+                        <img src="{% static 'image/icon/qrcode-solid.svg' %}" class="mx-3" />マイコード
+                    </button>
+                    <div class="modal" id="mycode">
+                        <div class="modal-background"></div>
+                        <div class="modal-card">
+                            <div class="modal-close"></div>
+                            <div class="modal-card-body has-text-centered">
+                                <div id="img-qr-mycode" style="margin: 20px"></div>
+                                <script>
+                                    function makemyQR(id, hsecret) {
+                                        var qrtext = 'user:{{ user.id }}/{{ user_secret }}';
+                                        var utf8qrtext = unescape(encodeURIComponent(qrtext));
+                                        $('#img-qr-mycode').html('');
+                                        $('#img-qr-mycode').qrcode({ width: 200, height: 200, text: utf8qrtext });
+                                    }
+                                    makemyQR();
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="notification is-info is-light m-5">
+                <div style="text-align: right">
+                    <a onclick="location.reload()"><img src="{% static 'image/icon/arrow-rotate-right-solid.svg' %}" /></a>
+                </div>
+                {% if now_tickets.count != 0 %}
+                <div class="has-text-centered">
+                    <strong>発券中の番号</strong>
+                </div>
+                <hr />
+                {% for ntobj in now_tickets %}
+                <p>{{ ntobj.shop.name }}</p>
+                <b>{{ ntobj.number }}</b>
+                <p style="font-size: 12px">呼び出し状況: {{ ntobj.status }}</p>
+                <hr />
+                {% endfor %} {% else %}
+                <div class="has-text-centered my-3">
+                    <strong>発券中のチケットはありません</strong>
+                </div>
+                {% endif %}
+            </div>
+            <div class="m-3 container">
+                <div class="box">
+                    <strong>予約注文履歴<c style="font-size: 15px">(直近3件を表示中)</c></strong>
+                    {% for obj in orders %} {% if forloop.counter <= 3 %}
+                    <div class="columns is-multiline">
+                        <b class="column is-12">{{ obj.shop.name }}</b>
+                        <p class="column is-12">予約日時: {{ obj.reserved_date }}</p>
+                        <p class="column is-6">購入点数: {{ obj.number }}</p>
+                        <p class="column is-6">合計金額: {{ obj.total_price }}</p>
+                        <div class="column is-12">
+                            <div class="button is-info is-outlined" onclick="getdetail('{{ obj.id }}')">詳細</div>
+                        </div>
+                    </div>
+                    {% endif %} {% endfor %} {% if orders.count > 0 %} {% else %}
+                    <div class="hero">
+                        <div class="hero-body has-text-centered">
+                            <p>予約注文中の商品はありません</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="column is-hidden-touch is-2"></div>
+    </div>
+</div>
+{% endblock %}

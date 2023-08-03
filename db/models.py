@@ -64,6 +64,7 @@ class CStype(models.Model):
 
 class Ticket(models.Model):
     # フィールドの定義
+    customer = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
     number = models.IntegerField()
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     cstype = models.ForeignKey(CStype, on_delete=models.SET_NULL,null=True)
@@ -94,13 +95,15 @@ class Product(models.Model):
     web_cart = models.BooleanField(default=False)
     image = models.URLField(null=True)
     status = models.CharField(max_length=20)
-    limit = models.IntegerField(null=True)
+    limit = models.IntegerField(default="5")
+    cancel = models.BooleanField(default=True)
     is_active = models.BooleanField()
     def __str__(self):
         return self.name
 
 class Order(models.Model):
     user = models.ForeignKey(VirtualUser, on_delete=models.SET_NULL,null=True)
+    customer = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     status = models.CharField(max_length=20)
     day = models.CharField(max_length=10)

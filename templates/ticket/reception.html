@@ -3,7 +3,7 @@
 <html lang="ja">
     <head>
         <title>NOSTA</title>
-        <link rel="icon" href="{% static 'image/favicon.ico' %}">
+        <link rel="icon" href="{% static 'image/favicon.ico' %}" />
         <base target="_top" />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -16,6 +16,23 @@
         <script src="https://code.jquery.com/jquery-3.5.1.min.js "></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="{% static 'js/jquery.qrcode.min.js' %}"></script>
+        <link rel="manifest" href="{% static 'manifest_shop_app.json' %}" />
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function () {
+                    navigator.serviceWorker.register('{% static "sw.js" %}').then(
+                        function (registration) {
+                            // Registration was successful
+                            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                        },
+                        function (err) {
+                            // registration failed :(
+                            console.log('ServiceWorker registration failed: ', err);
+                        }
+                    );
+                });
+            }
+        </script>
     </head>
     <body>
         <div class="container box">
@@ -95,20 +112,18 @@
                     </div>
                 </div>
 
-                <div class="slide" style="width: 80vw;">
+                <div class="slide" style="width: 80vw">
                     <!-- スライド3の内容 -->
-                    <div class="columns is-multiline" style="width: 70vw;">
-                        {% if cstype_list.count == 0  %}
+                    <div class="columns is-multiline" style="width: 70vw">
+                        {% if cstype_list.count == 0 %}
                         <div class="column is-6">
-                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="None" style="width: 65vw;">次へ</a>
+                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" data-type="None" style="width: 65vw">次へ</a>
                         </div>
-                        {% else %}
-                            {% for cstype_item in cstype_list %}
-                            <div class="column is-6">
-                                <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" style="min-width: 5vh;" data-type="{{ cstype_item.name }}">{{ cstype_item.name }}</a>
-                            </div>
-                            {% endfor %}
-                        {% endif %}
+                        {% else %} {% for cstype_item in cstype_list %}
+                        <div class="column is-6">
+                            <a class="button is-outlined is-size-4 is-fullwidth is-link cstype-selecter" style="min-width: 5vh" data-type="{{ cstype_item.name }}">{{ cstype_item.name }}</a>
+                        </div>
+                        {% endfor %} {% endif %}
                     </div>
                 </div>
 

@@ -3,9 +3,9 @@
 <html lang="ja">
     <head>
         <title>NOSTA</title>
-        <link rel="icon" href="{% static 'image/favicon.ico' %}">
+        <link rel="icon" href="{% static 'image/favicon.ico' %}" />
         <base target="_top" />
-        <meta http-equiv="Refresh" content="15">
+        <meta http-equiv="Refresh" content="15" />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
@@ -16,9 +16,26 @@
         <script src="https://code.jquery.com/jquery-3.5.1.min.js "></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <link rel="stylesheet" href="{% static 'css/showview.css' %}" />
+        <link rel="manifest" href="{% static 'manifest_shop_app.json' %}" />
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function () {
+                    navigator.serviceWorker.register('{% static "sw.js" %}').then(
+                        function (registration) {
+                            // Registration was successful
+                            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                        },
+                        function (err) {
+                            // registration failed :(
+                            console.log('ServiceWorker registration failed: ', err);
+                        }
+                    );
+                });
+            }
+        </script>
     </head>
     <body>
-        <div class="container box" style="margin-top: 5vh; height: 90vh; width: 90vw;">
+        <div class="container box" style="margin-top: 5vh; height: 90vh; width: 90vw">
             <div class="columns">
                 <div class="column is-6">
                     <div class="has-text-centered">
@@ -26,7 +43,7 @@
                     </div>
                     <div class="container-number-already m-2 has-text-centered">
                         {% for ticket in tickets_calling %}
-                            <b class="number-item-already m-1">{{ ticket.number }}</b>
+                        <b class="number-item-already m-1">{{ ticket.number }}</b>
                         {% endfor %}
                     </div>
                 </div>
@@ -36,12 +53,11 @@
                     </div>
                     <div class="container-number-yet m-2 has-text-centered">
                         {% for ticket in tickets_waiting %}
-                            <b class="number-item-yet m-1">{{ ticket.number }}</b>
+                        <b class="number-item-yet m-1">{{ ticket.number }}</b>
                         {% endfor %}
                     </div>
                 </div>
-                <script>
-                </script>
+                <script></script>
             </div>
         </div>
     </body>

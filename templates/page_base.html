@@ -78,7 +78,8 @@
                 <div class="navbar-end">
                     {% if request.user.is_authenticated %}
                     <div class="navbar-item">
-                        <a href="{% url 'home' %}" class="button is-light is-info">アカウントホーム</a>
+                        <a href="{% url 'userapp:index' %}" class="button is-light is-info mx-2">NOSTAアプリ</a>
+                        <a href="{% url 'home' %}" class="button is-light is-info mx-2">店舗向けサービス</a>
                     </div>
                     {% else %}
                     <div class="navbar-item">

@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <title>NOSTA</title>
+        <link rel="icon" href="{% static 'image/favicon.ico' %}" />
+        <meta
+            name="description"
+            content="NOSTA公式サイトです。NOSTAは模擬店などの小規模店舗でも簡単に導入できる販売支援サービスです。受付でのチケット・整理券の発券からレジ・在庫管理・オンライン注文までNOSTAにお任せください。"
+        />
+        <meta name="theme-color" content="#00517c" />
+        <base target="_top" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+        <link rel="stylesheet" href="{% static 'css/footer.css' %}" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="{% static 'js/jquery.qrcode.min.js' %}"></script>
+        <script src="{% static 'js/userapp/app.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
+        <link rel="manifest" href="{% static 'manifest_user_app.json' %}" />
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function () {
+                    navigator.serviceWorker.register('{% static "sw.js" %}').then(
+                        function (registration) {
+                            // Registration was successful
+                            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                        },
+                        function (err) {
+                            // registration failed :(
+                            console.log('ServiceWorker registration failed: ', err);
+                        }
+                    );
+                });
+            }
+        </script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+
+            gtag('config', 'G-KNEMN3XWCG');
+        </script>
+        <script>
+            $(document).ready(function () {
+                var burger = $('.burger');
+                var menu = $('#' + burger.data('target'));
+
+                burger.on('click', function () {
+                    burger.toggleClass('is-active');
+                    menu.toggleClass('is-active');
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item is-size-2 pt-1 pr-6" style="font-family: 'Noto Sans JP', sans-serif; color: #00517c"
+                    ><img src="{% static 'image/long_logo.png' %}" style="max-height: 3.75rem" alt="ロゴ"
+                /></a>
+                <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <p>{{ user.last_name }} {{ user.first_name }} 様</p>
+                    </div>
+                    <div class="navbar-item">
+                        <p>{{ user.email }}</p>
+                    </div>
+                    <hr />
+                    <div class="navbar-item">
+                        <a class="button is-light is-info js-modal-trigger" data-target="settings" style="color: #00517c">
+                            <img src="{% static 'image/icon/user-solid.svg' %}" class="mx-2" />登録情報
+                        </a>
+                    </div>
+                    <div class="navbar-item">
+                        <a class="button is-light is-info" href="{% url 'logout' %}"> <img src="{% static 'image/icon/arrow-up-right-from-square-solid.svg' %}" class="mx-2" />ログアウト </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="modal" id="settings">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <div class="modal-card-head">
+                    <strong>ユーザー登録情報</strong>
+                    <div class="modal-close"></div>
+                </div>
+                <div class="modal-card-body">
+                    <strong>登録情報の変更</strong>
+                    <form class="form" onsubmit="return false;" method="POST">
+                        <div class="my-4">
+                            <label for="email">メールアドレス</label>
+                            <input name="email" id="email" type="email" class="input" value="{{ user.email }}" />
+                        </div>
+                        <div class="my-4">
+                            <label>ユーザー名(変更できません)</label>
+                            <input class="input" value="@{{ user.username }}" disabled />
+                        </div>
+                        <div class="my-4">
+                            <label for="email">お名前</label>
+                            <input name="last_name" type="text" id="last_name" class="input my-2" value="{{ user.last_name }}" placeholder="姓" />
+                            <input name="first_name" type="text" id="first_name" class="input my-2" value="{{ user.first_name }}" placeholder="名" />
+                        </div>
+                        <div class="my-4 has-text-centered"><button class="button is-info is-outlined" onclick="setting_ajax_handler('save')">保存</button></div>
+                    </form>
+                    <hr />
+                    {% if provider == "google-oauth2" %}
+                    <strong class="my-4">Googleアカウントでログイン中</strong><br />
+                    {% else %}
+                    <strong>パスワードの変更</strong>
+                    <form class="form" onsubmit="return false;" method="POST">
+                        <div class="my-4">
+                            <label for="old_password">現在のパスワード</label>
+                            <input name="old_password" type="password" class="input" />
+                        </div>
+                        <div class="my-4">
+                            <label for="new_password">新しいパスワード</label>
+                            <input name="new_password" type="password" class="input my-2" />
+                            <input name="new_password2" type="password" class="input my-2" />
+                        </div>
+                        <div class="my-4 has-text-centered"><button class="button is-info is-outlined" onclick="setting_ajax_handler('password')">保存</button></div>
+                    </form>
+                    {% endif %}
+                    <hr />
+                    <button class="button is-danger is-fullwidth" onclick="setting_ajax_handler('delete')">アカウントを削除</button>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 100px">{% block content %}{% endblock %}</div>
+    </body>
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>© prasic-plus.com 2023</p>
+        </div>
+    </footer>
+    <script>
+        function openModal($el) {
+            $el.classList.add('is-active');
+        }
+        function closeModal($el) {
+            $el.classList.remove('is-active');
+        }
+        function createTrigger() {
+            (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+                const target = $trigger.dataset.target;
+                const $target = document.getElementById(target);
+                $trigger.addEventListener('click', () => {
+                    openModal($target);
+                });
+            });
+            (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+                const $target = $close.closest('.modal');
+                $close.addEventListener('click', () => {
+                    closeModal($target);
+                });
+            });
+        }
+        createTrigger();
+    </script>
+</html>
