@@ -20,7 +20,7 @@ function csrfSafeMethod(method) {
 }
 function settings_ajax_handler(type) {
     var csrf_token = getCookie('csrftoken');
-    path = "{% url 'userapp:index' %}";
+    path = "/";
     if (type == 'save') {
         $.ajax({
             beforeSend: function (xhr, settings) {

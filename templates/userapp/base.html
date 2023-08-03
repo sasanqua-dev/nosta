@@ -121,10 +121,10 @@
                     {% if provider == "google-oauth2" %}
                     <strong class="my-4">Googleアカウントでログイン中</strong><br />
                     {% endif %}
-                    <a href="{% url 'password_change_form' %}" class="button is-rounded is-gray">パスワードを変更</a>
-                    <a href="{% url 'password_reset' %}" class="button is-rounded is-gray">パスワードを設定<br><p style="font-size: 12px;">ほかのアカウントでログイン中でパスワードの設定をしていない方はこちら</p></a>
+                    <a href="{% url 'password_change_form' %}" class="button is-rounded is-gray my-2">パスワードを変更</a>
+                    <a href="{% url 'password_reset' %}" class="button is-rounded is-gray my-2">パスワードを設定<br><p style="font-size: 12px;">ほかのアカウントでログイン中でパスワードの設定をしていない方はこちら</p></a>
                     <hr />
-                    <a href="{% url 'home' %}" class="button is-rounded is-gray">店舗向けアプリ</a>
+                    <a href="{% url 'home' %}" class="button is-rounded is-gray my-2">店舗向けアプリ</a>
                     <p class="help my-1 has-text-danger">NOSTAアプリとNOSTA店舗向けアプリを同時にインストールすることはできません</p>
                     <hr>
                     <button class="button is-danger is-fullwidth" onclick="settings_ajax_handler('delete')">アカウントを削除</button>
