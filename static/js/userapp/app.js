@@ -46,38 +46,6 @@ function settings_ajax_handler(type) {
                 console.log(data);
                 window.alert('通信エラーが発生しました(E-UA100)');
             });
-    } else if ((type = 'password')) {
-        if (document.getElementById('password').value != document.getElementById('password2').value) {
-            window.alert('パスワードが一致しません');
-            return;
-        }
-        $.ajax({
-            beforeSend: function (xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader('X-CSRFToken', csrf_token);
-                }
-            },
-            type: 'POST',
-            url: path,
-            data: {
-                type: 'post_password_user_data',
-                old_password: document.getElementById('old_password').value,
-                password: document.getElementById('password').value,
-            },
-            dataType: 'text',
-        })
-            .done(function (data) {
-                if ((data = 'error')) {
-                    window.alert('現在のパスワードが間違っています');
-                    return;
-                }
-                window.alert('更新しました');
-            })
-            .fail(function (data) {
-                // error
-                console.log(data);
-                window.alert('通信エラーが発生しました(E-UA100)');
-            });
     } else if ((type = 'delete')) {
         let checkSaveFlg = window.confirm('アカウントを削除すると紐づいているすべての情報が削除されます\n本当によろしいですか？');
         if (checkSaveFlg) {
