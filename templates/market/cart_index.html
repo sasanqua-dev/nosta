@@ -185,7 +185,6 @@
                     window.alert('注文数に制限のある商品で購入数が購入上限を超えています\n再読み込みします');
                     location.reload();
                 }
-                data = JSON.parse(data);
                 document.getElementById('result').classList.add('is-active');
                 document.getElementById('cart_body').innerHTML = '';
             })
