@@ -57,6 +57,14 @@ class VirtualUser(models.Model):
     team = models.CharField(max_length=50,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+class VadminUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    team = models.CharField(max_length=50,null=True)
+    name = models.CharField(max_length=50,null=True)
+    permission = models.CharField(max_length=10,null=True)
+    def __str__(self):
+        return self.name
+
 class CStype(models.Model):
     shop = models.ForeignKey(Shop, on_delete=models.SET_NULL,null=True)
     name = models.CharField(max_length=50)

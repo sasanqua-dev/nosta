@@ -34,6 +34,10 @@ class CstypeAdmin(admin.ModelAdmin):
 class VirtualUser(admin.ModelAdmin):
     pass
 
+@admin.register(VadminUser)
+class VadminUser(admin.ModelAdmin):
+    pass
+
 @admin.register(FAQ)
 class FAQAdmin(admin.ModelAdmin):
     pass

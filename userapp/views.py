@@ -75,9 +75,12 @@ def index(request):
             message = "こんにちは！"
         else:
             message = "こんばんは！"
+        if VadminUser.objects.all().filter(user=request.user).exists():
+            va_user = VadminUser.objects.all().filter(user=request.user)[0]
         
         provider = request.user.social_auth.first().provider
         param = {
+            'va_user':va_user,
             'message':message,
             'provider':provider,
             'now_tickets':tickets,
