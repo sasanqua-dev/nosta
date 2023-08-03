@@ -155,7 +155,7 @@ function getdetail(id){
     })
         .done(function (data) {
             document.getElementById("odetail").innerHTML = data
-            openModal(document.getElementById("detail_modal"))
+            openModal(document.getElementById("order_detail"))
         })
         .fail(function (data) {
             // error
