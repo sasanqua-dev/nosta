@@ -133,6 +133,18 @@ def app(request,shopCODE):
             if request.method == "POST":
                 shop = Shop.objects.get(code=shopCODE)
                 match request.POST["type"]:
+                    case "change_state":
+                        id = request.POST["id"]
+                        state = request.POST["state"]
+                        order = Order.objects.get(id=id)
+                        order.status = state
+                        #TODO レジパスモードが有効かどうかの確認
+                        if state == "complite":
+                            order.day = get_dayformat()
+                        order.user = request.user
+                        order.save()
+                        return HttpResponse("OK!")
+
                     case "get_code":
                         code = request.POST["code"]
                         if "ticket" in code:

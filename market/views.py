@@ -76,7 +76,8 @@ def market(request,shopCODE):
                 return HttpResponse("OK!")
     else:
         shop = Shop.objects.get(code=shopCODE)
+        userdata = UserData.objects.get(user=request.user)
+        fav = shop.favorites.all().count()
         products = Product.objects.all().filter(Q(shop=shop)&Q(web_cart=True))
-        categories = set(products.values_list('category',flat=True))
-        return render(request,'market/cart_index.html',{'shop':shop,'categories':categories})
+        return render(request,'market/cart_index.html',{'shop':shop,'userdata':userdata,'fav':fav})
     

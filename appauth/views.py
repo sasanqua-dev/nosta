@@ -73,6 +73,9 @@ def user_register(request):
                 first_name=request.POST["first_name"],
                 is_active="True"
             )
+            UserData.objects.create(
+                user=user
+            )
 
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)

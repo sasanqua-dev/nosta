@@ -152,3 +152,44 @@ function makeorderQR() {
     $('#img-qr-ordercode').html('');
     $('#img-qr-ordercode').qrcode({ width: 200, height: 200, text: utf8qrtext });
 }
+
+function favorites(type, id, via) {
+    var csrf_token = getCookie('csrftoken');
+    $.ajax({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader('X-CSRFToken', csrf_token);
+            }
+        },
+        type: 'POST',
+        url: '/app/',
+        data: {
+            type: 'post_fav',
+            action: type,
+            id: id,
+        },
+        dataType: 'html',
+    })
+        .done(function (data) {
+            if (via === 'market') {
+                let number = document.getElementById('favorite').firstElementChild.textContent;
+                if (type === 'fav') {
+                    document.getElementById('favorite').setAttribute('hidden', '');
+                    document.getElementById('unfavorite').removeAttribute('hidden');
+                    document.getElementById('favorite').firstElementChild.lastElementChild.textContent = Number(number) + 1;
+                    document.getElementById('unfavorite').firstElementChild.lastElementChild.textContent = Number(number) + 1;
+                } else if (type === 'unfav') {
+                    document.getElementById('favorite').removeAttribute('hidden');
+                    document.getElementById('unfavorite').setAttribute('hidden', '');
+                    document.getElementById('favorite').firstElementChild.lastElementChild.textContent = Number(number) - 1;
+                    document.getElementById('unfavorite').firstElementChild.lastElementChild.textContent = Number(number) - 1;
+                }
+            } else if (via === 'app') {
+                document.getElementById(id).remove();
+            }
+        })
+        .fail(function (data) {
+            // error
+            console.log(data);
+        });
+}

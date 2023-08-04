@@ -192,3 +192,31 @@ function showSlide(index) {
     }
 }
 showSlide(0);
+
+function changestate(type, id) {
+    var csrf_token = getCookie('csrftoken');
+    $.ajax({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader('X-CSRFToken', csrf_token);
+            }
+        },
+        type: 'POST',
+        url: path,
+        data: {
+            type: 'change_state',
+            state: type,
+            id: id,
+        },
+        dataType: 'html',
+    })
+        .done(function (data) {
+            window.alert('伝票ステータスを変更しました');
+        })
+        .fail(function (data) {
+            // error
+            console.log(data);
+            window.alert('エラーが発生しました');
+        });
+    modal.classList.add('is-active');
+}

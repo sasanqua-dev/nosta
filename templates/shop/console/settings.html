@@ -47,7 +47,7 @@
                             <label>店舗名</label>
                         </div>
                         <div class="column is-5">
-                            <input class="input settingform" placeholder="店舗名" value="{{ shop.name }}" id="shop_name" />
+                            <input class="input settingform" placeholder="店舗名" value="{{ shop.name }}" id="shop_name" required />
                         </div>
                         <div class="column is-5"></div>
                         <div class="column is-2 has-text-centered">
@@ -62,14 +62,14 @@
                             <label>店舗公式サイト</label>
                         </div>
                         <div class="column is-5">
-                            <input class="input settingform" type="url" placeholder="店舗公式サイト" value="{{ shop.website }}" id="shop_url" />
+                            <input class="input settingform" type="url" placeholder="店舗公式サイト" value="{{ shop.website }}" id="shop_url" required />
                         </div>
                         <div class="column is-5"></div>
                         <div class="column is-2 has-text-centered">
                             <label>店舗紹介文</label>
                         </div>
                         <div class="column is-5">
-                            <textarea class="input settingform" id="shop_description" style="width: 100%; height: 100px">{{ shop.description }}</textarea>
+                            <textarea class="input settingform" id="shop_description" style="width: 100%; height: 100px" required>{{ shop.description }}</textarea>
                         </div>
                         <div class="column is-5"></div>
                     </div>
@@ -80,7 +80,7 @@
                         </div>
                         <div class="column is-5">
                             <div class="select settingform">
-                                <select id="regi_pass">
+                                <select id="regi_pass" required>
                                     <option value="{{ shop.regi_pass }}" selected hidden>{{ shop.regi_pass }}</option>
                                     <option value="True">True</option>
                                     <option value="False">False</option>

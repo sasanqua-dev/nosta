@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="{% static 'css/footer.css' %}" />
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="{% static 'js/jquery.qrcode.min.js' %}"></script>
+        <script src="{% static 'js/userapp/app.js' %}"></script>
 
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -50,7 +51,7 @@
             <div class="navbar-menu" id="nav-menu">
                 <div class="navbar-start">
                     <a class="navbar-item mx-1" onclick="pagemove('products')" style="color: dimgray"><img src="{% static 'image/icon/list-solid.svg' %}" class="mx-3" alt="商品リスト" />商品</a>
-                    {% if shop.website %}
+                    {% if shop.website and shop.website != None and shop.website != "" %}
                     <a class="navbar-item mx-1" href="{{ shop.website }}" style="color: dimgray"
                         ><img src="{% static 'image/icon/arrow-up-right-from-square-solid.svg' %}" class="mx-3" alt="店舗サイト" />店舗サイト</a
                     >
@@ -69,13 +70,47 @@
             </div>
         </nav>
         <div style="margin-top: 100px">
-            {% if shop.website != None or shop.website != "" %}
-            <div class="m-3 is-hidden-desktop">
-                <a class="button is-info is-outlined is-fullwidth" href="{{ shop.website }}"
-                    ><img src="{% static 'image/icon/arrow-up-right-from-square-solid.svg' %}" class="mx-3" alt="店舗サイト" />店舗サイト</a
-                >
+            <div class="container">
+                <div class="m-4">
+                    <div class="columns">
+                        <div class="column is-10">
+                            <strong class="is-size-4">{{ shop.name }}</strong>
+                            <p class="mt-3">{{ shop.description | linebreaksbr }}</p>
+                        </div>
+                        <div class="column is-2">
+                            {% if shop in userdata.favorites.all %}
+                            <div id="favorite" hidden>
+                                <a class="button is-info is-light my-2" onclick="favorites('fav','{{ shop.id }}','market')"
+                                    ><img src="{% static 'image/icon/heart-regular.svg' %}" class="mx-1 mr-3" /><c>{{ fav }}</c></a
+                                >
+                            </div>
+                            <div id="unfavorite">
+                                <a class="button is-info is-light my-2" onclick="favorites('unfav','{{ shop.id }}','market')"
+                                    ><img src="{% static 'image/icon/heart-solid.svg' %}" class="mx-1 mr-3" /><c>{{ fav }}</c></a
+                                >
+                            </div>
+                            {% else %}
+                            <div id="favorite">
+                                <a class="button is-info is-light my-2" onclick="favorites('fav','{{ shop.id }}','market')"
+                                    ><img src="{% static 'image/icon/heart-regular.svg' %}" class="mx-1 mr-3" /><c>{{ fav }}</c></a
+                                >
+                            </div>
+                            <div id="unfavorite" hidden>
+                                <a class="button is-info is-light my-2" onclick="favorites('unfav','{{ shop.id }}','market')"
+                                    ><img src="{% static 'image/icon/heart-solid.svg' %}" class="mx-1 mr-3" /><c>{{ fav }}</c></a
+                                >
+                            </div>
+                            {% endif %} {% if shop.website and shop.website != None and shop.website != "" %}
+                            <a class="button is-info is-outlined" href="{{ shop.website }}"
+                                ><img src="{% static 'image/icon/arrow-up-right-from-square-solid.svg' %}" class="mx-3" alt="店舗サイト" />店舗サイト</a
+                            >
+                            <br />
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
-            {% endif %} {% block content %}{% endblock %}
+            {% block content %}{% endblock %}
         </div>
     </body>
     <footer class="footer">

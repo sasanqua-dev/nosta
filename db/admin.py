@@ -38,6 +38,10 @@ class VirtualUser(admin.ModelAdmin):
 class VadminUser(admin.ModelAdmin):
     pass
 
+@admin.register(UserData)
+class UserData(admin.ModelAdmin):
+    pass
+
 @admin.register(FAQ)
 class FAQAdmin(admin.ModelAdmin):
     pass
