@@ -14,13 +14,13 @@
     <p><c style="font-size: 12px">状態</c><br />{{ order.status }}</p>
     {% if order.status == "reserved" %}
     <hr />
-    <p><c style="font-size: 12px">お客様ニックネーム</c><br />{{ order.customer.first_name }} 様</p>
+    <p><c style="font-size: 12px">お客様ニックネーム</c><br />{{ order.customer.last_name }}{{ order.customer.first_name }} 様</p>
     <p><c style="font-size: 12px">予約来店日時</c><br />{{ order.reserved_date }}</p>
     {% else %}
     <hr />
     <p><c style="font-size: 12px">お預かり金額</c><br />{{ order.cs_price }}円</p>
     <p><c style="font-size: 12px">お釣り</c><br />{{ order.remaining_price }}円</p>
-    <p><c style="font-size: 12px">担当者</c><br />{{ order.user.name}}<br />{{ order.user.team}}</p>
+    <p><c style="font-size: 12px">担当者</c><br />{{ order.user.name}}<br /><c style="font-size: 12px">{{ order.user.team}}</c></p>
     {% endif %} {% if order.ticket != None %}
     <hr />
     <p><c style="font-size: 12px">チケットID</c><br />{{ order.ticket.id }}</p>

@@ -54,6 +54,7 @@ def index(request):
                 user_data.email = request.POST["email"]
                 user_data.username = username
                 user_data.first_name = request.POST["nickname"]
+                user_data.last_name = ""
                 user_data.save()
                 return HttpResponse("OK!")
                 
