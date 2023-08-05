@@ -52,6 +52,15 @@ class Shop(models.Model):
     def __str__(self):
         return self.name
 
+class ShopGrade(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE,null=True)
+    code = models.CharField(max_length=50)
+    status = models.CharField(max_length=10)
+    expire_at = models.DateTimeField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)

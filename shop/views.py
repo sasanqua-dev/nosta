@@ -153,7 +153,8 @@ def settings(request,shopCODE):
                     shop.website = request.POST["url"]
                     shop.description = request.POST["description"]
                     shop.regi_pass = request.POST["regi_pass"]
-                    shop.market_active = request.POST["market_active"]
+                    if shop.grade == "Plus" or shop.grade == "Premium":
+                        shop.market_active = request.POST["market_active"]
                     shop.ucc_baner = tagblocker(request.POST["ucc_baner"])
                     shop.ucc_treasure = tagblocker(request.POST["ucc_treasure"])
                     shop.ucc_ticket = tagblocker(request.POST["ucc_ticket"])
