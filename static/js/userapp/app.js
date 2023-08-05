@@ -57,7 +57,7 @@ function settings_ajax_handler(type) {
                 console.log(data);
                 window.alert('通信エラーが発生しました(E-UA100)');
             });
-    } else if ((type = 'delete')) {
+    } else if (type == 'delete') {
         let checkSaveFlg = window.confirm('アカウントを削除すると紐づいているすべての情報が削除されます\n本当によろしいですか？');
         if (checkSaveFlg) {
             $.ajax({
@@ -86,7 +86,7 @@ function settings_ajax_handler(type) {
                 });
         } else {
         }
-    } else if ((type = 'cancel')) {
+    } else if (type == 'cancel') {
         let checkSaveFlg = window.confirm('この注文をキャンセルします\n本当によろしいですか？');
         if (checkSaveFlg) {
             $.ajax({

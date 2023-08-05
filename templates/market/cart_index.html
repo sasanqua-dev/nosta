@@ -48,7 +48,10 @@
                         </div>
                     </div>
                     <hr />
-                    <div class="shopmessage">{{ shop.ucc_treasure | safe }}</div>
+                    <div class="shopmessage mx-2 notification is-info is-light">
+                        <strong class="my-2">店舗からのお知らせ</strong>
+                        {{ shop.ucc_treasure | safe }}
+                    </div>
                     <form class="form" onsubmit="return false;" method="POST">
                         <div class="my-4">
                             <label for="tr_date">受け取り希望日時</label>
@@ -79,9 +82,7 @@
                 <div class="content">
                     <div class="hero">
                         <div class="hero-body">
-                            <div class="subtitle has-text-centered">
-                                ご注文ありがとうございました<br /><c class="my-2 is-size-6">注文内容はマイページでご確認ください</c>
-                            </div>
+                            <div class="subtitle has-text-centered">ご注文ありがとうございました<br /><c class="my-2 is-size-6">注文内容はマイページでご確認ください</c></div>
                         </div>
                     </div>
                     <hr />
@@ -137,9 +138,9 @@
     function showTreasurer() {
         sum_cart_product();
         let ele = document.getElementById('treasurer');
-        if (document.getElementById("cart_number").textContent == 0){
-            window.alert("カートが空です")
-            return
+        if (document.getElementById('cart_number').textContent == 0) {
+            window.alert('カートが空です');
+            return;
         }
         closeModal(document.getElementById('cart'));
         openModal(ele);
