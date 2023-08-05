@@ -39,18 +39,11 @@ services:
       - traefik.http.routers.nosta_app.tls.certresolver=${CERT_RESOLVER}
   
   db:
-    build: 
-      context: .
-      dockerfile: ./mysql_Dockerfile
-    container_name: nosta_db
-    image: mysql:5.7
+    image: mariadb:10.6.4
     restart: always
-    environment:
-      MYSQL_DATABASE: nosta_production
-      MYSQL_ROOT_PASSWORD: nosta_db_root_password
-      MYSQL_USER: user
-      MYSQL_PASSWORD: nosta_db_user_password
-
+    container_name: nosta_db
+    environment: 
+      MARIADB_ROOT_PASSWORD: nosta_db_root_password
     volumes:
       - ./mysql:/var/lib/mysql
 

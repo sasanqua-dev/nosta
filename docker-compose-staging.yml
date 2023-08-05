@@ -32,6 +32,7 @@ services:
   db:
     image: mariadb:10.6.4
     restart: always
+    container_name: nosta_db
     environment: 
       MARIADB_ROOT_PASSWORD: nosta_db_root_password
 
