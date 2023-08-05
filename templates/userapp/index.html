@@ -4,11 +4,39 @@
         <div class="column is-hidden-touch is-2"></div>
         <div class="column">
             <div class="columns">
-                <div class="column is-8 has-text-centered is-size-5" style="margin-top: auto"><b>{{ message }}</b></div>
+                <div class="column is-8 has-text-centered is-size-4" style="margin-top: auto"><b>{{ message }}</b></div>
                 <div class="column is-4 has-text-centered">
-                    <button class="button is-info is-light js-modal-trigger" data-target="mycode" onclick="modal_mycode()">
+                    <button class="button is-info is-light js-modal-trigger my-2" data-target="mycode" onclick="modal_mycode()">
                         <img src="{% static 'image/icon/qrcode-solid.svg' %}" class="mx-3" />マイコード
                     </button>
+                    <br />
+                    <button class="button is-info is-light js-modal-trigger my-2" data-target="favorite"><img src="{% static 'image/icon/heart-solid.svg' %}" class="mx-3" />お気に入り</button>
+                    <div class="modal" id="favorite">
+                        <div class="modal-background"></div>
+                        <div class="modal-content m-2">
+                            <header class="modal-card-head">
+                                <p class="modal-card-title mx-2">お気に入り店舗</p>
+                                <button class="delete" aria-label="close"></button>
+                            </header>
+                            <div class="modal-card-body">
+                                {% if userdata.favorites.all.count == 0 %}
+                                <p>お気に入り登録済みの店舗がありません</p>
+                                {% endif %} {% for obj in userdata.favorites.all %}
+                                <div class="columns is-mobile" id="{{ obj.id }}">
+                                    <div class="column is-9">
+                                        <strong class="is-size-5">{{ obj.name }}</strong>
+                                    </div>
+                                    <div class="column is-3">
+                                        <a class="button is-info is-light" onclick="favorites('unfav','{{ obj.id }}','app')"><img src="{% static 'image/icon/heart-solid.svg' %}" class="m-1" /></a>
+                                        <a class="button is-light is-info" href="{% url 'market:index' obj.code %}"
+                                            ><img src="{% static 'image/icon/arrow-up-right-from-square-solid.svg' %}" class="m-1"
+                                        /></a>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                     <div class="modal" id="mycode">
                         <div class="modal-background"></div>
                         <div class="modal-card">

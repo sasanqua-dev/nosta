@@ -233,13 +233,14 @@
             })
                 .done(function (data) {
                     window.alert('情報を更新しました');
+                    location.reload();
                 })
                 .fail(function (data) {
                     // error
                     console.log(data);
                     window.alert('通信エラーが発生しました(E-S100-18)');
                 });
-            if ((type = 'delete')) {
+            if (type == 'delete') {
                 location.reload();
             }
         }

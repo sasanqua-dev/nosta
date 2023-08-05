@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from db.models import *
 from django.db.models import *
-from django.db.models.functions import Coalesce
+from django.db.models.functions import *
 import datetime as dt 
 import pytz
 import json
@@ -87,7 +87,31 @@ def dashboard(request,shopCODE):
 def analytics(request,shopCODE):
     if user_permission_auth(request,shopCODE,"editor") == "allow":
         shop = Shop.objects.get(code=shopCODE)
-        return render(request, 'shop/console/analytics.html',{'shop':shop})
+        if request.method == "POST":
+            match request.POST["type"]:
+                case "get_selectday_data":
+                    start = dt.date(int(request.POST["start"].split('-')[0]),int(request.POST["start"].split('-')[1]),int(request.POST["start"].split('-')[2]))
+                    end = dt.date(int(request.POST["end"].split('-')[0]),int(request.POST["end"].split('-')[1]),int(request.POST["end"].split('-')[2]))
+                    selectdata_reserved = Order.objects.filter(Q(status="reserved")&Q(shop=shop),created_at__range=(start, end)).aggregate(reserved_price=Coalesce(Sum('total_price'),0),reserved_count=Count('id'))
+                    selectdata_complete = Order.objects.filter(Q(status="complete")&Q(shop=shop),created_at__range=(start, end)).aggregate(complete_price=Coalesce(Sum('total_price'),0),complete_count=Count('id'))
+                    param = {
+                        'selectdata_reserved':selectdata_reserved,
+                        'selectdata_complete':selectdata_complete
+                    }
+                    data = render_to_string('shop/console/analytics_select.html',param)
+                    return HttpResponse(data)
+
+                case "get_monthly_data":
+                    year = request.POST["year"]
+                    month = request.POST["month"]
+                    monthly_data = Order.objects.filter(Q(shop=shop)&Q(status="complete"),created_at__year=year,created_at__month=month).annotate(cr_day=TruncDay('created_at')).values('cr_day').annotate(count=Count('id'),price=Sum('total_price')).order_by("-cr_day")
+                    param = {
+                        'monthly_data':monthly_data
+                    }
+                    data = render_to_string('shop/console/analytics_days.html',param)
+                    return HttpResponse(data)
+        monthly = Order.objects.filter(Q(shop=shop)&Q(status="complete")).annotate(monthly_date=TruncMonth("created_at")).values("monthly_date").annotate(count=Count("id"),monthly_price=Sum("total_price")).values("monthly_date","monthly_price", "count").order_by("-monthly_date")
+        return render(request, 'shop/console/analytics.html',{'shop':shop,'monthly':monthly})
     else:
         return redirect('home')
 
@@ -153,11 +177,15 @@ def settings(request,shopCODE):
                     shop.website = request.POST["url"]
                     shop.description = request.POST["description"]
                     shop.regi_pass = request.POST["regi_pass"]
+                    if shop.grade == "Plus" or shop.grade == "Premium":
+                        shop.market_active = request.POST["market_active"]
                     shop.ucc_baner = tagblocker(request.POST["ucc_baner"])
                     shop.ucc_treasure = tagblocker(request.POST["ucc_treasure"])
                     shop.ucc_ticket = tagblocker(request.POST["ucc_ticket"])
                     shop.ucc_resource = tagblocker(request.POST["ucc_resource"])
-                    shop.webhock = request.POST["webhock"]
+                    if shop.grade == "Plus" or shop.grade == "Premium":
+                        shop.regi_post = request.POST["regi_post"]
+                        shop.webhock = request.POST["webhock"]
                     shop.save()
                     return HttpResponse("OK!")
                 case "re_gererate":
@@ -206,6 +234,14 @@ def product(request,shopCODE):
                 data = render_to_string('shop/console/product_list.html', param)
                 return HttpResponse(data)
             
+            elif request.POST["type"] == "get_category_list":
+                categories = set(Product.objects.filter(shop=shop).values_list('category',flat=True))
+                param = {
+                    "categories": categories,
+                }
+                data = render_to_string('shop/console/product_category.html', param)
+                return HttpResponse(data)
+            
             elif request.POST["type"] == "get_product":
                 products = Product.objects.all().filter(Q(shop=shop)&Q(is_active=True))
                 param = {
@@ -250,6 +286,7 @@ def product(request,shopCODE):
                 product.price_buy = request.POST["price_buy"]
                 product.code = request.POST["code"]
                 product.web_cart = request.POST["web_cart"]
+                product.cancel = request.POST["cancel"]
                 product.image = request.POST["image"]
                 product.limit = request.POST["limit"]
                 product.save()
@@ -267,6 +304,7 @@ def product(request,shopCODE):
                     web_cart=request.POST["web_cart"],
                     image=request.POST["image"],
                     limit=request.POST["limit"],
+                    cancel=request.POST["cancel"],
                     is_active=True
                 )
                 return HttpResponse("OK")

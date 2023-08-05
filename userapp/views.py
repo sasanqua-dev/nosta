@@ -54,6 +54,7 @@ def index(request):
                 user_data.email = request.POST["email"]
                 user_data.username = username
                 user_data.first_name = request.POST["nickname"]
+                user_data.last_name = ""
                 user_data.save()
                 return HttpResponse("OK!")
                 
@@ -61,7 +62,9 @@ def index(request):
                 now_tickets = Ticket.objects.all().filter(Q(customer=request.user)&Q(Q(status="Waiting")|Q(status="Calling")))
                 orders = Order.objects.all().filter(Q(customer=request.user)&Q(status="reserved"))
                 if now_tickets.count() == 0 and orders.count() == 0:
-                    request.user.delete()
+                    user = User.objects.get(email=request.user)
+                    user.is_active = False
+                    user.save()
                     logout(request)
                     return HttpResponse("OK!")
                 else:
@@ -82,16 +85,27 @@ def index(request):
                 order = Order.objects.get(id=request.POST["id"])
                 products = CellProduct.objects.all().filter(order=order)
                 for pdc in products:
-                    if pdc.cancel == True:
-                        pass
-                    elif pdc.cancel == False:
+                    if pdc.product.cancel == True:
                         return HttpResponse("error")
+                    elif pdc.product.cancel == False:
+                        pass
                         
                 order.status = "cancel"
                 order.save()
                 products.update(number=0)
                 products.update(price=0)
                 return HttpResponse("OK!")
+
+            case "post_fav":
+                id = request.POST["id"]
+                shop = Shop.objects.get(id=id)
+                user = UserData.objects.get(user=request.user)
+                if request.POST["action"] == "fav":
+                    user.favorites.add(shop)
+                elif request.POST["action"] == "unfav":
+                    user.favorites.remove(shop)
+                return HttpResponse("OK!")
+
     else:
         now_tickets = Ticket.objects.all().filter(Q(customer=request.user)&Q(Q(status="Waiting")|Q(status="Calling")))
         tickets = Ticket.objects.all().filter(Q(customer=request.user)&Q(status="reserved"))
@@ -115,7 +129,15 @@ def index(request):
             provider = request.user.social_auth.first().provider
         except:
             provider = None
+        if UserData.objects.all().filter(user=request.user).exists():
+            pass
+        else:
+            UserData.objects.create(
+                user=request.user
+            )
+        userdata = UserData.objects.get(user=request.user)
         param = {
+            'userdata':userdata,
             'va_user':va_user,
             'message':message,
             'provider':provider,

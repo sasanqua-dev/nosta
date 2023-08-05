@@ -1,0 +1,22 @@
+<div class="has-text-centered my-4">
+    <strong>集計データ</strong>
+</div>
+<div class="columns">
+    <div class="column has-text-centered">
+        <p style="font-size: 12px">確定伝票件数</p>
+        <b class="is-size-4">{{ selectdata_complete.complete_count }}</b>
+    </div>
+    <div class="column has-text-centered">
+        <p style="font-size: 12px">確定売上金額</p>
+        <b class="is-size-4">￥{{ selectdata_complete.complete_price }}</b>
+    </div>
+    <div class="column has-text-centered">
+        <p style="font-size: 12px">予約伝票件数</p>
+        <b class="is-size-4">{{ selectdata_reserved.reserved_count }}</b>
+    </div>
+    <div class="column has-text-centered">
+        <p style="font-size: 12px">予約売上金額</p>
+        <b class="is-size-4">￥{{ selectdata_reserved.reserved_price }}</b>
+    </div>
+</div>
+<div class="notification is-light is-danger">予約伝票件数および予約売上金額はこの期間に予約され<strong>まだ会計処理が行われていないもの</strong>のみです</div>

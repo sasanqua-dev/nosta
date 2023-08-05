@@ -1,6 +1,7 @@
 {% load static %}
 <section>
     <div class="my-3">{{ shop.ucc_baner | safe}}</div>
+    {% if shop.market_active %}
     <div class="columns is-multiline is-mobile mx-2">
         {% for product in products %}
         <div class="column is-2 is-hidden-touch" style="min-width: 300px">
@@ -21,6 +22,11 @@
                         <span class="tag is-primary is-light">在庫あり</span><br />
                         {% elif product.status == "残りわずか" %}
                         <span class="tag is-warning is-light">残りわずか</span><br />
+                        {% endif %}
+                    </div>
+                    <div style="height: 25px">
+                        {% if product.cancel %}
+                        <span class="tag is-danger is-light my-2">キャンセル不可</span>
                         {% endif %}
                     </div>
                     <p class="is-size-3 m-1 mx-4"><c style="font-size: 12px">￥</c>{{ product.price_sell }}</p>
@@ -71,6 +77,11 @@
                             <span class="tag is-warning is-light">残りわずか</span><br />
                             {% endif %}
                         </div>
+                        <div style="height: 30px">
+                            {% if product.cancel %}
+                            <span class="tag is-danger is-light">キャンセル不可</span>
+                            {% endif %}
+                        </div>
                     </div>
                     <b class="is-size-5" style="letter-spacing: 1px"><c style="font-size: 12px">￥</c><c id="{{ product.id }}_price">{{ product.price_sell }}</c></b>
 
@@ -103,4 +114,16 @@
         </div>
         {% endfor %}
     </div>
+    {% else %}
+    <div class="hero is-light is-large mx-1">
+        <div class="hero-body">
+            <div class="content">
+                <strong> この店舗では現在NOSTAオンライン注文はご利用頂けません </strong>
+                <div class="m-3 box">
+                    <div class="content">店舗スタッフの方の場合はNOSTA店舗設定をご確認の上、有効になっているにもかかわらずオンライン注文機能が利用できない場合はNOSTA運営チームにご連絡ください</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </section>

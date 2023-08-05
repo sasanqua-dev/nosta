@@ -45,7 +45,7 @@
             </div>
             <div class="column is-2 my-5 is-hidden-mobile">
                 <p style="font-size: 12px" class="mb-1">担当者名</p>
-                <p class="is-size-6">{{ user.username }}</p>
+                <p class="is-size-6">{{ vuser.name }}</p>
             </div>
         </div>
     </head>
@@ -356,6 +356,13 @@
                     <!--7:会計-->
                     <div class="columns" style="width: 100vw; height: 80vh">
                         <div class="column is-6 px-6">
+                            {% if shop.regi_pass %}
+                            <div class="notification is-danger is-light">
+                                <strong>REGI PASSモードが有効です</strong>
+                                <br />
+                                <p>受取金入力・お釣り計算機能は利用できません</p>
+                            </div>
+                            {% else %}
                             <div class="columns is-multiline">
                                 <div class="column is-4"><a onclick="tr_recive(1)" class="m-2 number_display">1</a></div>
                                 <div class="column is-4"><a onclick="tr_recive(2)" class="m-2 number_display">2</a></div>
@@ -370,6 +377,7 @@
                                 <div class="column is-4"><a onclick="tr_recive(0)" class="m-2 number_display">0</a></div>
                                 <div class="column is-4"><a onclick="tr_treat('delete')" class="m-2 number_display">Del</a></div>
                             </div>
+                            {% endif %}
                         </div>
                         <div class="column is-4">
                             <div class="my-5">
@@ -387,18 +395,18 @@
                             <div class="my-5">
                                 <b>
                                     <p class="is-size-6">おつり：</p>
-                                    <c class="is-size-2" id="remaining" style="width: 1000px"></c>円
+                                    <c class="is-size-2" id="remaining" style="width: 1000px">0</c>円
                                 </b>
                             </div>
                             <div class="my-5">
                                 <b>
                                     <p class="is-size-6">チケットID：</p>
-                                    <input class="input m-2" type="number" min="0" placeholder="0" id="ticket_id" />
+                                    <input class="input m-2" type="number" min="0" value="0" id="ticket_id" />
                                 </b>
                             </div>
                             <div class="my-5">
                                 <p class="is-size-4 has-text-centered has-text-danger" id="tr_message">金額が不足しています</p>
-                                <a class="button is-outlined is-info m-2" style="width: 200px; height: 50px" id="tr_next" disabled onclick="tr_send()">終了</a>
+                                <a class="button is-outlined is-info m-2" style="width: 200px; height: 50px" disabled id="tr_next" onclick="tr_send()">終了</a>
                             </div>
                         </div>
                         <div class="column is-2">
@@ -408,18 +416,18 @@
                             <div>
                                 <a class="button is-outlined is-info m-2" onclick="showSlide(1)" style="width: 120px">商品登録に戻る</a>
                             </div>
-                            <div>
-                                <a class="button is-outlined is-info m-2" style="width: 120px">値引き</a>
-                            </div>
-                            <div>
-                                <a class="button is-outlined is-info m-2" style="width: 120px">割引</a>
-                            </div>
                         </div>
                     </div>
                     <script>
                         function treasurer_setup() {
                             document.getElementById('treasurer_cart_sum').textContent = document.getElementById('cart_sum').textContent;
-                            cal_remaining();
+                            let jught = '{{ shop.regi_pass }}';
+                            if (jught == 'True') {
+                                document.getElementById('tr_message').textContent = '';
+                                document.getElementById('tr_next').removeAttribute('disabled');
+                            } else {
+                                cal_remaining();
+                            }
                         }
                         function cal_remaining() {
                             document.getElementById('remaining').textContent =

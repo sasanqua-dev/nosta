@@ -34,7 +34,7 @@
                 <aside class="menu">
                     <a class="button is-fullwidth is-info is-outlined mx-1 js-modal-trigger" data-target="new" style="font-size: min(2vw, 1rem)">作成</a>
                     <p class="menu-label" style="font-size: min(1.25vw, 1rem)">Category</p>
-                    <ul class="menu-list">
+                    <ul class="menu-list" id="category_list">
                         <!--TODO フォントサイズのフレキシブル対応-->
                         {% for cat in categories %}
                         <li><a onclick="get_data('{{ cat }}')" style="font-size: min(1.5vw, 1rem)">{{ cat }}</a></li>
@@ -103,6 +103,22 @@
                                 <label for="p_limit">オンライン注文(最大数)</label>
                                 <input type="number" id="p_limit" name="p_limit" class="input" min="0" />
                             </div>
+                            <div class="my-4">
+                                <div class="notification is-danger is-light">
+                                    キャンセルプロテクト機能を使用する際は必ずMarketページバナーもしくは注文画面メッセージでキャンセルの可否、条件などを明記してください
+                                </div>
+                                <label for="p_cancel">
+                                    キャンセルプロテクト<br />
+                                    <p class="help">この商品が含まれるオンライン注文のキャンセルを拒否します</p>
+                                </label>
+                                <div class="select is-info m-3">
+                                    <select id="p_cancel">
+                                        <option value="" id="p_cancel_default" selected hidden></option>
+                                        <option value="True">有効</option>
+                                        <option value="False">無効</option>
+                                    </select>
+                                </div>
+                            </div>
                         </section>
                     </div>
                 </section>
@@ -164,8 +180,23 @@
                                 </div>
                             </div>
                             <div class="my-4">
-                                <label for="c_limit">オンライン注文(最大数)</label>
+                                <label for="c_limit"><span class="tag is-danger is-light">必須</span>オンライン注文(最大数)</label>
                                 <input type="number" id="c_limit" name="c_limit" class="input" min="0" />
+                            </div>
+                            <div class="my-4">
+                                <div class="notification is-danger is-light">
+                                    キャンセルプロテクト機能を使用する際は必ずMarketページバナーもしくは注文画面でキャンセルの可否、条件などを明記してください
+                                </div>
+                                <label for="c_cancel">
+                                    キャンセルプロテクト<br />
+                                    <p class="help">この商品が含まれるオンライン注文のキャンセルを拒否します</p>
+                                </label>
+                                <div class="select is-info m-3">
+                                    <select id="c_cancel">
+                                        <option value="True">有効</option>
+                                        <option value="False" selected>無効</option>
+                                    </select>
+                                </div>
                             </div>
                         </section>
                     </div>
@@ -280,6 +311,7 @@
                     dataType: 'html',
                 })
                     .done(function (data) {
+                        get_all_category();
                         document.getElementById('product_list').innerHTML = data;
                         createTrigger();
                     })
@@ -290,6 +322,33 @@
                     });
             }
             get_all_data();
+
+            function get_all_category() {
+                var csrf_token = getCookie('csrftoken');
+                path = "{% url 'shop:product' shop.code %}";
+                $.ajax({
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                        }
+                    },
+                    type: 'POST',
+                    url: path,
+                    data: {
+                        type: 'get_category_list',
+                    },
+                    dataType: 'html',
+                })
+                    .done(function (data) {
+                        document.getElementById('category_list').innerHTML = data;
+                        createTrigger();
+                    })
+                    .fail(function (data) {
+                        // error
+                        console.log(data);
+                        window.alert('通信エラーが発生しました(E-S100-10)');
+                    });
+            }
 
             function openModal($el) {
                 $el.classList.add('is-active');
@@ -329,7 +388,9 @@
                 document.getElementById('p_import').value = document.getElementById(id + '_import').textContent;
                 document.getElementById('p_export').value = document.getElementById(id + '_export').textContent;
                 document.getElementById('p_online_default').value = document.getElementById(id + '_webcart').textContent;
-                document.getElementById('p_online_default').textContent = document.getElementById(id + '_webcart').textContent;
+                document.getElementById('p_online_default').textContent = document.getElementById(id + '_cancel').textContent;
+                document.getElementById('p_cancel_default').value = document.getElementById(id + '_cancel').textContent;
+                document.getElementById('p_cancel_default').textContent = document.getElementById(id + '_webcart').textContent;
                 document.getElementById('p_url').value = document.getElementById(id + '_image').textContent;
                 document.getElementById('p_limit').value = document.getElementById(id + '_limit').textContent;
                 document.getElementById('p_id').textContent = id;
@@ -382,6 +443,7 @@
                             price_sell: document.getElementById('p_export').value,
                             price_buy: document.getElementById('p_import').value,
                             web_cart: document.getElementById('p_online').value,
+                            cancel: document.getElementById('p_cancel').value,
                             image: document.getElementById('p_url').value,
                             limit: document.getElementById('p_limit').value,
                         },
@@ -391,6 +453,7 @@
                             document.getElementById('p_title').textContent = document.getElementById('p_name').value;
                             document.getElementById('d_save').classList.remove('is-loading');
                             window.alert('正常に更新しました');
+                            get_all_data();
                         })
                         .fail(function (data) {
                             // error
@@ -417,6 +480,7 @@
                         .done(function (data) {
                             document.getElementById('d_save').classList.remove('is-loading');
                             window.alert('商品を削除しました');
+                            get_all_data();
                         })
                         .fail(function (data) {
                             // error
@@ -446,6 +510,7 @@
                         price_sell: document.getElementById('c_export').value,
                         price_buy: document.getElementById('c_import').value,
                         web_cart: document.getElementById('c_online').value,
+                        cancel: document.getElementById('c_cancel').value,
                         image: document.getElementById('c_url').value,
                         limit: document.getElementById('c_limit').value,
                     },
@@ -454,6 +519,7 @@
                     .done(function (data) {
                         document.getElementById('d_create').classList.remove('is-loading');
                         window.alert('商品を作成しました');
+                        get_all_data();
                     })
                     .fail(function (data) {
                         // error

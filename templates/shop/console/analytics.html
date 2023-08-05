@@ -1,4 +1,4 @@
-{% extends 'shop/console_base.html' %} {% block content %}
+{% extends 'shop/console_base.html' %} {% block content %}{% load static %}
 <nav class="navbar has-background-white-ter" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <div class="navbar-item">
@@ -15,15 +15,135 @@
 
 <div class="container is-main">
     <main class="content mt-4 mr-2 ml-2" style="overflow-y: auto; overflow-x: hidden">
-        <section class="hero is-light" style="width: 100%;">
-            <div class="hero-body">
-                <p class="title">
-                    この機能は現在提供されていません
-                </p>
-                <p class="subtitle">
-                    近日提供予定です
-                </p>
+        <section class="m-2 box">
+            <strong>売上情報分析</strong>
+            <p>指定した期間中の確定伝票枚数、確定売上額などが確認できます</p>
+            <div class="columns m-1">
+                <div class="column">
+                    <label>開始日</label>
+                    <input class="input my-2" type="date" id="start" />
+                </div>
+                <div class="column">
+                    <label>終了日</label>
+                    <input class="input my-2" type="date" id="end" />
+                </div>
+                <div class="column has-text-centered">
+                    <button class="button is-info is-light" onclick="get_date_select()"><img src="{% static 'image/icon/magnifying-glass-solid.svg' %}" class="mx-2" />検索</button>
+                </div>
             </div>
+            <div id="select_date"></div>
+        </section>
+        <section class="my-2">
+            <div class="columns">
+                <div class="column">
+                    <div class="m-2 box" style="min-height: 500px">
+                        {% if monthly.count == 0 %}
+                        <p>情報なし</p>
+                        {% endif %} {% for month in monthly %}
+                        <a onclick="get_data_days('{{ month.monthly_date }}')" style="color: #4d5156">
+                            <div class="columns">
+                                <div class="column">
+                                    <strong>{{ month.monthly_date|date:"Y年n月" }}</strong>
+                                </div>
+                                <div class="column is-size-6"><c style="font-size: 12px">売上金</c><br />￥{{ month.monthly_price }}</div>
+                                <div class="column is-size-6"><c style="font-size: 12px">伝票件数</c><br />{{ month.count }}</div>
+                            </div>
+                        </a>
+                        <hr />
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="m-2 box" style="min-height: 500px">
+                        <div id="days_data"><p class="has-text-centered">対象月を選択すると月ごとの詳細データを表示できます</p></div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                // csrf_tokenの取得に使う
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = jQuery.trim(cookies[i]);
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === name + '=') {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+                function csrfSafeMethod(method) {
+                    // these HTTP methods do not require CSRF protection
+                    return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+                }
+                function get_data_days(data) {
+                    var csrf_token = getCookie('csrftoken');
+                    path = "{% url 'shop:analytics' shop.code %}";
+                    year = data.split('年')[0];
+                    month = data.split('年')[1].split('月')[0];
+                    $.ajax({
+                        beforeSend: function (xhr, settings) {
+                            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                            }
+                        },
+                        type: 'POST',
+                        url: path,
+                        data: {
+                            type: 'get_monthly_data',
+                            year: year,
+                            month: month,
+                        },
+                        dataType: 'html',
+                    })
+                        .done(function (data) {
+                            document.getElementById('days_data').innerHTML = data;
+                        })
+                        .fail(function (data) {
+                            // error
+                            console.log(data);
+                            window.alert('通信エラーが発生しました(E-100)');
+                        });
+                }
+                function get_date_select() {
+                    var csrf_token = getCookie('csrftoken');
+                    path = "{% url 'shop:analytics' shop.code %}";
+                    if (document.getElementById('start').value == '') {
+                        window.alert('開始日を入力してください');
+                        return;
+                    } else if (document.getElementById('end').value == '') {
+                        window.alert('終了日を入力してください');
+                        return;
+                    }
+                    $.ajax({
+                        beforeSend: function (xhr, settings) {
+                            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                            }
+                        },
+                        type: 'POST',
+                        url: path,
+                        data: {
+                            type: 'get_selectday_data',
+                            start: document.getElementById('start').value,
+                            end: document.getElementById('end').value,
+                        },
+                        dataType: 'html',
+                    })
+                        .done(function (data) {
+                            document.getElementById('select_date').innerHTML = data;
+                        })
+                        .fail(function (data) {
+                            // error
+                            console.log(data);
+                            window.alert('通信エラーが発生しました(E-100)');
+                        });
+                }
+            </script>
         </section>
     </main>
 </div>

@@ -1,5 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import *
 from django.contrib.auth import get_user, get_user_model
+from django.core.validators import MaxValueValidator, MinValueValidator
 User = get_user_model()
 
 # Create your models here.
@@ -31,10 +33,12 @@ class Shop(models.Model):
 
     regi_ticket = models.BooleanField(default=True)
     regi_pass = models.BooleanField(default=False)
+    regi_post = models.BooleanField(default=False)
+    market_active = models.BooleanField(default=False)
     webhock = models.URLField(blank=True)
 
     secret = models.CharField(max_length=50)
-    token = models.CharField(max_length=50)
+    token = models.TextField(max_length=50)
 
     order_limit = models.IntegerField(null=True)
     
@@ -47,6 +51,26 @@ class Shop(models.Model):
 
     def __str__(self):
         return self.name
+
+class ShopGrade(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE,null=True)
+    code = models.CharField(max_length=50)
+    status = models.CharField(max_length=10)
+    expire_at = models.DateTimeField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
+    star = models.IntegerField(default=3,validators=[MinValueValidator(1), MaxValueValidator(5)])
+    content = models.TextField(default="")
+    status = models.CharField(default="normal",max_length=10)
+
+class UserData(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    favorites = models.ManyToManyField(Shop,related_name="favorites")
 
 class VirtualUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -76,21 +100,16 @@ class Ticket(models.Model):
     number = models.IntegerField()
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     cstype = models.ForeignKey(CStype, on_delete=models.SET_NULL,null=True)
-
     people = models.IntegerField()
     cstype = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
-
     status = models.CharField(max_length=50)
     day = models.CharField(max_length=50)
-
     created_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField(auto_now=True)
     waiting = models.IntegerField()
-
     def __str__(self):
         return str(self.number)  # モデルの文字列表現
-    
 
 class Product(models.Model):
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
@@ -103,7 +122,7 @@ class Product(models.Model):
     web_cart = models.BooleanField(default=False)
     image = models.URLField(null=True)
     status = models.CharField(max_length=20)
-    limit = models.IntegerField(default="5")
+    limit = models.IntegerField(default=5)
     cancel = models.BooleanField(default=True)
     is_active = models.BooleanField()
     def __str__(self):
@@ -124,7 +143,7 @@ class Order(models.Model):
     remaining_price = models.IntegerField()
 
     reserved_date =  models.DateTimeField(null=True)
-    secret = models.CharField(max_length=1000,null=True)
+    secret = models.CharField(max_length=200,null=True)
     reserved_id = models.IntegerField(null=True)
     email = models.EmailField(null=True)
 
@@ -138,6 +157,25 @@ class CellProduct(models.Model):
     price = models.IntegerField()
     day = models.CharField(max_length=10)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Resource(models.Model):
+    code = models.CharField(max_length=50)
+    shop = models.ForeignKey(Shop,on_delete=models.CASCADE)
+    people = models.IntegerField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    memo = models.TextField(null=True)
+    is_active = models.BooleanField(default=True)
+
+class CellResource(models.Model):
+    resource = models.ForeignKey(Resource,on_delete=models.CASCADE)
+    status = models.CharField(default="using",max_length=10)
+    user = models.ForeignKey(VirtualUser,on_delete=models.CASCADE,null=True)
+    customer = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
+    memo = models.TextField(null=True)
+    order = models.ForeignKey(Order,on_delete=models.CASCADE,null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class News(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)

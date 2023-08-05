@@ -47,7 +47,7 @@
                             <label>店舗名</label>
                         </div>
                         <div class="column is-5">
-                            <input class="input settingform" placeholder="店舗名" value="{{ shop.name }}" id="shop_name" />
+                            <input class="input settingform" placeholder="店舗名" value="{{ shop.name }}" id="shop_name" required />
                         </div>
                         <div class="column is-5"></div>
                         <div class="column is-2 has-text-centered">
@@ -62,14 +62,14 @@
                             <label>店舗公式サイト</label>
                         </div>
                         <div class="column is-5">
-                            <input class="input settingform" type="url" placeholder="店舗公式サイト" value="{{ shop.website }}" id="shop_url" />
+                            <input class="input settingform" type="url" placeholder="店舗公式サイト" value="{{ shop.website }}" id="shop_url" required />
                         </div>
                         <div class="column is-5"></div>
                         <div class="column is-2 has-text-centered">
                             <label>店舗紹介文</label>
                         </div>
                         <div class="column is-5">
-                            <textarea class="input settingform" id="shop_description" style="width: 100%; height: 100px">{{ shop.description }}</textarea>
+                            <textarea class="input settingform" id="shop_description" style="width: 100%; height: 100px" required>{{ shop.description }}</textarea>
                         </div>
                         <div class="column is-5"></div>
                     </div>
@@ -80,13 +80,35 @@
                         </div>
                         <div class="column is-5">
                             <div class="select settingform">
-                                <select id="regi_pass">
+                                <select id="regi_pass" required>
                                     <option value="{{ shop.regi_pass }}" selected hidden>{{ shop.regi_pass }}</option>
                                     <option value="True">True</option>
                                     <option value="False">False</option>
                                 </select>
                             </div>
                             <div class="help">レジの受取金入力をスキップし自動でおつり0円として処理します<br /></div>
+                        </div>
+                        <div class="column is-5"></div>
+                        <div class="column is-2 has-text-centered">
+                            <label>Market<span class="tag is-primary is-light mx-2">Plus/Premium</span></label>
+                        </div>
+                        <div class="column is-5">
+                            <div class="select settingform">
+                                {% if shop.grade == "Lite" %}
+                                <select id="market_active" required disabled>
+                                    <option value="{{ shop.market_active }}" selected hidden>{{ shop.market_active }}</option>
+                                    <option value="True">True</option>
+                                    <option value="False">False</option>
+                                </select>
+                                {% else %}
+                                <select id="market_active" required>
+                                    <option value="{{ shop.market_active }}" selected hidden>{{ shop.market_active }}</option>
+                                    <option value="True">True</option>
+                                    <option value="False">False</option>
+                                </select>
+                                {% endif %}
+                            </div>
+                            <div class="help">NOSTAマーケット機能の有効/無効を切り替えます<br /></div>
                         </div>
                         <div class="column is-5"></div>
                     </div>
@@ -142,7 +164,7 @@
                         </div>
                         <div class="column is-10">
                             <div class="notification is-danger is-light">
-                                APIリクエスト・webhockは「Pro」「Premium」アカウント限定機能です<br />
+                                APIリクエスト・webhockは「Plus」「Premium」アカウント限定機能です<br />
                                 Liteアカウントではご利用頂けません
                             </div>
                         </div>
@@ -158,10 +180,36 @@
                             <div class="is-size-3"><a class="is-light is-link button" onclick="re_generate('token')">再生成</a></div>
                         </div>
                         <div class="column is-2 has-text-centered">
-                            <label>webhock</label>
+                            <label>webhock<span class="tag is-primary is-light mx-2">Plus/Premium</span></label>
                         </div>
                         <div class="column is-5">
+                            <div class="select settingform">
+                                {% if shop.grade == "Lite" %}
+                                <select id="regi_post" required disabled>
+                                    <option value="{{ shop.regi_post }}" selected hidden>{{ shop.regi_post }}</option>
+                                    <option value="True">True</option>
+                                    <option value="False">False</option>
+                                </select>
+                                {% else %}
+                                <select id="regi_post" required>
+                                    <option value="{{ shop.regi_post }}" selected hidden>{{ shop.regi_post }}</option>
+                                    <option value="True">True</option>
+                                    <option value="False">False</option>
+                                </select>
+                                {% endif %}
+                            </div>
+                            <div class="help">会計処理時に会計情報をwebhockで送信します</div>
+                        </div>
+                        <div class="column is-5"></div>
+                        <div class="column is-2 has-text-centered">
+                            <label>webhock URL<span class="tag is-primary is-light mx-2">Plus/Premium</span></label>
+                        </div>
+                        <div class="column is-5">
+                            {% if shop.grade == "Lite" %}
+                            <input id="webhock" type="url" class="input settingform" value="{{ shop.webhock }}" disabled />
+                            {% else %}
                             <input id="webhock" type="url" class="input settingform" value="{{ shop.webhock }}" />
+                            {% endif %}
                             <div class="help">webhockの詳細は開発者向けドキュメントをご覧ください</div>
                         </div>
                         <div class="column is-5"></div>
@@ -174,7 +222,7 @@
                         <div class="column is-5">
                             <label>{{ shop.grade }}</label>
                             <div class="help">アカウントのアップグレードはユーザーアカウント設定から行うことができます</div>
-                            <div class="help is-danger">現在「Lite」アカウントのみを提供しています</div>
+                            <div class="help is-danger">現在「Plus」アカウントは招待制で提供しています</div>
                         </div>
                         <div class="column is-5">
                             <!--
@@ -237,10 +285,12 @@
                             url: document.getElementById('shop_url').value,
                             description: document.getElementById('shop_description').value,
                             regi_pass: document.getElementById('regi_pass').value,
+                            market_active: document.getElementById('market_active').value,
                             ucc_baner: document.getElementById('ucc_baner').value,
                             ucc_treasure: document.getElementById('ucc_treasure').value,
                             ucc_ticket: document.getElementById('ucc_ticket').value,
                             ucc_resource: document.getElementById('ucc_resource').value,
+                            regi_post: document.getElementById('regi_post').value,
                             webhock: document.getElementById('webhock').value,
                         },
                     }).done(function (response) {

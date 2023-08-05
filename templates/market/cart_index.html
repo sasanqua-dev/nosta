@@ -48,7 +48,10 @@
                         </div>
                     </div>
                     <hr />
-                    <div class="shopmessage">{{ shop.ucc_treasure | safe }}</div>
+                    <div class="shopmessage mx-2 notification is-info is-light">
+                        <strong class="my-2">店舗からのお知らせ</strong>
+                        {{ shop.ucc_treasure | safe }}
+                    </div>
                     <form class="form" onsubmit="return false;" method="POST">
                         <div class="my-4">
                             <label for="tr_date">受け取り希望日時</label>
@@ -60,11 +63,8 @@
                             <b>注意</b><br />
                             ・注文は店舗での支払い、受け取りとなります<br />
                             ・商品の仕様、アレルギー品目(食品の場合)等は店舗公式サイト等でご確認ください<br />
+                            ・キャンセル等の可否等必ず店舗のキャンセルポリシーをご確認ください<br />
                             ・この画面はNOSTAの画面です、注文にはNOSTA利用規約への同意が必要となります<br />
-                        </div>
-                        <div class="my-4">
-                            <input type="checkbox" required />
-                            <a class="js-modal-trigger" data-target="term">利用規約</a>と<a class="js-modal-trigger" data-target="privacy">プライバシーポリシー</a>に同意します
                         </div>
                         <button class="button is-fullwidth is-info is-outlined" onclick="tr_send()">注文する</button>
                     </form>
@@ -79,9 +79,7 @@
                 <div class="content">
                     <div class="hero">
                         <div class="hero-body">
-                            <div class="subtitle has-text-centered">
-                                ご注文ありがとうございました<br /><c class="my-2 is-size-6">注文内容はマイページでご確認ください</c>
-                            </div>
+                            <div class="subtitle has-text-centered">ご注文ありがとうございました<br /><c class="my-2 is-size-6">注文内容はマイページでご確認ください</c></div>
                         </div>
                     </div>
                     <hr />
@@ -137,9 +135,9 @@
     function showTreasurer() {
         sum_cart_product();
         let ele = document.getElementById('treasurer');
-        if (document.getElementById("cart_number").textContent == 0){
-            window.alert("カートが空です")
-            return
+        if (document.getElementById('cart_number').textContent == 0) {
+            window.alert('カートが空です');
+            return;
         }
         closeModal(document.getElementById('cart'));
         openModal(ele);
@@ -153,6 +151,9 @@
         let product_number_sum = 0;
         if (cart_numbers.length == 0) {
             windows.alert('カートが空です');
+        }
+        if (document.getElementById('tr_date').value == '') {
+            window.alert('必要事項が入力されていません');
         }
         for (let i = 0; i < products.length; i++) {
             let id = products[i].id.replace('_cart', '');

@@ -16,6 +16,11 @@
 <div class="container is-main">
     <main class="content mt-4 mr-2 ml-2" style="min-height: 120vh; overflow-x: hidden">
         <section>
+            {% if not shop.market_active %}
+            <div class="notification is-danger is-light m-1">
+                <strong>Market機能が無効化されています<br />店舗設定画面から有効化してください</strong>
+            </div>
+            {% endif %}
             <div class="hero">
                 <div class="hero-body">
                     <p class="title">オンライン販売中の商品</p>
@@ -25,7 +30,7 @@
             <div class="notification is-danger is-light m-1 help">
                 「NOSTAオンライン注文」には決済機能はありません、店舗で会計・商品の引き渡しを行ってください<br />
                 予約注文情報はNOSTA SHOP取引画面(Order)から確認できます<br />
-                またNOSTA利用規約によりweb掲載価格が受け取り時の実際の商品価格を下回ることは禁止されています
+                またNOSTA利用規約により受け取り時の実際の商品価格がweb掲載価格を上回ることは禁止されています
             </div>
             <hr class="my-6" />
             {% if products.count == 0 %}
