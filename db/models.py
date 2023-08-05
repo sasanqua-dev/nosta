@@ -33,6 +33,7 @@ class Shop(models.Model):
 
     regi_ticket = models.BooleanField(default=True)
     regi_pass = models.BooleanField(default=False)
+    regi_post = models.BooleanField(default=False)
     market_active = models.BooleanField(default=False)
     webhock = models.URLField(blank=True)
 

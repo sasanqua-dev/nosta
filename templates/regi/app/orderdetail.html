@@ -10,7 +10,7 @@
     {% else %}
     <p><c style="font-size: 12px">処理日時</c><br /><b style="font-size: max(1vw, 15px)">{{ order.created_at }}</b></p>
     <p><c style="font-size: 12px">個数</c><br />{{ order.number }}</p>
-    <p><c style="font-size: 12px">合計金額</c><br />{{ order.total_price }}円</p>
+    <p><c style="font-size: 12px">合計金額</c><br /><c id="total">{{ order.total_price }}</c>円</p>
     <p><c style="font-size: 12px">状態</c><br />{{ order.status }}</p>
     {% if order.status == "reserved" %}
     <hr />
@@ -27,7 +27,23 @@
     <p><c style="font-size: 12px">種別</c><br />{{ order.ticket.cs_type }}</p>
     {% endif %}
     <section class="m-6">
-        {% if order.status == "reserved" %}
+        {% if order.status == "reserved" %} {% if not shop.regi_pass %}
+        <input class="my-2" min="0" placeholder="受取金額" id="recieved_price" />
+        <p class="my-2">お釣り: <c id="recieved_price"></c></p>
+        <script>
+            document.getElementById('recieved_change').addEventListener('change', function () {
+                let total = document.getElementById('total').textContent;
+                let recieved_price = document.getElementById('recieved_price').value;
+                let remaining_price = total - recieved_price;
+                document.getElementById('remaining_price').textContent = remaining_price;
+            });
+        </script>
+        {% else %}
+        <div hidden>
+            <input id="recieved_price" value="0" />
+            <p class="my-2"><c id="recieved_price"></c></p>
+        </div>
+        {% endif %}
         <button class="button is-info is-outlined is-fullwidth" onclick="changestate('complite','{{order.id}}')">会計</button>
         {% elif order.status == "complete" %}
         <button class="button is-info is-outlined is-fullwidth" onclick="changestate('return','{{order.id}}')">返品</button>
