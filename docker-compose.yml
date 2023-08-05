@@ -28,8 +28,7 @@ services:
       - ./gunicorn.conf:/etc/nginx/conf.d/default.conf
       - gunicorn:/var/run/gunicorn
       - ./static:/home/static
-    ports:
-      - 80:80
+
     labels:
       - traefik.enable=true
       - traefik.http.routers.nosta_app.rule=Host(`nosta.${DOMAIN}`)
