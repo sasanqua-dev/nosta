@@ -38,7 +38,7 @@ class Shop(models.Model):
     webhock = models.URLField(blank=True)
 
     secret = models.CharField(max_length=50)
-    token = models.TextField(max_length=50)
+    token = models.TextField(max_length=100)
 
     order_limit = models.IntegerField(null=True)
     
