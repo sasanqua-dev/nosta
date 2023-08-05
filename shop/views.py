@@ -158,7 +158,9 @@ def settings(request,shopCODE):
                     shop.ucc_treasure = tagblocker(request.POST["ucc_treasure"])
                     shop.ucc_ticket = tagblocker(request.POST["ucc_ticket"])
                     shop.ucc_resource = tagblocker(request.POST["ucc_resource"])
-                    shop.webhock = request.POST["webhock"]
+                    if shop.grade == "Plus" or shop.grade == "Premium":
+                        shop.regi_post = request.POST["regi_post"]
+                        shop.webhock = request.POST["webhock"]
                     shop.save()
                     return HttpResponse("OK!")
                 case "re_gererate":

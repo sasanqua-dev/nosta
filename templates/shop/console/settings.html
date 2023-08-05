@@ -89,18 +89,24 @@
                             <div class="help">レジの受取金入力をスキップし自動でおつり0円として処理します<br /></div>
                         </div>
                         <div class="column is-5"></div>
-                    </div>
-                    <div class="columns is-multiline my-4">
                         <div class="column is-2 has-text-centered">
                             <label>Market</label>
                         </div>
                         <div class="column is-5">
                             <div class="select settingform">
+                                {% if shop.grade == "Lite" %}
+                                <select id="market_active" required disabled>
+                                    <option value="{{ shop.market_active }}" selected hidden>{{ shop.market_active }}</option>
+                                    <option value="True">True</option>
+                                    <option value="False">False</option>
+                                </select>
+                                {% else %}
                                 <select id="market_active" required>
                                     <option value="{{ shop.market_active }}" selected hidden>{{ shop.market_active }}</option>
                                     <option value="True">True</option>
                                     <option value="False">False</option>
                                 </select>
+                                {% endif %}
                             </div>
                             <div class="help">NOSTAマーケット機能の有効/無効を切り替えます<br /></div>
                         </div>
@@ -158,7 +164,7 @@
                         </div>
                         <div class="column is-10">
                             <div class="notification is-danger is-light">
-                                APIリクエスト・webhockは「Pro」「Premium」アカウント限定機能です<br />
+                                APIリクエスト・webhockは「Plus」「Premium」アカウント限定機能です<br />
                                 Liteアカウントではご利用頂けません
                             </div>
                         </div>
@@ -177,7 +183,33 @@
                             <label>webhock</label>
                         </div>
                         <div class="column is-5">
+                            <div class="select settingform">
+                                {% if shop.grade == "Lite" %}
+                                <select id="regi_post" required disabled>
+                                    <option value="{{ shop.regi_post }}" selected hidden>{{ shop.regi_post }}</option>
+                                    <option value="True">True</option>
+                                    <option value="False">False</option>
+                                </select>
+                                {% else %}
+                                <select id="regi_post" required>
+                                    <option value="{{ shop.regi_post }}" selected hidden>{{ shop.regi_post }}</option>
+                                    <option value="True">True</option>
+                                    <option value="False">False</option>
+                                </select>
+                                {% endif %}
+                            </div>
+                            <div class="help">会計処理時に会計情報をwebhockで送信します</div>
+                        </div>
+                        <div class="column is-5"></div>
+                        <div class="column is-2 has-text-centered">
+                            <label>webhock URL</label>
+                        </div>
+                        <div class="column is-5">
+                            {% if shop.grade == "Lite" %}
+                            <input id="webhock" type="url" class="input settingform" value="{{ shop.webhock }}" disabled />
+                            {% else %}
                             <input id="webhock" type="url" class="input settingform" value="{{ shop.webhock }}" />
+                            {% endif %}
                             <div class="help">webhockの詳細は開発者向けドキュメントをご覧ください</div>
                         </div>
                         <div class="column is-5"></div>
@@ -258,6 +290,7 @@
                             ucc_treasure: document.getElementById('ucc_treasure').value,
                             ucc_ticket: document.getElementById('ucc_ticket').value,
                             ucc_resource: document.getElementById('ucc_resource').value,
+                            regi_post: document.getElementById('regi_post').value,
                             webhock: document.getElementById('webhock').value,
                         },
                     }).done(function (response) {
