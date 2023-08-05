@@ -112,10 +112,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'nosta_production',
-        'USER': 'user',
-        'PASSWORD':'nosta_db_user_password',
+        'USER': 'root',
+        'PASSWORD':'nosta_db_root_password',
         'HOST': 'db',
-        'POST': 3306
     }
 }
 
