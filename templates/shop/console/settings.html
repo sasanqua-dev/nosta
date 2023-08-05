@@ -90,6 +90,22 @@
                         </div>
                         <div class="column is-5"></div>
                     </div>
+                    <div class="columns is-multiline my-4">
+                        <div class="column is-2 has-text-centered">
+                            <label>Market</label>
+                        </div>
+                        <div class="column is-5">
+                            <div class="select settingform">
+                                <select id="market_active" required>
+                                    <option value="{{ shop.market_active }}" selected hidden>{{ shop.market_active }}</option>
+                                    <option value="True">True</option>
+                                    <option value="False">False</option>
+                                </select>
+                            </div>
+                            <div class="help">NOSTAマーケット機能の有効/無効を切り替えます<br /></div>
+                        </div>
+                        <div class="column is-5"></div>
+                    </div>
                     <h1 id="custom" class="m-2"><strong>Cutomize</strong></h1>
                     <div class="columns is-multiline my-4">
                         <div class="column is-2 has-text-centered">
@@ -237,6 +253,7 @@
                             url: document.getElementById('shop_url').value,
                             description: document.getElementById('shop_description').value,
                             regi_pass: document.getElementById('regi_pass').value,
+                            market_active: document.getElementById('market_active').value,
                             ucc_baner: document.getElementById('ucc_baner').value,
                             ucc_treasure: document.getElementById('ucc_treasure').value,
                             ucc_ticket: document.getElementById('ucc_ticket').value,

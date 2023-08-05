@@ -1,6 +1,7 @@
 {% load static %}
 <section>
     <div class="my-3">{{ shop.ucc_baner | safe}}</div>
+    {% if shop.market_active %}
     <div class="columns is-multiline is-mobile mx-2">
         {% for product in products %}
         <div class="column is-2 is-hidden-touch" style="min-width: 300px">
@@ -103,4 +104,16 @@
         </div>
         {% endfor %}
     </div>
+    {% else %}
+    <div class="hero is-light is-large mx-1">
+        <div class="hero-body">
+            <div class="content">
+                <strong> この店舗では現在NOSTAオンライン注文はご利用頂けません </strong>
+                <div class="m-3 box">
+                    <div class="content">店舗スタッフの方の場合はNOSTA店舗設定をご確認の上、有効になっているにもかかわらずオンライン注文機能が利用できない場合はNOSTA運営チームにご連絡ください</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </section>

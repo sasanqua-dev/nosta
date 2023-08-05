@@ -33,6 +33,7 @@ class Shop(models.Model):
 
     regi_ticket = models.BooleanField(default=True)
     regi_pass = models.BooleanField(default=False)
+    market_active = models.BooleanField(default=False)
     webhock = models.URLField(blank=True)
 
     secret = models.CharField(max_length=50)
@@ -111,7 +112,7 @@ class Product(models.Model):
     web_cart = models.BooleanField(default=False)
     image = models.URLField(null=True)
     status = models.CharField(max_length=20)
-    limit = models.IntegerField(default="5")
+    limit = models.IntegerField(default=5)
     cancel = models.BooleanField(default=True)
     is_active = models.BooleanField()
     def __str__(self):
