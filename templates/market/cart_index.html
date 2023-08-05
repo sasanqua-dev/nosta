@@ -63,11 +63,8 @@
                             <b>注意</b><br />
                             ・注文は店舗での支払い、受け取りとなります<br />
                             ・商品の仕様、アレルギー品目(食品の場合)等は店舗公式サイト等でご確認ください<br />
+                            ・キャンセル等の可否等必ず店舗のキャンセルポリシーをご確認ください<br />
                             ・この画面はNOSTAの画面です、注文にはNOSTA利用規約への同意が必要となります<br />
-                        </div>
-                        <div class="my-4">
-                            <input type="checkbox" required />
-                            <a class="js-modal-trigger" data-target="term">利用規約</a>と<a class="js-modal-trigger" data-target="privacy">プライバシーポリシー</a>に同意します
                         </div>
                         <button class="button is-fullwidth is-info is-outlined" onclick="tr_send()">注文する</button>
                     </form>
@@ -154,6 +151,9 @@
         let product_number_sum = 0;
         if (cart_numbers.length == 0) {
             windows.alert('カートが空です');
+        }
+        if (document.getElementById('tr_date').value == '') {
+            window.alert('必要事項が入力されていません');
         }
         for (let i = 0; i < products.length; i++) {
             let id = products[i].id.replace('_cart', '');

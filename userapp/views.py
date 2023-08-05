@@ -85,10 +85,10 @@ def index(request):
                 order = Order.objects.get(id=request.POST["id"])
                 products = CellProduct.objects.all().filter(order=order)
                 for pdc in products:
-                    if pdc.cancel == True:
-                        pass
-                    elif pdc.cancel == False:
+                    if pdc.product.cancel == True:
                         return HttpResponse("error")
+                    elif pdc.product.cancel == False:
+                        pass
                         
                 order.status = "cancel"
                 order.save()

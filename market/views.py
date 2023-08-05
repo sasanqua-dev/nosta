@@ -42,12 +42,12 @@ def market(request,shopCODE):
                     customer = request.user,
                     status = "reserved",
                     day = '',
-                    total_price = request.POST["total_price"],
                     number = request.POST["number"],
                     reserved_date = request.POST["reserved_date"],
                     secret = randomstr(10),
                     cs_price = 0,
-                    remaining_price = 0
+                    remaining_price = 0,
+                    total_price = 0
                 )
                 order.reserved_id = order.id + 1500
                 order.save()
@@ -73,6 +73,8 @@ def market(request,shopCODE):
                         day = ''
                     )
                     product_status_auto_change(product)
+                order.total_price=CellProduct.objects.filter(order=order).aggregate(price=Sum('price'))["price"]
+                order.save()
                 return HttpResponse("OK!")
     else:
         shop = Shop.objects.get(code=shopCODE)

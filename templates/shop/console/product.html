@@ -103,6 +103,22 @@
                                 <label for="p_limit">オンライン注文(最大数)</label>
                                 <input type="number" id="p_limit" name="p_limit" class="input" min="0" />
                             </div>
+                            <div class="my-4">
+                                <div class="notification is-danger is-light">
+                                    キャンセルプロテクト機能を使用する際は必ずMarketページバナーもしくは注文画面メッセージでキャンセルの可否、条件などを明記してください
+                                </div>
+                                <label for="p_cancel">
+                                    キャンセルプロテクト<br />
+                                    <p class="help">この商品が含まれるオンライン注文のキャンセルを拒否します</p>
+                                </label>
+                                <div class="select is-info m-3">
+                                    <select id="p_cancel">
+                                        <option value="" id="p_cancel_default" selected hidden></option>
+                                        <option value="True">有効</option>
+                                        <option value="False">無効</option>
+                                    </select>
+                                </div>
+                            </div>
                         </section>
                     </div>
                 </section>
@@ -166,6 +182,21 @@
                             <div class="my-4">
                                 <label for="c_limit">オンライン注文(最大数)</label>
                                 <input type="number" id="c_limit" name="c_limit" class="input" min="0" />
+                            </div>
+                            <div class="my-4">
+                                <div class="notification is-danger is-light">
+                                    キャンセルプロテクト機能を使用する際は必ずMarketページバナーもしくは注文画面でキャンセルの可否、条件などを明記してください
+                                </div>
+                                <label for="c_cancel">
+                                    キャンセルプロテクト<br />
+                                    <p class="help">この商品が含まれるオンライン注文のキャンセルを拒否します</p>
+                                </label>
+                                <div class="select is-info m-3">
+                                    <select id="c_cancel">
+                                        <option value="True">有効</option>
+                                        <option value="False" selected>無効</option>
+                                    </select>
+                                </div>
                             </div>
                         </section>
                     </div>
@@ -357,7 +388,9 @@
                 document.getElementById('p_import').value = document.getElementById(id + '_import').textContent;
                 document.getElementById('p_export').value = document.getElementById(id + '_export').textContent;
                 document.getElementById('p_online_default').value = document.getElementById(id + '_webcart').textContent;
-                document.getElementById('p_online_default').textContent = document.getElementById(id + '_webcart').textContent;
+                document.getElementById('p_online_default').textContent = document.getElementById(id + '_cancel').textContent;
+                document.getElementById('p_cancel_default').value = document.getElementById(id + '_cancel').textContent;
+                document.getElementById('p_cancel_default').textContent = document.getElementById(id + '_webcart').textContent;
                 document.getElementById('p_url').value = document.getElementById(id + '_image').textContent;
                 document.getElementById('p_limit').value = document.getElementById(id + '_limit').textContent;
                 document.getElementById('p_id').textContent = id;
@@ -410,6 +443,7 @@
                             price_sell: document.getElementById('p_export').value,
                             price_buy: document.getElementById('p_import').value,
                             web_cart: document.getElementById('p_online').value,
+                            cancel: document.getElementById('p_cancel').value,
                             image: document.getElementById('p_url').value,
                             limit: document.getElementById('p_limit').value,
                         },
@@ -476,6 +510,7 @@
                         price_sell: document.getElementById('c_export').value,
                         price_buy: document.getElementById('c_import').value,
                         web_cart: document.getElementById('c_online').value,
+                        cancel: document.getElementById('c_cancel').value,
                         image: document.getElementById('c_url').value,
                         limit: document.getElementById('c_limit').value,
                     },

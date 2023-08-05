@@ -24,6 +24,11 @@
                         <span class="tag is-warning is-light">残りわずか</span><br />
                         {% endif %}
                     </div>
+                    <div style="height: 25px">
+                        {% if product.cancel %}
+                        <span class="tag is-danger is-light my-2">キャンセル不可</span>
+                        {% endif %}
+                    </div>
                     <p class="is-size-3 m-1 mx-4"><c style="font-size: 12px">￥</c>{{ product.price_sell }}</p>
 
                     <div class="content p-1">
@@ -70,6 +75,11 @@
                             <span class="tag is-primary is-light">在庫あり</span><br />
                             {% elif product.status == "残りわずか" %}
                             <span class="tag is-warning is-light">残りわずか</span><br />
+                            {% endif %}
+                        </div>
+                        <div style="height: 30px">
+                            {% if product.cancel %}
+                            <span class="tag is-danger is-light">キャンセル不可</span>
                             {% endif %}
                         </div>
                     </div>

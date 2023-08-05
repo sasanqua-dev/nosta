@@ -1,0 +1,14 @@
+<div class="column">
+    {% if monthly.count == 0 %}
+    <p>情報なし</p>
+    {% endif %} {% for days in monthly_data %}
+    <div class="columns">
+        <div class="column">
+            <strong>{{ days.cr_day|date:"d日(D)" }}</strong>
+        </div>
+        <div class="column is-size-6"><c style="font-size: 12px">売上金</c><br />￥{{ days.price }}</div>
+        <div class="column is-size-6"><c style="font-size: 12px">伝票件数</c><br />{{ days.count }}</div>
+    </div>
+    <hr />
+    {% endfor %}
+</div>

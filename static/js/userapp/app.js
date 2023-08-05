@@ -106,7 +106,10 @@ function settings_ajax_handler(type) {
                 .done(function (data) {
                     if (data == 'error') {
                         window.alert('キャンセル不可の商品が含まれています');
+                        return;
                     }
+                    window.alert('注文をキャンセルしました');
+                    location.reload();
                 })
                 .fail(function (data) {
                     // error
