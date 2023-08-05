@@ -34,7 +34,7 @@
                 <aside class="menu">
                     <a class="button is-fullwidth is-info is-outlined mx-1 js-modal-trigger" data-target="new" style="font-size: min(2vw, 1rem)">作成</a>
                     <p class="menu-label" style="font-size: min(1.25vw, 1rem)">Category</p>
-                    <ul class="menu-list">
+                    <ul class="menu-list" id="category_list">
                         <!--TODO フォントサイズのフレキシブル対応-->
                         {% for cat in categories %}
                         <li><a onclick="get_data('{{ cat }}')" style="font-size: min(1.5vw, 1rem)">{{ cat }}</a></li>
@@ -280,6 +280,7 @@
                     dataType: 'html',
                 })
                     .done(function (data) {
+                        get_all_category();
                         document.getElementById('product_list').innerHTML = data;
                         createTrigger();
                     })
@@ -290,6 +291,33 @@
                     });
             }
             get_all_data();
+
+            function get_all_category() {
+                var csrf_token = getCookie('csrftoken');
+                path = "{% url 'shop:product' shop.code %}";
+                $.ajax({
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                        }
+                    },
+                    type: 'POST',
+                    url: path,
+                    data: {
+                        type: 'get_category_list',
+                    },
+                    dataType: 'html',
+                })
+                    .done(function (data) {
+                        document.getElementById('category_list').innerHTML = data;
+                        createTrigger();
+                    })
+                    .fail(function (data) {
+                        // error
+                        console.log(data);
+                        window.alert('通信エラーが発生しました(E-S100-10)');
+                    });
+            }
 
             function openModal($el) {
                 $el.classList.add('is-active');
@@ -391,6 +419,7 @@
                             document.getElementById('p_title').textContent = document.getElementById('p_name').value;
                             document.getElementById('d_save').classList.remove('is-loading');
                             window.alert('正常に更新しました');
+                            get_all_data();
                         })
                         .fail(function (data) {
                             // error
@@ -417,6 +446,7 @@
                         .done(function (data) {
                             document.getElementById('d_save').classList.remove('is-loading');
                             window.alert('商品を削除しました');
+                            get_all_data();
                         })
                         .fail(function (data) {
                             // error
@@ -454,6 +484,7 @@
                     .done(function (data) {
                         document.getElementById('d_create').classList.remove('is-loading');
                         window.alert('商品を作成しました');
+                        get_all_data();
                     })
                     .fail(function (data) {
                         // error

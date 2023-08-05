@@ -206,6 +206,14 @@ def product(request,shopCODE):
                 data = render_to_string('shop/console/product_list.html', param)
                 return HttpResponse(data)
             
+            elif request.POST["type"] == "get_category_list":
+                categories = set(Product.objects.filter(shop=shop).values_list('category',flat=True))
+                param = {
+                    "categories": categories,
+                }
+                data = render_to_string('shop/console/product_category.html', param)
+                return HttpResponse(data)
+            
             elif request.POST["type"] == "get_product":
                 products = Product.objects.all().filter(Q(shop=shop)&Q(is_active=True))
                 param = {
