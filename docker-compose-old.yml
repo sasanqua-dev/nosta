@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  nosta_app:
+    build: .
+    command: python3 -B manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    container_name: nosta_app
+    networks:
+      - prasic
+    environment:
+      - DJANGO_SETTINGS_MODULE=nosta.settings.production
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nosta_app.rule=Host(`nosta.${DOMAIN}`)
+      - traefik.http.routers.nosta_app.entrypoints=https
+      - traefik.http.routers.nosta_app.tls=true
+      - traefik.http.services.nosta_app.loadbalancer.server.port=8000
+      - traefik.http.routers.nosta_app.tls.certresolver=${CERT_RESOLVER}
+
+networks:
+  prasic:
+    external: true

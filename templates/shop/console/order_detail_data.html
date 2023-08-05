@@ -25,4 +25,5 @@
     <p><c style="font-size: 12px">チケットID</c><br />{{ order.ticket.id }}</p>
     <p><c style="font-size: 12px">種別</c><br />{{ order.ticket.cs_type }}</p>
     {% endif %} {% endif %}
+    <div class="notification is-danger is-light">一度返品処理を行った伝票は再度終了処理を行っても個数や単価は変更されず売上データには反映されません</div>
 </section>

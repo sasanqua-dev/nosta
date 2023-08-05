@@ -38,7 +38,7 @@ class Shop(models.Model):
     webhock = models.URLField(blank=True)
 
     secret = models.CharField(max_length=50)
-    token = models.CharField(max_length=50)
+    token = models.TextField(max_length=50)
 
     order_limit = models.IntegerField(null=True)
     
@@ -143,7 +143,7 @@ class Order(models.Model):
     remaining_price = models.IntegerField()
 
     reserved_date =  models.DateTimeField(null=True)
-    secret = models.CharField(max_length=1000,null=True)
+    secret = models.CharField(max_length=200,null=True)
     reserved_id = models.IntegerField(null=True)
     email = models.EmailField(null=True)
 

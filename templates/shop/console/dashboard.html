@@ -103,6 +103,7 @@
                         <hr />
                         <p>NOSTA TICKET</p>
                     </div>
+                    <!--
                     <div class="column m-2 has-text-centered">
                         <strong>商品受け渡し待ち</strong>
                         <hr />
@@ -117,10 +118,11 @@
                         <hr />
                         <p>NOSTA REGI</p>
                     </div>
+                    -->
                 </div>
             </div>
             <div class="container box m-2">
-                <strgon class="is-size-4">サービス連携状況</strgon>
+                <strgon class="is-size-4">サービス稼働状況</strgon>
                 <div class="columns mt-2">
                     <div class="column m-2 has-text-centered">
                         <strong>WEB発券</strong>
@@ -134,9 +136,9 @@
                         <p>NOSTA TICKET</p>
                     </div>
                     <div class="column m-2 has-text-centered">
-                        <strong>WEBカート</strong>
+                        <strong>オンライン注文</strong>
                         <hr />
-                        {% if webproducts > 0 %}
+                        {% if shop.market_active %}
                         <b class="has-text-center is-size-3 has-text-primary">有効</b>
                         {% else %}
                         <b class="has-text-center is-size-3">無効</b>
@@ -145,16 +147,24 @@
                         <p>NOSTA MARKET</p>
                     </div>
                     <div class="column m-2 has-text-centered">
-                        <strong>レジ</strong>
+                        <strong>REGI PASS</strong>
                         <hr />
+                        {% if shop.regi_pass %}
                         <b class="has-text-center is-size-3 has-text-primary">有効</b>
+                        {% else %}
+                        <b class="has-text-center is-size-3">無効</b>
+                        {% endif %}
                         <hr />
                         <p>NOSTA REGI</p>
                     </div>
                     <div class="column m-2 has-text-centered">
-                        <strong>商品受け渡し</strong>
+                        <strong>外部連携</strong>
                         <hr />
+                        {% if shop.regi_post %}
+                        <b class="has-text-center is-size-3 has-text-primary">有効</b>
+                        {% else %}
                         <b class="has-text-center is-size-3">無効</b>
+                        {% endif %}
                         <hr />
                         <p>NOSTA REGI</p>
                     </div>

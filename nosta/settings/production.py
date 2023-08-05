@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = 'django-insecure-fg+@^71lbdwcl@5(6wil#b792q83f)i%s)848497h7x!i^xce&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1','nosta.prasic-plus.com']
 
@@ -63,9 +63,15 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:5000',
+    'http://localhost:5000',#development
+    'http://localhost:5500',#staging
+    'http://localhost',
     'https://nosta.prasic-plus.com'
 ]
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5500','https://nosta.prasic-plus.com']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
 
 ROOT_URLCONF = 'nosta.urls'
 
@@ -94,12 +100,26 @@ WSGI_APPLICATION = 'nosta.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'production_db.sqlite3',
     }
 }
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'nosta_production',
+        'USER': 'user',
+        'PASSWORD':'nosta_db_user_password',
+        'HOST': 'db',
+        'POST': 3306
+    }
+}
+
+
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 EMAIL_HOST = 'smtp.email.ap-sydney-1.oci.oraclecloud.com'
