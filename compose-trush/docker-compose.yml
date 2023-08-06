@@ -9,11 +9,8 @@ services:
     container_name: nosta_gunicorn
     depends_on:
       - db
-    ports:
-      - 5500:8000
     networks:
       - nosta
-      - prasic
     environment:
       - DJANGO_SETTINGS_MODULE=nosta.settings.production
     volumes:
@@ -22,6 +19,27 @@ services:
     stdin_open: true
     tty: true
 
+  nginx:
+    image: nginx:1.17.7
+    container_name: nosta_nginx
+    depends_on:
+      - gunicorn
+    networks:
+      - prasic
+      - nosta
+    volumes:
+      - ./nginx-production.conf:/etc/nginx/conf.d/default.conf
+      - gunicorn:/var/run/gunicorn
+      - ./static/assets:/home/static
+
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nosta_nginx.rule=Host(`nosta.${DOMAIN}`)
+      - traefik.http.routers.nosta_nginx.entrypoints=https
+      - traefik.http.routers.nosta_nginx.tls=true
+      - traefik.http.services.nosta_nginx.loadbalancer.server.port=80
+      - traefik.http.routers.nosta_nginx.tls.certresolver=${CERT_RESOLVER}
+  
   db:
     image: mariadb:10.6.4
     restart: always
