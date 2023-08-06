@@ -115,13 +115,13 @@ def index(request,shopCODE):
     else:
         return redirect('home')
 
-def order_auth(code):
+def order_auth(code,shop):
     body = code.split(':')[1]
-    id = body.split('/')[0]
+    oid = body.split('/')[0]
     hsecret = body.split('/')[1]
-    if not Order.objects.all().filter(id=id).exists():
+    if not Order.objects.all().filter(Q(id=oid)&Q(shop=shop)).exists():
         return "order:incorrect"
-    order = Order.objects.get(id=id)
+    order = Order.objects.get(id=oid)
     if hashlib.sha224(order.secret.encode()).hexdigest() != hsecret:
         return "secret:incorrect"
 
@@ -153,9 +153,9 @@ def app(request,shopCODE):
                             return HttpResponse(render_to_string('regi/app/unsupport.html',{}))
                         elif "order" in code:
                             body = code.split(':')[1]
-                            id = body.split('/')[0]
-                            if order_auth(code) == "allow":
-                                order = Order.objects.get(reserved_id=id)
+                            oid = body.split('/')[0]
+                            if order_auth(code,shop) == "allow":
+                                order = Order.objects.get(id=oid)
                                 products = CellProduct.objects.all().filter(order=order)
                                 param = {
                                     'order':order,
@@ -166,7 +166,7 @@ def app(request,shopCODE):
                             
                             else:
                                 param = {
-                                    'message':order_auth(code)
+                                    'message':order_auth(code,shop)
                                 }
                                 data = render_to_string('regi/app/orderdetail.html',param)
                                 return HttpResponse(data)
@@ -207,7 +207,7 @@ def app(request,shopCODE):
                         body = code.split(':')[1]
                         id = body.split('/')[0]
                         if "order" in code:
-                            if order_auth(code) == "allow":
+                            if order_auth(code,shop) == "allow":
                                 if sub_command == "create_ticket":
                                     order = Order.objects.get(reserved_id=id)
                                     latestnumber = Ticket.objects.all().filter(Q(shop = shop) & Q(day=formatted)).aggregate(Max('number'))["number__max"]
@@ -235,7 +235,7 @@ def app(request,shopCODE):
                             
                             else:
                                 param = {
-                                    'message':order_auth(code)
+                                    'message':order_auth(code,shop)
                                 }
                                 data = render_to_string('regi/app/orderdetail.html',param)
                                 return HttpResponse(data)
