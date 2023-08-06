@@ -9,6 +9,10 @@ services:
     container_name: nosta_gunicorn
     depends_on:
       - db
+    expose:
+      - "8000"
+    ports:
+      - 8000:8000
     networks:
       - nosta
       - prasic

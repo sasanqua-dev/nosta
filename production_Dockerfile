@@ -9,4 +9,4 @@ COPY ./requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r requirements.txt
 RUN mkdir -p /var/run/gunicorn
 
-CMD ["gunicorn", "nosta.wsgi", "--bind=0.0.0.0:8000"]
+CMD ["gunicorn", "nosta.wsgi:application", "--bind=0.0.0.0:8000"]
