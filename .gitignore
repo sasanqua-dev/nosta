@@ -3,3 +3,4 @@ development_db.sqlite3
 mysql
 static/assets
 logs
+db/migrations
