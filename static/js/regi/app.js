@@ -134,6 +134,7 @@ SQR.modal = (() => {
         })
             .done(function (data) {
                 content.innerHTML = data;
+                cal();
             })
             .fail(function (data) {
                 // error
@@ -192,10 +193,17 @@ function showSlide(index) {
     }
 }
 showSlide(0);
-
+function cal() {
+    document.getElementById('recieved_change').addEventListener('change', function () {
+        let total = document.getElementById('total').textContent;
+        let recieved_price = document.getElementById('recieved_price').value;
+        let remaining_price = total - recieved_price;
+        document.getElementById('remaining_price').textContent = remaining_price;
+    });
+}
 function changestate(type, id) {
     var csrf_token = getCookie('csrftoken');
-    if (type === 'complite') {
+    if (type === 'complete') {
         $.ajax({
             beforeSend: function (xhr, settings) {
                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {

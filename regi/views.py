@@ -135,11 +135,11 @@ def app(request,shopCODE):
                 shop = Shop.objects.get(code=shopCODE)
                 match request.POST["type"]:
                     case "change_state":
-                        id = request.POST["id"]
+                        oid = request.POST["id"]
                         state = request.POST["state"]
-                        order = Order.objects.get(id=id)
+                        order = Order.objects.get(id=oid)
                         order.status = state
-                        if state == "complite":
+                        if state == "complete":
                             order.cs_price = request.POST['recieved']
                             order.remaining_price = request.POST['return']
                             order.day = get_dayformat()
