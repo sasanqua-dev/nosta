@@ -63,6 +63,8 @@ def index(request):
                 orders = Order.objects.all().filter(Q(customer=request.user)&Q(status="reserved"))
                 if now_tickets.count() == 0 and orders.count() == 0:
                     user = User.objects.get(email=request.user.email)
+                    user.email = "deleted-"+str(user.id)+"@nosta.deleted-user"
+                    user.username = "deleted"+str(user.id)+"nostadeleteduser"
                     user.is_active = False
                     user.save()
                     logout(request)

@@ -74,7 +74,13 @@
                         {% for vuser in vusers_approved %}
                         <div class="columns card card-content">
                             <div class="column is-3"><b class="is-size-6">{{ vuser.name }}</b></div>
-                            <div class="column is-4"><c style="font-size: 12px">グループ</c><br />{{ vuser.team }}<br /><c style="font-size: 12px">メール</c><br />{{ vuser.user.email }}</div>
+                            <div class="column is-4">
+                                <c style="font-size: 12px">グループ</c>
+                                <br />{{ vuser.team }}<br />
+                                <c style="font-size: 12px">メール</c>
+                                <br />
+                                {% if vuser.user.is_active %} {{ vuser.user.email }} {% else%} deleted {% endif %}
+                            </div>
                             <div class="column is-3"><c style="font-size: 12px">権限</c><br />{{ vuser.permission }}<br /><c style="font-size: 12px">作成日時</c><br />{{ vuser.created_at }}</div>
                             <div class="column is-2">
                                 <a class="button is-outlined is-info js-modal-trigger" data-id="{{ vuser.id }}" data-target="detail">詳細</a>

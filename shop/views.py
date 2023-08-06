@@ -149,7 +149,9 @@ def members(request,shopCODE):
                 
                 case "delete_virtual_user":
                     vuser = VirtualUser.objects.get(id=request.POST["id"])
-                    vuser.delete()
+                    vuser.status = "delete"
+                    vuser.team = "削除済みユーザー"
+                    vuser.save()
                     return HttpResponse("OK!")
 
     else:
