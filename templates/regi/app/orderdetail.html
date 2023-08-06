@@ -28,23 +28,15 @@
     {% endif %}
     <section class="m-6">
         {% if order.status == "reserved" %} {% if not shop.regi_pass %}
-        <input class="my-2" min="0" placeholder="受取金額" id="recieved_price" />
-        <p class="my-2">お釣り: <c id="recieved_price"></c></p>
-        <script>
-            document.getElementById('recieved_change').addEventListener('change', function () {
-                let total = document.getElementById('total').textContent;
-                let recieved_price = document.getElementById('recieved_price').value;
-                let remaining_price = total - recieved_price;
-                document.getElementById('remaining_price').textContent = remaining_price;
-            });
-        </script>
+        <input class="my-2 input" min="0" placeholder="受取金額" id="recieved_price" />
+        <p class="my-2">お釣り: ￥<c id="recieved_price">0</c></p>
         {% else %}
         <div hidden>
             <input id="recieved_price" value="0" />
             <p class="my-2"><c id="recieved_price"></c></p>
         </div>
         {% endif %}
-        <button class="button is-info is-outlined is-fullwidth" onclick="changestate('complite','{{order.id}}')">会計</button>
+        <button class="button is-info is-outlined is-fullwidth" onclick="changestate('complete','{{order.id}}')">会計</button>
         {% elif order.status == "complete" %}
         <button class="button is-info is-outlined is-fullwidth" onclick="changestate('return','{{order.id}}')">返品</button>
         {% endif %}
