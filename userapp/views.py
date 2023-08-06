@@ -64,7 +64,7 @@ def index(request):
                 if now_tickets.count() == 0 and orders.count() == 0:
                     user = User.objects.get(email=request.user.email)
                     user.email = "deleted-"+str(user.id)+"@nosta.deleted-user"
-                    user.username = ""
+                    user.username = "deleted"+str(user.id)+"nostadeleteduser"
                     user.is_active = False
                     user.save()
                     logout(request)
