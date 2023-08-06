@@ -73,7 +73,7 @@ class UserData(models.Model):
     favorites = models.ManyToManyField(Shop,related_name="favorites")
 
 class VirtualUser(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE,null=True)
     permission = models.CharField(max_length=10,null=True)
     status = models.CharField(max_length=10,null=True)
@@ -129,7 +129,7 @@ class Product(models.Model):
         return self.name
 
 class Order(models.Model):
-    user = models.ForeignKey(VirtualUser, on_delete=models.SET_NULL,null=True)
+    user = models.ForeignKey(VirtualUser, on_delete=models.PROTECT,null=True)
     customer = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     status = models.CharField(max_length=20)

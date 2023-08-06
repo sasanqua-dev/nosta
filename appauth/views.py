@@ -120,31 +120,40 @@ def home(request):
         shop_token = request.POST["token"]
         if not Shop.objects.all().filter(code=shop_code).exists():
             message = "不正な店舗コードです"
-            vusers = VirtualUser.objects.all().filter(user=request.user)
+            vusers = VirtualUser.objects.filter(Q(user=request.user)&~Q(status="delete"))
             return render(request, 'auth/home.html',{'vusers':vusers,"message":message})
         shop = Shop.objects.get(code=shop_code)
-        if VirtualUser.objects.all().filter(shop=shop,user=request.user).count() > 1:
+        if VirtualUser.objects.all().filter(Q(shop=shop)&Q(user=request.user)&~Q(status="delete")).count() > 1:
             message = "この店舗へはすでに登録されています"
-            vusers = VirtualUser.objects.all().filter(user=request.user)
+            vusers = VirtualUser.objects.filter(Q(user=request.user)&~Q(status="delete"))
             return render(request, 'auth/home.html',{'vusers':vusers,"message":message})
 
         if shop == None:
             message = "店舗コードが間違っています"
-            vusers = VirtualUser.objects.all().filter(user=request.user)
+            vusers =VirtualUser.objects.filter(Q(user=request.user)&~Q(status="delete"))
             return render(request, 'auth/home.html',{'vusers':vusers,"message":message})
         if shop.secret == shop_token :
-            VirtualUser.objects.create(
-                user = request.user,
-                shop = shop,
-                name= request.POST["name"],
-                status = "request"
-            )
+            if not VirtualUser.objects.filter(Q(user=request.user)&Q(shop=shop)).exists():
+                VirtualUser.objects.create(
+                    user = request.user,
+                    shop = shop,
+                    name= request.POST["name"],
+                    status = "request"
+                )
+            else:
+                vuser = VirtualUser.objects.filter(Q(user=request.user)&Q(shop=shop))[0]
+                vuser.name = request.POST["name"]
+                vuser.status = "request"
+                vuser.permission = None
+                vuser.team = ""
+                vuser.save()
+
             return redirect('home')
         else:
             message = "認証トークンが間違っています"
-            vusers = VirtualUser.objects.all().filter(user=request.user)
+            vusers = VirtualUser.objects.filter(Q(user=request.user)&~Q(status="delete"))
             return render(request, 'auth/home.html',{'vusers':vusers,"message":message})
 
     userid = request.user.id
-    vusers = VirtualUser.objects.all().filter(user=request.user)
+    vusers = VirtualUser.objects.filter(Q(user=request.user)&~Q(status="delete"))
     return render(request, 'auth/home.html',{'vusers':vusers,"message":message})
