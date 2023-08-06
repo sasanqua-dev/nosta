@@ -2,15 +2,16 @@ version: '3'
 
 services:
   gunicorn:
-    build: 
+    build:
       context: .
-      dockerfile: ./gunicorn_Dockerfile
+      dockerfile: ./production_Dockerfile
     image: gunicorn:20.1.0
     container_name: nosta_gunicorn
     depends_on:
       - db
     networks:
       - nosta
+      - prasic
     environment:
       - DJANGO_SETTINGS_MODULE=nosta.settings.production
     volumes:
@@ -18,35 +19,21 @@ services:
       - gunicorn:/var/run/gunicorn
     stdin_open: true
     tty: true
-
-  nginx:
-    image: nginx:1.17.7
-    container_name: nosta_nginx
-    depends_on:
-      - gunicorn
-    networks:
-      - prasic
-      - nosta
-    volumes:
-      - ./nginx-production.conf:/etc/nginx/conf.d/default.conf
-      - gunicorn:/var/run/gunicorn
-      - ./static/assets:/home/static
-
     labels:
       - traefik.enable=true
-      - traefik.http.routers.nosta_nginx.rule=Host(`nosta.${DOMAIN}`)
-      - traefik.http.routers.nosta_nginx.entrypoints=https
-      - traefik.http.routers.nosta_nginx.tls=true
-      - traefik.http.services.nosta_nginx.loadbalancer.server.port=80
-      - traefik.http.routers.nosta_nginx.tls.certresolver=${CERT_RESOLVER}
-  
+      - traefik.http.routers.nosta_gunicorn.rule=Host(`nosta.${DOMAIN}`)
+      - traefik.http.routers.nosta_gunicorn.entrypoints=https
+      - traefik.http.routers.nosta_gunicorn.tls=true
+      - traefik.http.services.nosta_gunicorn.loadbalancer.server.port=80
+      - traefik.http.routers.nosta_gunicorn.tls.certresolver=${CERT_RESOLVER}
+
   db:
     image: mariadb:10.6.4
     restart: always
     container_name: nosta_db
     networks:
       - nosta
-    environment: 
+    environment:
       MARIADB_ROOT_PASSWORD: nosta_db_root_password
     volumes:
       - ./mysql:/var/lib/mysql
