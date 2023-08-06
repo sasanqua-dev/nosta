@@ -1,6 +1,7 @@
 {% extends 'auth_base.html' %} {% block content %}{% load static %}
 <div style="min-width: 40vm">
     <strong>ようこそ {{ user.username }} さん</strong>
+    <a class="button is-light is-info" href="{% url 'logout' %}"> <img src="{% static 'image/icon/arrow-up-right-from-square-solid.svg' %}" class="mx-2" />ログアウト </a>
     <div class="is-size-3">店舗を選択してください</div>
     <p class="has-text-danger">{{ message }}</p>
     <a class="button is-info is-light is-fullwidth my-3 js-modal-trigger" data-target="request">店舗に参加</a>
