@@ -62,7 +62,7 @@ def index(request):
                 now_tickets = Ticket.objects.all().filter(Q(customer=request.user)&Q(Q(status="Waiting")|Q(status="Calling")))
                 orders = Order.objects.all().filter(Q(customer=request.user)&Q(status="reserved"))
                 if now_tickets.count() == 0 and orders.count() == 0:
-                    user = User.objects.get(email=request.user)
+                    user = User.objects.get(email=request.user.email)
                     user.is_active = False
                     user.save()
                     logout(request)
@@ -83,6 +83,8 @@ def index(request):
             
             case "cancel":
                 order = Order.objects.get(id=request.POST["id"])
+                if not order.status == "reserved":
+                    return
                 products = CellProduct.objects.all().filter(order=order)
                 for pdc in products:
                     if pdc.product.cancel == True:

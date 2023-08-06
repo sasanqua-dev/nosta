@@ -104,7 +104,7 @@ def user_register_guest(request):
             pasu = request.GET["next"]
         else:
             pasu = reverse('userapp:index')
-        return render(request, 'auth/register_guest.html',{'url':pasu,'username':username,'password':"guest"})
+        return render(request, 'auth/register_guest.html',{'url':pasu,'username':username,'password':randomstr(5)})
     else:
         return redirect('userapp:index')
 

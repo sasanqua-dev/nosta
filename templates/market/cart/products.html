@@ -1,7 +1,8 @@
 {% load static %}
 <section>
-    <div class="my-3">{{ shop.ucc_baner | safe}}</div>
-    {% if shop.market_active %}
+    {% if shop.ucc_baner != "" and shop.ucc_baner != "None" %}
+    <div class="m-3"><div class="notification is-info is-light">{{ shop.ucc_baner | safe}}</div></div>
+    {% endif %} {% if shop.market_active %}
     <div class="columns is-multiline is-mobile mx-2">
         {% for product in products %}
         <div class="column is-2 is-hidden-touch" style="min-width: 300px">

@@ -1,6 +1,6 @@
 {% extends 'userapp/base.html' %} {% block content %} {% load static %}
 <div style="min-height: 75vh">
-    <div class="columns">
+    <div class="columns" style="width: 100%; margin-right: 0px; margin-left: 0px">
         <div class="column is-hidden-touch is-2"></div>
         <div class="column">
             <div class="columns">
@@ -27,8 +27,8 @@
                                         <strong class="is-size-5">{{ obj.name }}</strong>
                                     </div>
                                     <div class="column is-3">
-                                        <a class="button is-info is-light" onclick="favorites('unfav','{{ obj.id }}','app')"><img src="{% static 'image/icon/heart-solid.svg' %}" class="m-1" /></a>
-                                        <a class="button is-light is-info" href="{% url 'market:index' obj.code %}"
+                                        <a class="button is-info is-light m-1" onclick="favorites('unfav','{{ obj.id }}','app')"><img src="{% static 'image/icon/heart-solid.svg' %}" class="m-1" /></a>
+                                        <a class="button is-light is-info m-1" href="{% url 'market:index' obj.code %}"
                                             ><img src="{% static 'image/icon/arrow-up-right-from-square-solid.svg' %}" class="m-1"
                                         /></a>
                                     </div>
