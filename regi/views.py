@@ -143,7 +143,9 @@ def app(request,shopCODE):
                             order.cs_price = request.POST['recieved']
                             order.remaining_price = request.POST['return']
                             order.day = get_dayformat()
-                        order.user = VirtualUser.objects.all().filter(shop=shop,user=request.user)[0]
+                        vuser = VirtualUser.objects.all().filter(shop=shop,user=request.user)[0]
+                        return HttpResponse(vuser)
+                        order.user = vuser
                         order.save()
                         return HttpResponse("OK!")
 
