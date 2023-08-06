@@ -109,7 +109,7 @@ def index(request,shopCODE):
             return HttpResponse("Permission Error")
     if user_permission_auth(request,shopCODE,"operator") == "allow":
         shop = Shop.objects.get(code=shopCODE)
-        vuser = VirtualUser.objects.filter(Q(shop=shop)&Q(user=request.user))
+        vuser = VirtualUser.objects.filter(Q(shop=shop)&Q(user=request.user))[0]
         categories = sorted(set(Product.objects.filter(shop=shop).values_list('category',flat=True)))
         return render(request, 'regi/base.html',{'shop':shop,"categories":categories,'vuser':vuser})
     else:
