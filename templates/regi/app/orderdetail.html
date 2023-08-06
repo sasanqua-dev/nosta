@@ -30,6 +30,11 @@
         {% if order.status == "reserved" %} {% if not shop.regi_pass == true %}
         <input class="my-2 input" min="0" placeholder="受取金額" id="recieved_price" />
         <p class="my-2">お釣り: ￥<c id="remaining_price">0</c></p>
+        {% else %}
+        <div hidden>
+            <input id="recieved_price" value="0" />
+            <p class="my-2"><c id="remaining_price"></c></p>
+        </div>
         {% endif %}{% else %}
         <div hidden>
             <input id="recieved_price" value="0" />
