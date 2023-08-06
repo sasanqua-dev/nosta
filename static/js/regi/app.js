@@ -224,6 +224,8 @@ function changestate(type, id) {
         })
             .done(function (data) {
                 window.alert('伝票ステータスを変更しました');
+                const modal = document.querySelector('#js-modal');
+                modal.classList.remove('is-active');
             })
             .fail(function (data) {
                 // error
@@ -248,6 +250,8 @@ function changestate(type, id) {
         })
             .done(function (data) {
                 window.alert('伝票ステータスを変更しました');
+                const modal = document.querySelector('#js-modal');
+                modal.classList.remove('is-active');
             })
             .fail(function (data) {
                 // error
@@ -255,6 +259,4 @@ function changestate(type, id) {
                 window.alert('エラーが発生しました');
             });
     }
-    const modal = document.querySelector('#js-modal');
-    modal.classList.add('is-active');
 }
