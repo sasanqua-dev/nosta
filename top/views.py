@@ -23,12 +23,17 @@ def s_ticket(request):
     return render(request,'top/service/ticket.html',{
     })
 
+def s_shop(request):
+    return render(request,'top/service/shop.html',{
+    })
+
 def s_regi(request):
-    return HttpResponse("準備中...")
+    return render(request,'top/service/regi.html',{
+    })
 
 def s_market(request):
-    return HttpResponse("準備中...")
-
+    return render(request,'top/service/market.html',{
+    })
 def guide(request):
     return HttpResponse("準備中...")
 

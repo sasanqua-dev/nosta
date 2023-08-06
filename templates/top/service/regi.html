@@ -1,0 +1,48 @@
+{% extends 'page_base.html' %}{% load static %}{% block content %}
+<section>
+    <div style="height: 30px"></div>
+    <nav class="breadcrumb mx-3 my-1" aria-label="breadcrumbs">
+        <ul>
+            <li><a class="is-size-6 mx-1" href="{% url 'top:home' %}" aria-current="page" style="color: #00517c">トップ</a></li>
+            <li><a class="is-size-6 mx-1" href="#" aria-current="page" style="color: #323232">NOSTA TICKETサービス紹介</a></li>
+        </ul>
+    </nav>
+    <div class="hero">
+        <!-- Hero content: will be in the middle -->
+        <div class="hero-body" style="background-color: #00517c; color: azure; vertical-align: middle; vertical-align: middle">
+            <div class="container my-2" id="start">
+                <h1 class="has-text-centered p-6" style="font-size: min(8vw, 3rem)">NOSTA TICKET　サービス紹介</h1>
+            </div>
+        </div>
+        <!-- Hero footer: will stick at the bottom -->
+        <div class="hero-foot is-hidden-mobile">
+            <nav class="tabs is-boxed is-fullwidth">
+                <div class="container">
+                    <ul>
+                        <li>
+                            <a href="#f1">レジアプリ</a>
+                        </li>
+                        <li>
+                            <a href="#f2">スマートリーダー</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="container my-4" id="f1">
+        <div class="container box mx-3">
+            <div class="is-size-6" style="color: #00517c"><b>Feature.1</b></div>
+            <br />
+            <div class="is-size-4">レジアプリ</div>
+            <hr />
+        </div>
+        <div class="container box mx-3" id="f2">
+            <div class="is-size-6" style="color: #00517c"><b>Feature.2</b></div>
+            <br />
+            <div class="is-size-4">スマートリーダー</div>
+            <hr />
+        </div>
+    </div>
+</section>
+{% endblock %}

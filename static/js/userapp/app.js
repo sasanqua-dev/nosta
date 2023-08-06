@@ -150,7 +150,7 @@ function getdetail(id) {
 function makeorderQR() {
     var id = document.getElementById('pid').value;
     var secret = document.getElementById('secret').value;
-    var qrtext = 'user:' + id + '/' + secret;
+    var qrtext = 'order:' + id + '/' + secret;
     var utf8qrtext = unescape(encodeURIComponent(qrtext));
     $('#img-qr-ordercode').html('');
     $('#img-qr-ordercode').qrcode({ width: 200, height: 200, text: utf8qrtext });
