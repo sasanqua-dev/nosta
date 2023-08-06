@@ -198,7 +198,7 @@ function cal() {
     document.getElementById('recieved_price').addEventListener('change', function () {
         let total = document.getElementById('total').textContent;
         let recieved_price = document.getElementById('recieved_price').value;
-        let remaining_price = total - recieved_price;
+        let remaining_price = recieved_price - total;
         document.getElementById('remaining_price').textContent = remaining_price;
     });
 }
@@ -212,11 +212,13 @@ function changestate(type, id) {
                 }
             },
             type: 'POST',
-            url: path,
+            url: '{% url "regi:app" shop.code %}',
             data: {
                 type: 'change_state',
                 state: type,
                 id: id,
+                recieved: document.getElementById('recieved_price').value,
+                return: document.getElementById('remaining_price').textContent,
             },
             dataType: 'html',
         })
@@ -236,13 +238,11 @@ function changestate(type, id) {
                 }
             },
             type: 'POST',
-            url: path,
+            url: '{% url "regi:app" shop.code %}',
             data: {
                 type: 'change_state',
                 state: type,
                 id: id,
-                recieved: document.getElementById('recieved_price').value,
-                return: document.getElementById('remaining_price').textContent,
             },
             dataType: 'html',
         })
@@ -255,6 +255,6 @@ function changestate(type, id) {
                 window.alert('エラーが発生しました');
             });
     }
-
+    const modal = document.querySelector('#js-modal');
     modal.classList.add('is-active');
 }
