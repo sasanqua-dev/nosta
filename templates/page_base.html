@@ -58,6 +58,9 @@
                         <a class="navbar-link" style="color: dimgray"> サービス </a>
                         <div class="navbar-dropdown is-boxed">
                             <a class="navbar-item" href="{% url 'top:se_ticket' %}" style="color: dimgray"> TICKET </a>
+                            <a class="navbar-item" href="{% url 'top:se_shop' %}" style="color: dimgray"> SHOP </a>
+                            <a class="navbar-item" href="{% url 'top:se_regi' %}" style="color: dimgray"> REGI </a>
+                            <a class="navbar-item" href="{% url 'top:se_market' %}" style="color: dimgray"> MARKET </a>
                         </div>
                     </div>
                     <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
@@ -81,6 +84,9 @@
                         <a href="{% url 'userapp:index' %}" class="button is-light is-info mx-2">NOSTAアプリ</a>
                         <a href="{% url 'home' %}" class="button is-light is-info mx-2">店舗向けサービス</a>
                     </div>
+                    <div class="navbar-item">
+                        <a href="{% url 'logout' %}" class="button is-light is-info mx-2">ログアウト</a>
+                    </div>
                     {% else %}
                     <div class="navbar-item">
                         <a href="{% url 'login' %}" class="button is-light is-info">NOSTA IDでログイン</a>
@@ -99,7 +105,7 @@
             <div class="column is-2">
                 <a href=""><img src="{% static 'image/long_logo.png' %}" style="max-height: 4.75rem" /></a>
                 <hr />
-                <p style="font-size: 12px">入店から退店までのフルサポート</p>
+                <p style="font-size: 12px">店舗運営を最適化</p>
             </div>
             <div class="column is-1"></div>
             <div class="column is-2">
