@@ -40,8 +40,9 @@
         </div>
         {% endfor %} {% endif %}
     </section>
-    {% endif %}
+    {% endif %} {% if order.status == "reserved" %}
     <section class="m-6">
         <button class="button is-info is-outlined is-fullwidth" onclick="settings_ajax_handler('cancel')">注文をキャンセル</button>
     </section>
+    {% endif %}
 </section>

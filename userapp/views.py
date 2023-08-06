@@ -83,6 +83,8 @@ def index(request):
             
             case "cancel":
                 order = Order.objects.get(id=request.POST["id"])
+                if not order.status == "reserved":
+                    return
                 products = CellProduct.objects.all().filter(order=order)
                 for pdc in products:
                     if pdc.product.cancel == True:
