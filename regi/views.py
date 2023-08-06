@@ -119,9 +119,9 @@ def order_auth(code):
     body = code.split(':')[1]
     id = body.split('/')[0]
     hsecret = body.split('/')[1]
-    if not Order.objects.all().filter(reserved_id=id).exists():
+    if not Order.objects.all().filter(id=id).exists():
         return "order:incorrect"
-    order = Order.objects.get(reserved_id=id)
+    order = Order.objects.get(id=id)
     if hashlib.sha224(order.secret.encode()).hexdigest() != hsecret:
         return "secret:incorrect"
 
