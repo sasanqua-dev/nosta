@@ -88,6 +88,26 @@ SQR.reader = (() => {
     };
 })();
 
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === name + '=') {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+}
+
 SQR.modal = (() => {
     const content = document.querySelector('#modal-content-body');
     const modal = document.querySelector('#js-modal');
@@ -98,25 +118,6 @@ SQR.modal = (() => {
      */
     const open = (code) => {
         code_input.value = code;
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = jQuery.trim(cookies[i]);
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === name + '=') {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
-        }
         var csrf_token = getCookie('csrftoken');
         $.ajax({
             beforeSend: function (xhr, settings) {
@@ -194,7 +195,7 @@ function showSlide(index) {
 }
 showSlide(0);
 function cal() {
-    document.getElementById('recieved_change').addEventListener('change', function () {
+    document.getElementById('recieved_price').addEventListener('change', function () {
         let total = document.getElementById('total').textContent;
         let recieved_price = document.getElementById('recieved_price').value;
         let remaining_price = total - recieved_price;
