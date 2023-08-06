@@ -212,7 +212,7 @@ function changestate(type, id) {
                 }
             },
             type: 'POST',
-            url: '{% url "regi:app" shop.code %}',
+            url: path,
             data: {
                 type: 'change_state',
                 state: type,
@@ -238,7 +238,7 @@ function changestate(type, id) {
                 }
             },
             type: 'POST',
-            url: '{% url "regi:app" shop.code %}',
+            url: path,
             data: {
                 type: 'change_state',
                 state: type,
