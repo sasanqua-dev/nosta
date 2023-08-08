@@ -6,7 +6,7 @@
     <p class="has-text-danger help" id="namemessage">{{ request.GET.message }}</p>
     <input type="submit" class="button is-rounded is-fullwidth my-4 is-info is-light" value="ユーザー名を確認" />
 </form>
-<form class="px-6" method="post" action="{% url 'register' %}">
+<form class="px-6" method="post" action="{% url 'register' %}?next={{ request.GET.next }}">
     {% csrf_token %}
     <input type="email" name="userid" id="userid" class="input my-2" placeholder="メールアドレス" required />
     <input type="hidden" name="username" class="input my-2" required pattern="^[0-9A-Za-z]+$" value="{{ request.GET.username}}" />
@@ -37,7 +37,9 @@
     <p><a href="{% url 'login' %}?next={{ request.GET.next }}" class="button is-rounded my-4 is-gray is-light is-fullwidth">ログイン</a></p>
     <p class="help">他のアカウントで始める</p>
     <a href="{% url 'social:begin' 'google-oauth2' %}">
-        <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}"> <img src="{% static 'image/icon/google.svg' %}" alt="Googleで始める" class="image" style="height: 25px" /></a>
+        <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}">
+            <img src="{% static 'image/design/btn_google_signin_dark_pressed_web@2x.png' %}" alt="Googleで始める" class="image" style="height: 50px"
+        /></a>
     </a>
 </div>
 <div class="modal" id="term">
