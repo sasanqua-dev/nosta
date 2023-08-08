@@ -22,7 +22,7 @@ from django.views.generic import TemplateView
 from django.views.decorators.cache import cache_control
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('system/admin/', admin.site.urls),
     #path('', include('top.urls')),
     path('shop/', include('shop.urls')),
     path('app/', include('userapp.urls')),
