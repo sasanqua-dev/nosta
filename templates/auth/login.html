@@ -8,14 +8,16 @@
     <a class="button is-rounded my-4 is-gray is-light is-fullwidth" href="{% url 'password_reset' %}" style="font-size: 15px">パスワードの再発行はこちら</a>
 </form>
 <p class="help">他のアカウントで始める</p>
-<a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}"> <img src="{% static 'image/icon/google.svg' %}" alt="Googleでログイン" class="image" style="height: 25px" /></a>
+<a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}">
+    <img src="{% static 'image/design/btn_google_signin_dark_pressed_web@2x.png' %}" alt="Googleでログイン" class="image" style="height: 50px"
+/></a>
 <hr class="hr-text" data-content="OR" style="background-color: white" />
 <div class="px-6 mb-4">
-    <p><a href="{% url 'register' %}" class="button is-rounded my-4 is-gray is-light is-fullwidth">新規作成</a></p>
+    <p><a href="{% url 'register' %}?next={{ request.GET.next }}" class="button is-rounded my-4 is-gray is-light is-fullwidth">新規作成</a></p>
 </div>
 <hr class="hr-text" data-content="OR" style="background-color: white" />
 <div class="px-6 mb-4">
-    <p><a href="{% url 'guest_register' %}" class="button is-rounded my-4 is-gray is-light is-fullwidth">ゲストアカウントの作成</a></p>
+    <p><a href="{% url 'guest_register' %}?next={{ request.GET.next }}" class="button is-rounded my-4 is-gray is-light is-fullwidth">ゲストアカウントの作成</a></p>
     <p class="help">ゲストアカウントはメールアドレスなどを入力せずに作成できます</p>
 </div>
 {% endblock %}

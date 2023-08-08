@@ -1,5 +1,5 @@
 {% extends 'auth_base.html' %} {% block content %}{% load static %}
-<form class="px-6" method="post" action="{% url 'register' %}">
+<form class="px-6" method="post" action="{% url 'register' %}?next={{ request.GET.next }}">
     {% csrf_token %}
     <p class="">ユーザーID、パスワードはログイン後に変更可能です</p>
     <div class="my-4">
