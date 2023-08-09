@@ -72,6 +72,11 @@
                     </div>
                 </div>
             </div>
+            {% if user.first_name == "ゲスト" %}
+            <div class="notification is-danger is-light m-5 has-text-centered">
+                ニックネームとメールアドレスの設定を行ってください！<br /><a class="button is-outlined js-modal-trigger is-danger m-4" data-target="settings">アカウント設定を行う</a>
+            </div>
+            {% endif %}
             <div class="notification is-info is-light m-5">
                 <div style="text-align: right">
                     <a onclick="location.reload()"><img src="{% static 'image/icon/arrow-rotate-right-solid.svg' %}" /></a>
