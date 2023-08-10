@@ -41,8 +41,18 @@
         {% endfor %} {% endif %}
     </section>
     {% endif %} {% if order.status == "reserved" %}
+    <hr />
     <section class="m-6">
-        <button class="button is-info is-outlined is-fullwidth" onclick="settings_ajax_handler('cancel')">注文をキャンセル</button>
+        <div class="my-4">
+            <label for="tr_date">受け取り希望日時の変更</label>
+            <p class="m-2"><c style="font-size: 12px">現在の予約来店日時</c><br />{{ order.reserved_date }}</p>
+            <input type="datetime-local" id="re_date" name="re_date" class="input m-2" />
+            <button class="button is-info is-outlined is-fullwidth m-2" onclick="settings_ajax_handler('changedate')">来店日時を変更</button>
+        </div>
+    </section>
+    <hr />
+    <section class="m-6">
+        <button class="button is-danger is-outlined is-fullwidth" onclick="settings_ajax_handler('cancel')">注文をキャンセル</button>
     </section>
     {% endif %}
 </section>

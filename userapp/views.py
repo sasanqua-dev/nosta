@@ -74,6 +74,10 @@ def index(request):
                 
             case "get_detail":
                 order = Order.objects.get(id=request.POST["id"])
+                if order.customer == request.user:
+                    pass
+                else:
+                    return
                 products = CellProduct.objects.all().filter(order=order)
                 param = {
                     'order': order,
@@ -85,6 +89,10 @@ def index(request):
             
             case "cancel":
                 order = Order.objects.get(id=request.POST["id"])
+                if order.customer == request.user:
+                    pass
+                else:
+                    return
                 if not order.status == "reserved":
                     return
                 products = CellProduct.objects.all().filter(order=order)
@@ -98,6 +106,18 @@ def index(request):
                 order.save()
                 products.update(number=0)
                 products.update(price=0)
+                return HttpResponse("OK!")
+
+            case "changedate":
+                order = Order.objects.get(id=request.POST["id"])
+                if order.customer == request.user:
+                    pass
+                else:
+                    return
+                if not order.status == "reserved":
+                    return
+                order.reserved_date = request.POST["new_date"]
+                order.save()
                 return HttpResponse("OK!")
 
             case "post_fav":

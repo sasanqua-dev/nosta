@@ -118,6 +118,43 @@ function settings_ajax_handler(type) {
                 });
         } else {
         }
+    } else if (type == 'changedate') {
+        let checkSaveFlg = window.confirm('予約来店日時を変更します\n本当によろしいですか？');
+        if (checkSaveFlg) {
+            if (document.getElementById('re_date').value == '') {
+                window.alert('値が不正です');
+                return;
+            }
+            $.ajax({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                    }
+                },
+                type: 'POST',
+                url: path,
+                data: {
+                    type: 'changedate',
+                    id: document.getElementById('pid').value,
+                    new_date: document.getElementById('re_date').value,
+                },
+                dataType: 'text',
+            })
+                .done(function (data) {
+                    if (data == 'error') {
+                        window.alert('エラーが発生しました');
+                        return;
+                    }
+                    window.alert('予約受付日時を変更しました');
+                    location.reload();
+                })
+                .fail(function (data) {
+                    // error
+                    console.log(data);
+                    window.alert('通信エラーが発生しました(E-UA100)');
+                });
+        } else {
+        }
     }
 }
 function getdetail(id) {
