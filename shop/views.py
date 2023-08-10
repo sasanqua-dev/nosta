@@ -121,6 +121,10 @@ def members(request,shopCODE):
         if user_permission_auth(request,shopCODE,"editor") == "allow":
             shop = Shop.objects.get(code=shopCODE)
             vuser = VirtualUser.objects.get(id=request.POST["id"])
+            if vuser.shop == shop:
+                pass
+            else:
+                return
             current_vuser = VirtualUser.objects.all().filter(shop=shop,user=request.user)[0]
             match request.POST["command"]:
                 case "change_user_status":
@@ -149,6 +153,10 @@ def members(request,shopCODE):
                 
                 case "delete_virtual_user":
                     vuser = VirtualUser.objects.get(id=request.POST["id"])
+                    if vuser.shop == shop:
+                        pass
+                    else:
+                        return
                     vuser.status = "delete"
                     vuser.team = "削除済みユーザー"
                     vuser.save()
@@ -254,6 +262,10 @@ def product(request,shopCODE):
             
             elif request.POST["type"] == "get_product_sum":
                 product = Product.objects.get(id=request.POST["id"])
+                if product.shop == shop:
+                    pass
+                else:
+                    return
                 reserved = CellProduct.objects.all().filter(Q(product=product)&Q(style="reserved")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"]
                 stock = CellProduct.objects.all().filter(Q(product=product)&Q(style="import")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] - (CellProduct.objects.all().filter(Q(product=product)&Q(style="sold")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"] + CellProduct.objects.all().filter(Q(product=product)&Q(style="export")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"])
                 all_import = CellProduct.objects.filter(Q(product=product)&Q(style="import")).aggregate(total_count=Coalesce(models.Sum("number"),0))["total_count"]
@@ -281,6 +293,10 @@ def product(request,shopCODE):
 
             elif request.POST["type"] == "post_product_edit":
                 product = Product.objects.get(id=request.POST["id"])
+                if product.shop == shop:
+                    pass
+                else:
+                    return
                 product.name = request.POST["name"]
                 product.category = request.POST["category"]
                 product.description = request.POST["description"]
@@ -313,11 +329,19 @@ def product(request,shopCODE):
 
             elif request.POST["type"] == "post_product_delete":
                 product = Product.objects.get(id=request.POST["id"])
+                if product.shop == shop:
+                    pass
+                else:
+                    return
                 product.delete()
                 return HttpResponse("OK")
             
             elif request.POST["type"] == "post_product_stock":
                 product = Product.objects.get(id=request.POST["id"])
+                if product.shop == shop:
+                    pass
+                else:
+                    return
                 if (request.POST["price"] == "") and (request.POST["style"] == "import"):
                     price = product.price_buy * int(request.POST["number"])
                 elif (request.POST["price"] == "") and (request.POST["style"] == "export"):
@@ -348,8 +372,13 @@ def product(request,shopCODE):
 @login_required
 def order(request,shopCODE):
     if user_permission_auth(request,shopCODE,"editor") == "allow":
+        shop = Shop.objects.get(code=shopCODE)
         if request.method == "POST":
             order = Order.objects.get(id=request.POST["id"])
+            if order.shop == shop:
+                pass
+            else:
+                return
             if request.POST["type"] == "get_detail":
                 param = {
                     "order":order
@@ -367,9 +396,17 @@ def order(request,shopCODE):
                 
             elif request.POST["type"] == "post_order_treat":
                 if request.POST["method"] == "delete":
-                    Order.objects.get(id=request.POST["id"]).delete()
+                    order = Order.objects.get(id=request.POST["id"])
+                    if order.shop == shop:
+                        order.delete()
+                    else:
+                        return
                 elif request.POST["method"] == "return":
                     order = Order.objects.get(id=request.POST["id"])
+                    if order.shop == shop:
+                        pass
+                    else:
+                        return
                     order.status = "return"
                     order.save()
                     products = CellProduct.objects.all().filter(order=order)
@@ -378,6 +415,10 @@ def order(request,shopCODE):
                         product.save()
                 elif request.POST["method"] == "complete":
                     order = Order.objects.get(id=request.POST["id"])
+                    if order.shop == shop:
+                        pass
+                    else:
+                        return
                     order.day = get_dayformat()
                     order.status = "complete"
                     order.save()

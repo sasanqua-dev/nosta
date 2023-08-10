@@ -81,6 +81,10 @@ def index(request,shopCODE):
                 )
                 for product_id,product_number in zip(json.loads(request.POST["products_ids"]),json.loads(request.POST["products_numbers"])):
                     product = Product.objects.get(id=product_id)
+                    if product.shop == shop:
+                        pass
+                    else:
+                        return
                     CellProduct.objects.create(
                         product=product,
                         order=order,
@@ -122,6 +126,10 @@ def order_auth(code,shop):
     if not Order.objects.all().filter(Q(id=oid)&Q(shop=shop)).exists():
         return "order:incorrect"
     order = Order.objects.get(id=oid)
+    if product.shop == shop:
+        pass
+    else:
+        return
     if hashlib.sha224(order.secret.encode()).hexdigest() != hsecret:
         return "secret:incorrect"
 
@@ -138,6 +146,10 @@ def app(request,shopCODE):
                         oid = request.POST["id"]
                         state = request.POST["state"]
                         order = Order.objects.get(id=oid)
+                        if order.shop == shop:
+                            pass
+                        else:
+                            return
                         order.status = state
                         if state == "complete":
                             order.cs_price = request.POST['recieved']
@@ -157,6 +169,10 @@ def app(request,shopCODE):
                             oid = body.split('/')[0]
                             if order_auth(code,shop) == "allow":
                                 order = Order.objects.get(id=oid)
+                                if order.shop == shop:
+                                    pass
+                                else:
+                                    return
                                 products = CellProduct.objects.all().filter(order=order)
                                 param = {
                                     'order':order,
