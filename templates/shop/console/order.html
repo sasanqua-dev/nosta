@@ -166,6 +166,7 @@
             document.getElementById('o_id').textContent = id;
             var csrf_token = getCookie('csrftoken');
             path = "{% url 'shop:order' shop.code %}";
+            document.getElementById('order_detail_data').innerHTML = 'データ取得中';
             $.ajax({
                 beforeSend: function (xhr, settings) {
                     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -189,6 +190,7 @@
                     window.alert('通信エラーが発生しました(E-S100-16)');
                 });
 
+            document.getElementById('order_product_data').innerHTML = 'データ取得中';
             $.ajax({
                 beforeSend: function (xhr, settings) {
                     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {

@@ -57,6 +57,10 @@ def market(request,shopCODE):
 
                 for product_id,product_number in zip(json.loads(request.POST["products_ids"]),json.loads(request.POST["products_numbers"])):
                     product = Product.objects.get(id=product_id)
+                    if product.shop == shop:
+                        pass
+                    else:
+                        return
                     if int(product_stock(product)) < int(product_number):
                         outofrange(order)
                         return HttpResponse("outofrange")

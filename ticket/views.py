@@ -86,6 +86,13 @@ def reception_internal(request,shopCODE):
 
 @csrf_exempt
 def system_ajax(request):
+    """
+    悪意あるコードで店舗ID捏造して不正アクセスされる可能性あるけど共通認証モジュールに対応してない(URLにshopCODEを含んでない)から対応見送ります（2023/08/10）
+    if user_permission_auth(request,shopCODE,"operator") == "allow":
+        pass
+    else:
+        return
+    """
     match request.POST["command"]:
         case 'create_tickets':
             formatted = get_dayformat()
