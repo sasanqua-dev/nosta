@@ -5,12 +5,10 @@ services:
     build:
       context: .
       dockerfile: ./production_Dockerfile
-    command: python manage.py runserver 0.0.0.0:8000
+    command: uwsgi --http :8000 --module nosta.wsgi
     container_name: nosta_app
     depends_on:
       - db
-    expose:
-      - "8000"
     networks:
       - prasic
       - nosta
@@ -31,7 +29,7 @@ services:
   nosta_db:
     image: mariadb:10.6.4
     restart: always
-    container_name: nosta_db_sv
+    container_name: nosta_db
     networks:
       - nosta
     environment:
