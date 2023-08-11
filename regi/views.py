@@ -126,7 +126,7 @@ def order_auth(code,shop):
     if not Order.objects.all().filter(Q(id=oid)&Q(shop=shop)).exists():
         return "order:incorrect"
     order = Order.objects.get(id=oid)
-    if product.shop == shop:
+    if order.shop == shop:
         pass
     else:
         return
@@ -169,10 +169,6 @@ def app(request,shopCODE):
                             oid = body.split('/')[0]
                             if order_auth(code,shop) == "allow":
                                 order = Order.objects.get(id=oid)
-                                if order.shop == shop:
-                                    pass
-                                else:
-                                    return
                                 products = CellProduct.objects.all().filter(order=order)
                                 param = {
                                     'order':order,
