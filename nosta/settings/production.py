@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+import logging
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -194,3 +195,22 @@ LOGIN_REDIRECT_URL = 'top:home'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '224291454090-fu17l5f6bu2me6721o7eroodsmrqq76r.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 LOGOUT_REDIRECT_URL = "login"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',  # ログのレベルを設定します（DEBUG、INFO、WARNING、ERROR、CRITICALなど）
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/django.log'),  # ログファイルのパスを指定します
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

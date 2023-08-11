@@ -8,7 +8,7 @@ services:
     command: uwsgi --http :8000 --module nosta.wsgi
     container_name: nosta_app
     depends_on:
-      - db
+      - nosta_db
     networks:
       - prasic
       - nosta
