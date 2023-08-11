@@ -113,7 +113,7 @@ DATABASES = {
         'NAME': 'nosta_production',
         'USER': 'root',
         'PASSWORD':'nosta_db_root_password',
-        'HOST': 'db_sv',
+        'HOST': 'nosta_db',
     }
 }
 
