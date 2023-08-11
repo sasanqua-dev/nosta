@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: ./production_Dockerfile
     command: uwsgi --http :8000 --module nosta.wsgi 
+    container_name: nosta_app_sv
     depends_on:
       - db
     expose:
@@ -21,15 +22,16 @@ services:
     tty: true
     labels:
       - traefik.enable=true
-      - traefik.http.routers.app.rule=Host(`nosta.${DOMAIN}`)
-      - traefik.http.routers.app.entrypoints=https
-      - traefik.http.routers.app.tls=true
-      - traefik.http.services.app.loadbalancer.server.port=8000
-      - traefik.http.routers.app.tls.certresolver=${CERT_RESOLVER}
+      - traefik.http.routers.nosta_app_sv.rule=Host(`nosta.${DOMAIN}`)
+      - traefik.http.routers.nosta_app_sv.entrypoints=https
+      - traefik.http.routers.nosta_app_sv.tls=true
+      - traefik.http.services.nosta_app_sv.loadbalancer.server.port=8000
+      - traefik.http.routers.nosta_app_sv.tls.certresolver=${CERT_RESOLVER}
 
   db:
     image: mariadb:10.6.4
     restart: always
+    container_name: nosta_db_sv
     networks:
       - nosta
     environment:
