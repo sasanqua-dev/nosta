@@ -5,8 +5,8 @@ services:
     build:
       context: .
       dockerfile: ./production_Dockerfile
-    image: gunicorn:20.1.0
-    container_name: nosta_gunicorn
+    command: uwsgi --http :8000 --module nosta.wsgi 
+    container_name: app_sv
     depends_on:
       - db
     expose:
@@ -18,7 +18,6 @@ services:
       - DJANGO_SETTINGS_MODULE=nosta.settings.production
     volumes:
       - .:/usr/src/app/
-      - gunicorn:/var/run/gunicorn
     stdin_open: true
     tty: true
     labels:
@@ -32,17 +31,13 @@ services:
   db:
     image: mariadb:10.6.4
     restart: always
-    container_name: nosta_db
+    container_name: db_sv
     networks:
       - nosta
     environment:
       MARIADB_ROOT_PASSWORD: nosta_db_root_password
     volumes:
       - ./mysql:/var/lib/mysql
-
-volumes:
-  gunicorn:
-    driver: local
 
 networks:
   prasic:

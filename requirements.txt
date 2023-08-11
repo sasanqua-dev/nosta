@@ -1,4 +1,4 @@
-Django==4.1.0
+Django
 social-auth-app-django
 django-allauth
 psycopg2
@@ -8,6 +8,6 @@ pillow
 django-cors-headers
 python-dotenv
 requests
-gunicorn
+uwsgi
 mysqlclient
 whitenoise
