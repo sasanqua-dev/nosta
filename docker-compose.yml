@@ -1,11 +1,11 @@
 version: '3'
 
 services:
-  gunicorn:
+  app:
     build:
       context: .
       dockerfile: ./production_Dockerfile
-    command: python manage.py runserver 0.0.0.0:8000
+    command: uwsgi --http :8000 --module nosta.wsgi 
     container_name: app_sv
     depends_on:
       - db
@@ -22,11 +22,11 @@ services:
     tty: true
     labels:
       - traefik.enable=true
-      - traefik.http.routers.nosta_gunicorn.rule=Host(`nosta.${DOMAIN}`)
-      - traefik.http.routers.nosta_gunicorn.entrypoints=https
-      - traefik.http.routers.nosta_gunicorn.tls=true
-      - traefik.http.services.nosta_gunicorn.loadbalancer.server.port=8000
-      - traefik.http.routers.nosta_gunicorn.tls.certresolver=${CERT_RESOLVER}
+      - traefik.http.routers.app_sv.rule=Host(`nosta.${DOMAIN}`)
+      - traefik.http.routers.app_sv.entrypoints=https
+      - traefik.http.routers.app_sv.tls=true
+      - traefik.http.services.app_sv.loadbalancer.server.port=8000
+      - traefik.http.routers.app_sv.tls.certresolver=${CERT_RESOLVER}
 
   db:
     image: mariadb:10.6.4
