@@ -20,7 +20,7 @@ def user_login(request):
             if user is not None:
                 user.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, user)
-                if "next" in request.GET:
+                if "next" in request.GET and request.GET["next"] != "":
                     pasu = request.GET["next"]
                 else:
                     pasu = reverse('userapp:index')
@@ -79,7 +79,7 @@ def user_register(request):
 
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
-            if "next" in request.GET:
+            if "next" in request.GET and request.GET["next"] != "":
                 pasu = request.GET["next"]
             else:
                 pasu = reverse('userapp:index')
