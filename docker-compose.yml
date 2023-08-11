@@ -11,11 +11,9 @@ services:
       - db
     expose:
       - "8000"
-    ports:
-      - 8000:8000
     networks:
-      - nosta
       - prasic
+      - nosta
     environment:
       - DJANGO_SETTINGS_MODULE=nosta.settings.production
     volumes:
