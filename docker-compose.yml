@@ -20,7 +20,7 @@ services:
     tty: true
     labels:
       - traefik.enable=true
-      - traefik.http.routers.nosta_app.rule=Host(`nosta.${DOMAIN}`)
+      - traefik.http.routers.nosta_app.rule=Host(`nosta.staging.${DOMAIN}`)
       - traefik.http.routers.nosta_app.entrypoints=https
       - traefik.http.routers.nosta_app.tls=true
       - traefik.http.services.nosta_app.loadbalancer.server.port=8000
