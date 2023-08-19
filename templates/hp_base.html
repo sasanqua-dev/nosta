@@ -34,16 +34,9 @@
         </script>
         <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item is-size-2 pt-1 pr-6" style="font-family: 'Noto Sans JP', sans-serif; color: #00517c" href="{% url 'top:home' %}"
+                <a class="navbar-item is-size-2 pt-1 pr-6" style="font-family: 'Noto Sans JP', sans-serif; color: #00517c" href="{% url 'about:home' %}"
                     ><img src="{% static 'image/long_logo.png' %}" style="max-height: 3.75rem" alt="ロゴ"
                 /></a>
-            </div>
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    {% if shopID != None %}
-                    <p class="is-size-4">ショップ名</p>
-                    {% endif %}
-                </div>
             </div>
         </nav>
     </head>
@@ -62,34 +55,30 @@
             <div class="column is-2">
                 <ul>
                     <li class="my-2"><strong>利用者の方へ</strong></li>
-                    <li class="my-2"><a href="{% url 'top:home' %}">サービスホーム</a></li>
-                    <li class="my-2"><a href="{% url 'top:guide' %}">ユーザーガイド</a></li>
+                    <li class="my-2"><a href="{% url 'userapp:index' %}">NOSTAアプリ</a></li>
                     <li class="my-4"></li>
                 </ul>
             </div>
             <div class="column is-2">
                 <ul>
-                    <li class="my-2"><strong>サービス</strong></li>
-                    <li class="my-2"><a href="{% url 'top:terms' %}">利用規約</a></li>
-                    <li class="my-2"><a href="{% url 'top:privacy' %}">プライバシーポリシー</a></li>
-                    <li class="my-2"><a href="{% url 'top:about' %}">ABOUT</a></li>
+                    <li class="my-2"><strong>店舗スタッフの方へ</strong></li>
+                    <li class="my-2"><a href="{% url 'home' %}">店舗アプリ</a></li>
+                    <li class="my-2"><a href="{% url 'about:home' %}">サービス</a></li>
+                    <li class="my-4"></li>
+                </ul>
+            </div>
+            <div class="column is-2">
+                <ul>
+                    <li class="my-2"><strong>ドキュメント</strong></li>
+                    <li class="my-2"><a href="{% url 'about:terms' %}">利用規約</a></li>
+                    <li class="my-2"><a href="{% url 'about:privacy' %}">プライバシーポリシー</a></li>
                 </ul>
             </div>
             <div class="column is-2">
                 <ul>
                     <li class="my-2"><strong>サポート</strong></li>
-                    <li class="my-2"><a href="{% url 'top:faq' %}">FAQ</a></li>
-                    <li class="my-2"><a href="{% url 'top:contact' %}">お問い合わせ</a></li>
-                </ul>
-            </div>
-            <div class="column is-2">
-                <ul>
-                    <li class="my-2">
-                        <a><img src="{% static 'image/prasic_full.png'%}" style="max-height: 5.75rem" /></a>
-                    </li>
-                    <li class="my-2"><p style="font-size: 12px">このサービスはアプリケーションサービス基盤「Prasic-plus」上で動作しています</p></li>
-                    <hr />
-                    <li class="my-2"><a>共通ガイドライン</a></li>
+                    <li class="my-2"><a href="{% url 'about:faq' %}">FAQ</a></li>
+                    <li class="my-2"><a href="{% url 'about:contact' %}">お問い合わせ</a></li>
                 </ul>
             </div>
         </div>

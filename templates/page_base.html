@@ -19,7 +19,6 @@
         <link rel="stylesheet" href="{% static 'css/footer.css' %}" />
         <link rel="stylesheet" href="{% static 'css/contact.css' %}" />
         <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -43,7 +42,7 @@
         </script>
         <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item is-size-2 pt-1 pr-6" style="font-family: 'Noto Sans JP', sans-serif; color: #00517c" href="{% url 'top:home' %}"
+                <a class="navbar-item is-size-2 pt-1 pr-6" style="font-family: 'Noto Sans JP', sans-serif; color: #00517c" href="{% url 'top:index' %}"
                     ><img src="{% static 'image/long_logo.png' %}" style="max-height: 3.75rem" alt="ロゴ"
                 /></a>
                 <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="nav-menu">
@@ -55,26 +54,17 @@
             <div class="navbar-menu" id="nav-menu">
                 <div class="navbar-start">
                     <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
-                        <a class="navbar-link" style="color: dimgray"> サービス </a>
-                        <div class="navbar-dropdown is-boxed">
-                            <a class="navbar-item" href="{% url 'top:se_ticket' %}" style="color: dimgray"> TICKET </a>
-                            <a class="navbar-item" href="{% url 'top:se_shop' %}" style="color: dimgray"> SHOP </a>
-                            <a class="navbar-item" href="{% url 'top:se_regi' %}" style="color: dimgray"> REGI </a>
-                            <a class="navbar-item" href="{% url 'top:se_market' %}" style="color: dimgray"> MARKET </a>
-                        </div>
-                    </div>
-                    <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
                         <a class="navbar-link" style="color: dimgray"> ドキュメント </a>
                         <div class="navbar-dropdown is-boxed">
-                            <a class="navbar-item" href="{% url 'top:terms' %}" style="color: dimgray"> 利用規約 </a>
-                            <a class="navbar-item" href="{% url 'top:privacy' %}" style="color: dimgray"> プライバシーポリシー </a>
+                            <a class="navbar-item" href="{% url 'about:terms' %}" style="color: dimgray"> 利用規約 </a>
+                            <a class="navbar-item" href="{% url 'about:privacy' %}" style="color: dimgray"> プライバシーポリシー </a>
                         </div>
                     </div>
                     <div class="navbar-item has-dropdown is-hoverable m-2" style="color: dimgray">
                         <a class="navbar-link" style="color: dimgray"> サポート </a>
                         <div class="navbar-dropdown is-boxed">
-                            <a class="navbar-item" href="{% url 'top:faq' %}" style="color: dimgray"> FAQ </a>
-                            <a class="navbar-item" href="{% url 'top:contact' %}" style="color: dimgray"> お問い合わせ </a>
+                            <a class="navbar-item" href="{% url 'about:faq' %}" style="color: dimgray"> FAQ </a>
+                            <a class="navbar-item" href="{% url 'about:contact' %}" style="color: dimgray"> お問い合わせ </a>
                         </div>
                     </div>
                 </div>
@@ -82,7 +72,7 @@
                     {% if request.user.is_authenticated %}
                     <div class="navbar-item">
                         <a href="{% url 'userapp:index' %}" class="button is-light is-info mx-2">NOSTAアプリ</a>
-                        <a href="{% url 'home' %}" class="button is-light is-info mx-2">店舗向けサービス</a>
+                        <a href="{% url 'home' %}" class="button is-light is-info mx-2">店舗アプリ</a>
                     </div>
                     <div class="navbar-item">
                         <a href="{% url 'logout' %}" class="button is-light is-info mx-2">ログアウト</a>
@@ -111,34 +101,30 @@
             <div class="column is-2">
                 <ul>
                     <li class="my-2"><strong>利用者の方へ</strong></li>
-                    <li class="my-2"><a href="{% url 'top:home' %}">サービスホーム</a></li>
-                    <li class="my-2"><a href="{% url 'top:guide' %}">ユーザーガイド</a></li>
+                    <li class="my-2"><a href="{% url 'userapp:index' %}">NOSTAアプリ</a></li>
                     <li class="my-4"></li>
                 </ul>
             </div>
             <div class="column is-2">
                 <ul>
-                    <li class="my-2"><strong>サービス</strong></li>
-                    <li class="my-2"><a href="{% url 'top:terms' %}">利用規約</a></li>
-                    <li class="my-2"><a href="{% url 'top:privacy' %}">プライバシーポリシー</a></li>
-                    <li class="my-2"><a href="{% url 'top:about' %}">ABOUT</a></li>
+                    <li class="my-2"><strong>店舗スタッフの方へ</strong></li>
+                    <li class="my-2"><a href="{% url 'home' %}">店舗アプリ</a></li>
+                    <li class="my-2"><a href="{% url 'about:home' %}">サービス</a></li>
+                    <li class="my-4"></li>
+                </ul>
+            </div>
+            <div class="column is-2">
+                <ul>
+                    <li class="my-2"><strong>ドキュメント</strong></li>
+                    <li class="my-2"><a href="{% url 'about:terms' %}">利用規約</a></li>
+                    <li class="my-2"><a href="{% url 'about:privacy' %}">プライバシーポリシー</a></li>
                 </ul>
             </div>
             <div class="column is-2">
                 <ul>
                     <li class="my-2"><strong>サポート</strong></li>
-                    <li class="my-2"><a href="{% url 'top:faq' %}">FAQ</a></li>
-                    <li class="my-2"><a href="{% url 'top:contact' %}">お問い合わせ</a></li>
-                </ul>
-            </div>
-            <div class="column is-2">
-                <ul>
-                    <li class="my-2">
-                        <a><img src="{% static 'image/prasic_full.png'%}" style="max-height: 5.75rem" /></a>
-                    </li>
-                    <li class="my-2"><p style="font-size: 12px">このサービスはアプリケーションサービス基盤「Prasic-plus」上で動作しています</p></li>
-                    <hr />
-                    <li class="my-2"><a>共通ガイドライン</a></li>
+                    <li class="my-2"><a href="{% url 'about:faq' %}">FAQ</a></li>
+                    <li class="my-2"><a href="{% url 'about:contact' %}">お問い合わせ</a></li>
                 </ul>
             </div>
         </div>

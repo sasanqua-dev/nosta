@@ -1,0 +1,32 @@
+{% load static %}
+<p style="font-size: 12px" class="mb-4">{{shops.count}}件の店舗を表示中</p>
+{% if shops.count == 0 %}
+<div class="hero">
+    <div class="hero-body">
+        <div class="has-text-centered">
+            <p class="has-text-left">申し訳ございません</p>
+            <p class="has-text-left">表示可能な店舗がありません</p>
+            <p class="has-text-left has-text-gray my-3" style="font-size: 12px">ヒント：検索するワードを変えて検索して下さい</p>
+        </div>
+    </div>
+</div>
+{% endif %} {% for shop in shops %}
+<div class="box m-2">
+    <div class="card-content">
+        <div class="columns">
+            <div class="column is-10">
+                <p class="is-size-4">{{ shop.name }}</p>
+                <p class="is-size-6">{{ shop.description }}</p>
+            </div>
+            <div class="column is-2 has-text-centered">
+                <a class="button is-info is-light" href="{% url 'market:index' shop.code %}">
+                    <span class="icon-text">
+                        <img src="{% static 'image/icon/arrow-up-right-from-square-solid.svg' %}" class="m-1" />
+                        <span>ストア</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}

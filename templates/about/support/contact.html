@@ -6,7 +6,7 @@
             <p class="title">お問い合わせ</p>
         </div>
     </div>
-    <form class="Form" action="{% url 'top:contact' %}" method="POST">
+    <form class="Form" action="{% url 'about:contact' %}" method="POST">
         {% csrf_token %}
         <div class="Form-Item">
             <p class="Form-Item-Label"><span class="Form-Item-Label-Required">必須</span>会社/団体名</p>
@@ -25,7 +25,7 @@
             <textarea class="Form-Item-Textarea input" name="content"></textarea>
         </div>
         <div class="Form-Item" style="display: inline-block">
-            <a href="{% url 'top:privacy' %}">こちら</a>をお読みになり、NOSTA運営チームプライバシーポリシー(個人情報保護方針)についてご理解の上送信してください。
+            <a href="{% url 'about:privacy' %}">こちら</a>をお読みになり、NOSTA運営チームプライバシーポリシー(個人情報保護方針)についてご理解の上送信してください。
             送信内容は自動返信メールでお届けします。 メールが届かない場合は以下の内容をご確認の上、再度お問い合わせください。
             <br />
             <ul>

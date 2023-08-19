@@ -11,4 +11,3 @@ requests
 uwsgi
 mysqlclient
 whitenoise
-logging

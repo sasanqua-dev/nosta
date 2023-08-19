@@ -1,0 +1,111 @@
+{% extends 'page_base.html' %} {% block content %} {% load static %}
+<section style="min-height: 90vh; margin-top: 15vh">
+    <div class="has-text-centered">
+        <p style="color: #00517c; font-size: min(3.5vw, 1.25rem)">模擬店から導入できる店舗支援サービス「NOSTA」</p>
+    </div>
+    <div class="hero">
+        <div class="hero-body">
+            <div class="has-text-centered">
+                <p class="my-3">オンラインショップに対応している</p>
+                <p class="title">店舗をさがす</p>
+            </div>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column is-2 is-hidden-touch"></div>
+        <div class="column is-8 p-4">
+            <div class="my-4 m-1">
+                <div class="columns">
+                    <div class="column is-10"><input class="input m-1" placeholder="店舗名のキーワード" id="search" /></div>
+                    <div class="column is-2 has-text-centered">
+                        <button class="button is-info m-1 is-light" onclick="search()"><img src="{% static 'image/icon/magnifying-glass-solid.svg' %}" class="m-1 mr-3" />検索</button>
+                    </div>
+                </div>
+            </div>
+            <hr style="background-color: #00517c" />
+            <section id="list" class="m-1">
+                <p style="font-size: 12px" class="mb-4">{{shops.count}}件の店舗を表示中</p>
+                {% if shops.count == 0 %}
+                <div class="hero">
+                    <div class="hero-body">
+                        <div class="has-text-centered">
+                            <p class="has-text-left">申し訳ございません</p>
+                            <p class="has-text-left">表示可能な店舗がありません</p>
+                            <p class="has-text-left has-text-gray">ヒント：検索するワードを変えて検索して下さい</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %} {% for shop in shops %}
+                <div class="box m-2">
+                    <div class="card-content">
+                        <div class="columns">
+                            <div class="column is-10">
+                                <p class="is-size-4">{{ shop.name }}</p>
+                                <p class="is-size-6">{{ shop.description }}</p>
+                            </div>
+                            <div class="column is-2 has-text-centered">
+                                <a class="button is-info is-light" href="{% url 'market:index' shop.code %}">
+                                    <span class="icon-text">
+                                        <img src="{% static 'image/icon/arrow-up-right-from-square-solid.svg' %}" class="m-1 mr-3" />
+                                        <span>ストア</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </section>
+        </div>
+        <div class="column is-2 is-hidden-touch"></div>
+    </div>
+</section>
+
+<script>
+    // csrf_tokenの取得に使う
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === name + '=') {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+    }
+    function search() {
+        var csrf_token = getCookie('csrftoken');
+        path = "{% url 'top:search' %}";
+        $.ajax({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                }
+            },
+            type: 'POST',
+            url: path,
+            data: {
+                key: document.getElementById('search').value,
+            },
+            dataType: 'html',
+        })
+            .done(function (data) {
+                document.getElementById('list').innerHTML = data;
+            })
+            .fail(function (data) {
+                // error
+                console.log(data);
+                window.alert('通信エラーが発生しました(E-T100)');
+            });
+    }
+</script>
+{% endblock %}
