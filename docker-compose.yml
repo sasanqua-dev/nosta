@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: ./production_Dockerfile
-    command: uwsgi --http :8000 --module nosta.wsgi
+    command: python manage.py runserver 0.0.0.0:8000
     container_name: nosta_app
     depends_on:
       - nosta_db
