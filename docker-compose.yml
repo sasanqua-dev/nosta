@@ -11,7 +11,6 @@ services:
       - nosta_db
     networks:
       - prasic
-      - nosta
     environment:
       - DJANGO_SETTINGS_MODULE=nosta.settings.production
     volumes:
@@ -31,7 +30,7 @@ services:
     restart: always
     container_name: nosta_db
     networks:
-      - nosta
+      - prasic
     environment:
       MARIADB_ROOT_PASSWORD: nosta_db_root_password
     volumes:
@@ -39,6 +38,4 @@ services:
 
 networks:
   prasic:
-    external: true
-  nosta:
     external: true
