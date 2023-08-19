@@ -25,7 +25,24 @@
                             <p class="is-size-3"><c style="font-size: 12px">￥</c><c id="cart_sum">0</c></p>
                         </div>
                     </div>
+                    {% if request.user.is_authenticated %}
                     <button class="button is-fullwidth is-info is-outlined" onclick="showTreasurer()">注文へ進む</button>
+                    {% else %}
+                    <div class="columns">
+                        <div class="column">
+                            <a class="button is-fullwidth is-info is-outlined my-2 py-6" href="{% url 'login' %}">ログイン / アカウントを作成する</a>
+                        </div>
+                        <div class="column">
+                            <button class="button is-fullwidth is-info my-2 py-6" onclick="showTreasurer()">ゲストアカウントを作成して<br />注文へ進む</button>
+                        </div>
+                    </div>
+                    <div class="notification is-danger is-light">
+                        <p class="help has-text-danger">
+                            <b>ログイン/アカウント作成を行った場合、カート内の商品は保存されません</b
+                            ><br />ゲストアカウントは注文確定時にアカウントID/パスワードを表示します<br />ゲストアカウント作成時に入力していただく項目はありません<br />※注文確定後、マイページでニックネームのご登録をお願いします
+                        </p>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -66,7 +83,15 @@
                             ・キャンセル等の可否等必ず店舗のキャンセルポリシーをご確認ください<br />
                             ・この画面はNOSTAの画面です、注文にはNOSTA利用規約への同意が必要となります<br />
                         </div>
+                        {% if request.user.is_authenticated %}
                         <button class="button is-fullwidth is-info is-outlined" onclick="tr_send()">注文する</button>
+                        {% else %}
+                        <div class="m-2">
+                            <input type="checkbox" required id="term" name="term" />
+                            <a href="{% url 'about:terms' %}" target="_blank">利用規約</a>と<a href="{% url 'about:privacy' %}" target="_blank">プライバシーポリシー</a>に同意する
+                        </div>
+                        <button class="button is-fullwidth is-info is-outlined" onclick="tr_send()">注文する</button>
+                        {% endif %}
                     </form>
                 </div>
             </div>
@@ -83,6 +108,21 @@
                         </div>
                     </div>
                     <hr />
+                    {% if not request.user.is_authenticated %}
+                    <div class="box m-2" id="authinfo" hidden>
+                        <p>ユーザー名:</p>
+                        <b id="username_display"></b>
+                        <hr />
+                        <p>パスワード:</p>
+                        <b id="password_display"></b>
+                        <br />
+                        <br />
+                        <strong class="has-text-danger">この画面を必ず保存してください</strong>
+                    </div>
+                    {% else %}
+                    <input id="username_display" hidden />
+                    <input id="password_display" hidden />
+                    {% endif %}
                     <a class="button is-fullwidth is-info is-outlined my-6" href="{% url 'userapp:index' %}">マイページ</a>
                     <button class="button is-fullwidth is-info is-outlined my-6" onclick="location.reload()">画面を閉じる</button>
                 </div>
@@ -151,10 +191,19 @@
         let product_number_sum = 0;
         if (cart_numbers.length == 0) {
             windows.alert('カートが空です');
+            return;
         }
         if (document.getElementById('tr_date').value == '') {
             window.alert('必要事項が入力されていません');
+            return;
         }
+        if (document.getElementById('term') != undefined) {
+            if (document.getElementById('term').checked == false) {
+                window.alert('利用規約およびプライバシーポリシーに同意されない場合はご利用頂くことができません');
+                return;
+            }
+        }
+
         for (let i = 0; i < products.length; i++) {
             let id = products[i].id.replace('_cart', '');
             let number = cart_numbers[i].textContent;
@@ -186,9 +235,16 @@
                 if (data == 'outofrange') {
                     window.alert('注文した商品に在庫が不足している商品がふくまれていたためキャンセルされました\n再読み込みします');
                     location.reload();
+                    return;
                 } else if (data == 'limit') {
                     window.alert('注文数に制限のある商品で購入数が購入上限を超えています\n再読み込みします');
                     location.reload();
+                    return;
+                }
+                if (data != 'None:None') {
+                    document.getElementById('username_display').textContent = data.split(':')[0];
+                    document.getElementById('password_display').textContent = data.split(':')[1];
+                } else {
                 }
                 document.getElementById('result').classList.add('is-active');
                 document.getElementById('cart_body').innerHTML = '';

@@ -78,7 +78,7 @@
                             <p class="mt-3">{{ shop.description | linebreaksbr }}</p>
                         </div>
                         <div class="column is-2">
-                            {% if shop in userdata.favorites.all %}
+                            {% if userdata %} {% if shop in userdata.favorites.all %}
                             <div id="favorite" hidden>
                                 <a class="button is-info is-light my-2" onclick="favorites('fav','{{ shop.id }}','market')"
                                     ><img src="{% static 'image/icon/heart-regular.svg' %}" class="mx-1 mr-3" /><c>{{ fav }}</c></a
@@ -100,7 +100,12 @@
                                     ><img src="{% static 'image/icon/heart-solid.svg' %}" class="mx-1 mr-3" /><c>{{ fav }}</c></a
                                 >
                             </div>
-                            {% endif %} {% if shop.website and shop.website != "None" and shop.website != "" %}
+                            {% endif %} {%else%}
+                            <div id="favorite">
+                                <p class="button is-info is-light my-2"><img src="{% static 'image/icon/heart-regular.svg' %}" class="mx-1 mr-3" /><c>{{ fav }}</c></p>
+                                <p class="help my-2"><a href="{% url 'login' %}">ログイン</a>するとお気に入り登録が可能です</p>
+                            </div>
+                            {%endif%} {% if shop.website and shop.website != "None" and shop.website != "" %}
                             <a class="button is-info is-outlined" href="{{ shop.website }}"
                                 ><img src="{% static 'image/icon/arrow-up-right-from-square-solid.svg' %}" class="mx-3" alt="店舗サイト" />店舗サイト</a
                             >

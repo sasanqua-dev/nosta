@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from db.models import *
 from django.db.models import *
@@ -14,7 +15,6 @@ import hashlib
 import json
 
 # Create your views here.
-@login_required
 def market(request,shopCODE):
     if request.method == "POST":
         shop = Shop.objects.get(code=shopCODE)
@@ -37,9 +37,38 @@ def market(request,shopCODE):
                 return HttpResponse(data)
             case "post_treasurer":
                 shop = Shop.objects.get(code=shopCODE)
+                if request.user.is_authenticated:
+                    Guest = False
+                    user = request.user
+                    username = None
+                    password = None
+                else:
+                    Guest = True
+                    while True:
+                        username = randomstr(10)
+                        email = username + "@nosta.guest_user"
+                        if User.objects.filter(username = username).count() > 0 & User.objects.filter(email = email).count() > 0:
+                            pass
+                        else:
+                            break
+                    last_name = "ゲスト"
+                    password = randomstr(5)
+                    user = User.objects.create_user(
+                        username=username,
+                        email=email,
+                        password=password,
+                        first_name=last_name,
+                        is_active="True"
+                    )
+                    UserData.objects.create(
+                        user=user
+                    )
+                    user.backend = 'django.contrib.auth.backends.ModelBackend'
+                    login(request, user)
+
                 order = Order.objects.create(
                     shop = Shop.objects.get(code=shopCODE),
-                    customer = request.user,
+                    customer = user,
                     status = "reserved",
                     day = '',
                     number = request.POST["number"],
@@ -54,6 +83,9 @@ def market(request,shopCODE):
 
                 def outofrange(order):
                     order.delete()
+                    if Guest:
+                        logout(request)
+                        user.delete()
 
                 for product_id,product_number in zip(json.loads(request.POST["products_ids"]),json.loads(request.POST["products_numbers"])):
                     product = Product.objects.get(id=product_id)
@@ -79,10 +111,15 @@ def market(request,shopCODE):
                     product_status_auto_change(product)
                 order.total_price=CellProduct.objects.filter(order=order).aggregate(price=Sum('price'))["price"]
                 order.save()
-                return HttpResponse("OK!")
+                authinfo = str(username) + ":" + str(password)
+                return HttpResponse(authinfo)
     else:
         shop = Shop.objects.get(code=shopCODE)
-        userdata = UserData.objects.get(user=request.user)
+        if request.user.is_authenticated:
+            userdata = UserData.objects.get(user=request.user)
+        else:
+            userdata = None
+
         fav = shop.favorites.all().count()
         products = Product.objects.all().filter(Q(shop=shop)&Q(web_cart=True))
         return render(request,'market/cart_index.html',{'shop':shop,'userdata':userdata,'fav':fav})
