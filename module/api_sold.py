@@ -17,7 +17,7 @@ def api_send(shop,order):
         "products":products
     }
     url = shop.webhock
-    response = requests.post(url, data=senddate)
+    response = requests.get(url, data=senddate)
     return response
 
 
